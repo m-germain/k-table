@@ -1,22 +1,28 @@
 import Vue from 'vue'
-import VueRouter, { RouteConfig } from 'vue-router'
-import Client from '../views/Client.vue'
+import VueRouter, { RouteConfig } from 'vue-router';
+import Client from '../views/Client.vue';
+import Barman from '../views/Barman.vue';
+import Products from '../views/Products.vue';
+
 
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
   {
-    path: '/',
-    name: 'Client',
+    path: '/:number',
+    name: 'Table',
+    props: true,
     component: Client
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Barman.vue')
+    path: '/manager/admin',
+    name: 'Barman Dashboard',
+    component: Barman
+  },
+  {
+    path: '/manager/admin/products',
+    name: 'Products',
+    component: Products,
   }
 ]
 
