@@ -16,7 +16,7 @@
         </template>
         <v-card>
           <HeadLine title="Ajouter un Produit" />
-          <ProductForm :product="item" update="true" @closeDialogAndFetch="closeDialogAndFetch" />
+          <ProductForm :product="item" update="true" @closeDialog="closeDialog" />
         </v-card>
       </v-dialog>
     </v-list-item-action>
@@ -37,9 +37,9 @@ export default class ProductListItemBarman extends Vue {
 
   private dialog = false;
 
-  closeDialogAndFetch() {
+  closeDialog() {
     this.dialog = false;
-    this.$emit("closeDialogAndFetch");
+    this.$emit("closeDialog");
   }
 }
 </script>

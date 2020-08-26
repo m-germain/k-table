@@ -7,7 +7,7 @@ const ProductService = {
 
     getProducts: async function (): Promise<MProduct[]> {
         const productsArray: MProduct[] = [];
-        products.get().then((querySnapshot) => {
+        await products.get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 const product: MProduct = {
                     id: doc.id,
@@ -24,6 +24,8 @@ const ProductService = {
         }).catch(error => {
             throw new Error('Could not get any Products from the serveur.' + error)
         })
+        console.log(productsArray);
+
         return productsArray;
     },
 

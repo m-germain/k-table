@@ -17,6 +17,28 @@ export interface MTable {
     token: string;
 }
 
+export interface MOrder {
+    id: string;
+    table: number;
+    timestamp: Date;
+    completed: boolean;
+    clientToken: string;
+    lineItems: MLineItem[];
+}
+
+export interface MLineItem {
+    product: MProduct;
+    quantity: number;
+}
+
+export interface MTable {
+    id: string;
+    name: number;
+    available: boolean;
+    help: boolean;
+    token: string;
+}
+
 
 export const Categories: MCategorie[] = [
     { name: "Beers", icon: "mdi-beer" },

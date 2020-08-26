@@ -16,6 +16,7 @@ const routes: Array<RouteConfig> = [
     component: Home
   },
   {
+    //Va Changer en Table ID genre CgkImrfu06656wI
     path: '/:number',
     name: 'Table',
     props: true,

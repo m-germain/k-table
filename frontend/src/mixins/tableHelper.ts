@@ -18,35 +18,21 @@ export default class TableHelper extends Vue {
     const localTables: MTable[] = [];
     tables.orderBy("name").onSnapshot(function (snapshot) {
       snapshot.docChanges().forEach(function (change) {
+        const table: MTable = {
+          id: change.doc.id,
+          name: change.doc.data().name,
+          available: change.doc.data().available,
+          help: change.doc.data().help,
+          token: change.doc.data().token,
+        }
         if (change.type === "added") {
-          const table: MTable = {
-            id: change.doc.id,
-            name: change.doc.data().name,
-            available: change.doc.data().available,
-            help: change.doc.data().help,
-            token: change.doc.data().token,
-          }
           localTables.push(table);
         }
         if (change.type === "modified") {
-          const table: MTable = {
-            id: change.doc.id,
-            name: change.doc.data().name,
-            available: change.doc.data().available,
-            help: change.doc.data().help,
-            token: change.doc.data().token,
-          }
           const index = localTables.findIndex(item => item.id == table.id)
           localTables.splice(index, 1, table)
         }
         if (change.type === "removed") {
-          const table: MTable = {
-            id: change.doc.id,
-            name: change.doc.data().name,
-            available: change.doc.data().available,
-            help: change.doc.data().help,
-            token: change.doc.data().token,
-          }
           const index = localTables.findIndex(item => item.id == table.id)
           if (index >= 0) {
             localTables.splice(index, 1)

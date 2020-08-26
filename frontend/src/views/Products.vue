@@ -43,27 +43,27 @@
         <v-progress-circular :size="70" :width="7" color="secondary" indeterminate></v-progress-circular>
       </v-col>
       <v-col cols="12" v-else>
-        <ProductListBarman
+        <ProductList
           v-if="recomendations.length > 0 && filters.includes(3) || filters.length == 0"
-          :list="recomendations"
+          :listProduct="recomendations"
           title="Recommended"
           @closeDialog="closeDialog"
         />
-        <ProductListBarman
+        <ProductList
           v-if="beers.length > 0 && filters.includes(0) || filters.length == 0"
-          :list="beers"
+          :listProduct="beers"
           title="Beers"
           @closeDialog="closeDialog"
         />
-        <ProductListBarman
+        <ProductList
           v-if="softs.length > 0 && filters.includes(1) || filters.length == 0"
-          :list="softs"
+          :lilistProductst="softs"
           title="Softs"
           @closeDialog="closeDialog"
         />
-        <ProductListBarman
+        <ProductList
           v-if="foods.length > 0 && filters.includes(2) || filters.length == 0"
-          :list="foods"
+          :listProduct="foods"
           title="Foods"
           @closeDialog="closeDialog"
         />
@@ -76,7 +76,7 @@
 import { Component, Mixins } from "vue-property-decorator";
 import HeadLine from "../components/communs/HeadLine.vue";
 import ProductForm from "../components/products/ProductForm.vue";
-import ProductListBarman from "../components/products/ProductListBarman.vue";
+import ProductList from "../components/products/ProductList.vue";
 import ProductHelper from "../mixins/productHelper";
 import { MProduct, Categories } from "../models";
 
@@ -92,14 +92,14 @@ const defaultProduct: MProduct = {
 };
 
 @Component({
-  components: { HeadLine, ProductForm, ProductListBarman },
+  components: { HeadLine, ProductForm, ProductList },
 })
 export default class Products extends Mixins(ProductHelper) {
   private search = "";
   private categories = Categories;
+  private filters = [];
   private newProduct = JSON.parse(JSON.stringify(defaultProduct));
   private dialog = false; // To open the modal
-  private filters = [];
 
   mounted() {
     this.getProducts();

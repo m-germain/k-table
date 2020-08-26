@@ -1,0 +1,113 @@
+<template>
+  <v-list-item :key="lineItem.product.id" v-if="lineItem.product.available">
+    <template>
+      <transition name="slide-fade">
+        <v-list-item-icon class="ma-0 mr-4 ma-auto success--text" v-if="lineItem.quantity > 0">
+          <h3 :class="inOrder ? 'mt-1' :'mt-3' ">x</h3>
+          <h1>{{lineItem.quantity}}</h1>
+        </v-list-item-icon>
+      </transition>
+
+      <transition name="slide-fade-invert">
+        <v-list-item-icon class="ma-0 mr-4 ma-auto" v-if="lineItem.quantity <= 0">
+          <h1>{{parseFloat(lineItem.product.alcohol)}}</h1>
+          <h4>%</h4>
+        </v-list-item-icon>
+      </transition>
+      <v-list-item-content align="end" :class="lineItem.quantity > 0 ? 'success--text' : ''">
+        <v-list-item-title>
+          <transition name="slide-fade">
+            <v-icon
+              v-if="lineItem.quantity > 0"
+              small
+              left
+              color="success"
+            >mdi-checkbox-marked-circle-outline</v-icon>
+          </transition>
+
+          <span class="font-weight-medium">{{lineItem.product.name}}</span>
+        </v-list-item-title>
+        <v-list-item-subtitle v-if="inOrder === true">
+          <span
+            class="font-weight-bold"
+          >{{( parseFloat(lineItem.product.price) * parseFloat(lineItem.quantity) ) }} €</span>
+        </v-list-item-subtitle>
+        <v-list-item-subtitle v-if="inOrder === false">
+          <span class="font-weight-ligth">{{lineItem.product.description}}</span>
+        </v-list-item-subtitle>
+      </v-list-item-content>
+      <!-- <v-list-item-action align="end" v-if="inOrder === true">
+        <v-row no-gutters>
+          <v-col class="pa-0 mt-n2" style="width: 45px">
+            <h3>{{( parseFloat(lineItem.product.price) * parseFloat(lineItem.quantity) ) }} €</h3>
+          </v-col>
+        </v-row>
+      </v-list-item-action>-->
+      <v-list-item-action>
+        <v-btn small text class="pa-0" @click="lineItem.quantity = lineItem.quantity + 1">
+          <v-icon>mdi-plus-circle-outline</v-icon>
+        </v-btn>
+        <v-btn
+          small
+          text
+          class="pa-0"
+          @click="lineItem.quantity > 0 ? lineItem.quantity = lineItem.quantity - 1 : lineItem.quantity = 0"
+        >
+          <v-icon>mdi-minus-circle-outline</v-icon>
+        </v-btn>
+      </v-list-item-action>
+    </template>
+  </v-list-item>
+</template>
+
+<script lang="ts">
+import { Component, Vue, Prop } from "vue-property-decorator";
+import ProductForm from "./ProductForm.vue";
+import HeadLine from "../communs/HeadLine.vue";
+import { MProduct, MLineItem } from "../../models";
+
+@Component({
+  components: { ProductForm, HeadLine },
+})
+export default class ProductListItemClient extends Vue {
+  @Prop() lineItem!: MLineItem;
+  @Prop({ default: false }) inOrder!: boolean;
+
+  mounted() {
+    console.log(this.inOrder);
+
+    console.log(this.lineItem);
+  }
+}
+</script>
+
+
+<style scoped>
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(30px);
+  opacity: 0;
+  position: absolute;
+}
+
+.slide-fade-invert-enter-active {
+  transition: all 0.6s ease;
+}
+.slide-fade2-invert-leave-active {
+  transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-invert-enter, .slide-fade-invert-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(-10px);
+  opacity: 0;
+  position: absolute;
+}
+</style>
