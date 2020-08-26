@@ -80,7 +80,7 @@
               v-model="formProduct.price"
             ></v-text-field>
           </v-col>
-          <v-col cols="12" sm="6" md="6">
+          <v-col cols="12" sm="12" md="12">
             <v-text-field
               label="Description*"
               hint="exemple : Une bière légère et sucrée"

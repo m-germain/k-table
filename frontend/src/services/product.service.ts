@@ -1,7 +1,7 @@
 import { MProduct } from "../models";
 import db from "../plugins/firebase";
 
-const products = db.collection("products");
+export const products = db.collection("products");
 
 const ProductService = {
 
