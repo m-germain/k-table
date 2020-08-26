@@ -168,7 +168,7 @@ export default class ProductForm extends Vue {
 
   close() {
     this.productForm.resetValidation();
-    this.$emit("closeDialogAndFetch");
+    this.$emit("closeDialog");
   }
 
   async updateProduct() {

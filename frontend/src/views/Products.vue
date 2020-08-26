@@ -23,7 +23,7 @@
           </template>
           <v-card>
             <HeadLine title="Ajouter un Produit" />
-            <ProductForm :product="newProduct" @closeDialogAndFetch="closeDialogAndFetch" />
+            <ProductForm :product="newProduct" @closeDialog="closeDialog" />
           </v-card>
         </v-dialog>
       </template>
@@ -47,25 +47,25 @@
           v-if="recomendations.length > 0 && filters.includes(3) || filters.length == 0"
           :list="recomendations"
           title="Recommended"
-          @closeDialogAndFetch="closeDialogAndFetch"
+          @closeDialog="closeDialog"
         />
         <ProductListBarman
           v-if="beers.length > 0 && filters.includes(0) || filters.length == 0"
           :list="beers"
           title="Beers"
-          @closeDialogAndFetch="closeDialogAndFetch"
+          @closeDialog="closeDialog"
         />
         <ProductListBarman
           v-if="softs.length > 0 && filters.includes(1) || filters.length == 0"
           :list="softs"
           title="Softs"
-          @closeDialogAndFetch="closeDialogAndFetch"
+          @closeDialog="closeDialog"
         />
         <ProductListBarman
           v-if="foods.length > 0 && filters.includes(2) || filters.length == 0"
           :list="foods"
           title="Foods"
-          @closeDialogAndFetch="closeDialogAndFetch"
+          @closeDialog="closeDialog"
         />
       </v-col>
     </v-row>
@@ -105,10 +105,9 @@ export default class Products extends Mixins(ProductHelper) {
     this.getProducts();
   }
 
-  closeDialogAndFetch() {
+  closeDialog() {
     this.dialog = false;
     this.newProduct = JSON.parse(JSON.stringify(defaultProduct));
-    this.getProducts();
   }
 }
 </script>
