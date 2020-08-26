@@ -11,7 +11,7 @@
       <v-col cols="12">
         <v-row>
           <v-col cols="6">
-            <v-card class="mx-auto"  to="/manager/admin/orders">
+            <v-card class="mx-auto" to="/manager/admin/orders">
               <v-img
                 class="white--text align-end"
                 height="200px"
@@ -69,10 +69,10 @@
                 </v-card-title>
               </v-img>
 
-              <v-card-subtitle class="pb-0">Nombre de tables : 10</v-card-subtitle>
+              <v-card-subtitle class="pb-0">Nombre de tables : {{numberOfTables}}</v-card-subtitle>
 
               <v-card-text class="text--primary">
-                <div>Tables Libres :</div>
+                <div>Tables Libres : {{numberOfTablesAvailable}}</div>
               </v-card-text>
             </v-card>
           </v-col>
@@ -83,14 +83,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
+import TableHelper from "../mixins/tableHelper";
 
 @Component({
   components: {},
 })
-export default class Barman extends Vue {
+export default class Barman extends Mixins(TableHelper) {
   created() {
-    console.log(this.$route);
+    this.getTables();
   }
 }
 </script>

@@ -17,7 +17,7 @@
           style="font-size: 20vh"
         >mdi-checkbox-marked-circle-outline</v-icon>
         <br />Il reste
-        <strong>4</strong> tables disponibles.
+        <strong>{{numberOfTablesAvailable}}</strong> tables disponibles.
         <strong>Vennez vite !</strong>
       </v-col>
       <v-col cols="7" style="font-size: 1.5rem" v-else>
@@ -31,14 +31,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
+import TableHelper from "../mixins/tableHelper";
 
 @Component({
   components: {},
 })
-export default class Barman extends Vue {
-  get available() {
-    return true;
+export default class Barman extends Mixins(TableHelper) {
+  mounted() {
+    this.getTables();
   }
 }
 </script>

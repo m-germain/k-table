@@ -27,7 +27,6 @@ export default class TableHelper extends Vue {
             token: change.doc.data().token,
           }
           localTables.push(table);
-          console.log("New table: ", change.doc.data());
         }
         if (change.type === "modified") {
           const table: MTable = {
@@ -39,7 +38,6 @@ export default class TableHelper extends Vue {
           }
           const index = localTables.findIndex(item => item.id == table.id)
           localTables.splice(index, 1, table)
-          console.log("Modified table: ", change.doc.data());
         }
         if (change.type === "removed") {
           const table: MTable = {
@@ -53,7 +51,6 @@ export default class TableHelper extends Vue {
           if (index >= 0) {
             localTables.splice(index, 1)
           }
-          console.log("Removed table: ", change.doc.data());
         }
       });
     });
@@ -100,5 +97,8 @@ export default class TableHelper extends Vue {
   }
 
 
+  get available() {
+    return this.numberOfTablesAvailable > 0;
+  }
 
 }
