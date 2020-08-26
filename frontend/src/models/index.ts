@@ -8,6 +8,16 @@ export interface MProduct {
     available: boolean;
     categorie: MCategorie;
 }
+
+export interface MTable {
+    id: string;
+    name: number;
+    available: boolean;
+    help: boolean;
+    token: string;
+}
+
+
 export const Categories: MCategorie[] = [
     { name: "Beers", icon: "mdi-beer" },
     { name: "Softs", icon: "mdi-cup-water" },

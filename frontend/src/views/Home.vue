@@ -1,0 +1,48 @@
+<template>
+  <v-container>
+    <v-row>
+      <v-col cols="12">
+        <h1 class="font-weight-bold">Hello,</h1>
+        <h2>
+          <span class="font-weight-medium">tu veux une</span> bière
+          <span class="font-weight-medium">à la</span> K-Fêt?
+        </h2>
+      </v-col>
+    </v-row>
+    <v-row align="center" justify="center">
+      <v-col cols="6" align="center" style="font-size: 1.5rem" v-if="available">
+        <v-icon
+          color="success"
+          class="my-8"
+          style="font-size: 20vh"
+        >mdi-checkbox-marked-circle-outline</v-icon>
+        <br />Il reste
+        <strong>4</strong> tables disponibles.
+        <strong>Vennez vite !</strong>
+      </v-col>
+      <v-col cols="7" style="font-size: 1.5rem" v-else>
+        <v-icon color="primary" class="my-8" style="font-size: 20vh">mdi-close-circle-outline</v-icon>
+        <br />Il ne reste
+        <strong>PAS</strong> de tables disponibles.
+        <strong>Vennez plus tard.</strong>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+
+@Component({
+  components: {},
+})
+export default class Barman extends Vue {
+  get available() {
+    return true;
+  }
+}
+</script>
+
+
+<style scoped>
+</style>

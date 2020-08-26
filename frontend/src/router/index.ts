@@ -3,11 +3,18 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import Client from '../views/Client.vue';
 import Barman from '../views/Barman.vue';
 import Products from '../views/Products.vue';
-
+import Home from '../views/Home.vue';
+import Tables from '../views/Tables.vue';
 
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
+  {
+    path: '/',
+    name: '',
+    props: true,
+    component: Home
+  },
   {
     path: '/:number',
     name: 'Table',
@@ -23,6 +30,11 @@ const routes: Array<RouteConfig> = [
     path: '/manager/admin/products',
     name: 'Products',
     component: Products,
+  },
+  {
+    path: '/manager/admin/tables',
+    name: 'Tables',
+    component: Tables,
   }
 ]
 
