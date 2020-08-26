@@ -99,18 +99,6 @@
 import { Component, Mixins } from "vue-property-decorator";
 import HeadLine from "../components/communs/HeadLine.vue";
 import TableHelper from "../mixins/tableHelper";
-import { MProduct } from "../models";
-
-const defaultProduct: MProduct = {
-  name: "",
-  id: "-1",
-  price: -1,
-  alcohol: -1,
-  pictureUrl: "",
-  description: "",
-  available: true,
-  categorie: { name: "", icon: "" },
-};
 
 @Component({
   components: { HeadLine },
