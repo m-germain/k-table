@@ -73,7 +73,7 @@ export default class ProductListItemClient extends Vue {
 
   mounted() {
     if (this.table.available) {
-      this.helpMessage = "Attente Validation Table";
+      this.helpMessage = "Attente Validation";
     }
   }
 
@@ -82,7 +82,7 @@ export default class ProductListItemClient extends Vue {
   }
 
   activateTable() {
-    this.$router.push("activate/" + this.table.id);
+    this.$router.push("activate/" + this.table.id + "/" + this.table.name);
   }
 
   liberateTable() {

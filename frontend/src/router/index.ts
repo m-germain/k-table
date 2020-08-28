@@ -6,6 +6,7 @@ import Products from '../views/Products.vue';
 import Home from '../views/Home.vue';
 import Tables from '../views/Tables.vue';
 import LandingPageTable from "../views/LandingPageTable.vue";
+import ActivateTable from "../views/ActivateTable.vue";
 
 Vue.use(VueRouter)
 
@@ -44,6 +45,11 @@ const routes: Array<RouteConfig> = [
     path: '/manager/admin/tables',
     name: 'Tables',
     component: Tables,
+  },
+  {
+    path: '/manager/admin/activate/:tableId/:tableNumber',
+    name: 'Table Activation',
+    component: ActivateTable,
   }
 ]
 

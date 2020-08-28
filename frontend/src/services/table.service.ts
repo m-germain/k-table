@@ -110,7 +110,18 @@ const TableService = {
         }).catch(error => {
             throw new Error('Could liberate table.' + error)
         })
-    }
+    },
+
+    activateTable: async function (id: string, token: string) {
+        tables.doc(id).update({
+            available: false,
+            token: token,
+        }).then(() => {
+            console.log("Table" + id + " Activated");
+        }).catch(error => {
+            throw new Error('Could liberate table.' + error)
+        })
+    },
 
 }
 
