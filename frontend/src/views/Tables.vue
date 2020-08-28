@@ -9,6 +9,7 @@
           :clearable="search.length > 2"
           filled
           flat
+          disabled
           style="max-width: 9rem"
           hide-details
           prepend-inner-icon="mdi-database-search"
@@ -72,22 +73,17 @@
       <v-col cols="12" v-else>
         <div class="overline font-weight-bold">Besoin d'aide aux tables</div>
         <v-row>
-          <v-col cols="4" v-for="table in tablesInNeed" :key="table.name">
-            <v-card v-if="table.help" color="warning" dark>
-              <v-card-text align="center" class="white--text">
-                <h2>{{table.name}}</h2>
-              </v-card-text>
-            </v-card>
+          <v-col cols="3" v-for="table in tablesInNeed" :key="table.name">
+            <!-- <v-btn block align="center" height="3rem" color="warning" dark>
+              <h2>{{table.name}}</h2>
+            </v-btn>-->
+            <TableTile :table="table" :color="'warning'" />
           </v-col>
         </v-row>
         <div class="overline font-weight-bold">Activitée des tables</div>
         <v-row>
-          <v-col cols="4" v-for="table in tables" :key="table.name">
-            <v-card :color="table.available ? 'success' : 'primary'" dark>
-              <v-card-text align="center" class="white--text">
-                <h2>{{table.name}}</h2>
-              </v-card-text>
-            </v-card>
+          <v-col cols="3" v-for="table in tables" :key="table.name">
+            <TableTile :table="table" :color="table.available ? 'success' : 'primary'" />
           </v-col>
         </v-row>
       </v-col>
@@ -98,10 +94,11 @@
 <script lang="ts">
 import { Component, Mixins } from "vue-property-decorator";
 import HeadLine from "../components/communs/HeadLine.vue";
+import TableTile from "../components/tables/TableTile.vue";
 import TableHelper from "../mixins/tableHelper";
 
 @Component({
-  components: { HeadLine },
+  components: { HeadLine, TableTile },
 })
 export default class Products extends Mixins(TableHelper) {
   private search = "";

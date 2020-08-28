@@ -89,60 +89,28 @@ const TableService = {
         }).catch(error => {
             throw new Error('Could not ask for help.' + error)
         })
+    },
+
+    resolveHelp: async function (id: string) {
+        tables.doc(id).update({
+            help: false
+        }).then(() => {
+            console.log("Table" + id + " helped");
+        }).catch(error => {
+            throw new Error('Could resolve help.' + error)
+        })
+    },
+
+    liberateTable: async function (id: string) {
+        tables.doc(id).update({
+            available: true,
+            token: ""
+        }).then(() => {
+            console.log("Table" + id + " liberated");
+        }).catch(error => {
+            throw new Error('Could liberate table.' + error)
+        })
     }
-
-    // updateProduct: async function (product: MProduct) {
-    //     products.doc(product.id).set({
-    //         id: product.id,
-    //         name: product.name,
-    //         price: parseFloat(product.price.toString()),
-    //         alcohol: parseFloat(product.alcohol.toString()),
-    //         pictureUrl: product.pictureUrl,
-    //         description: product.description,
-    //         available: product.available,
-    //         categorie: product.categorie,
-    //     }).then(() => {
-    //         console.log("ProductUpdated" + product.id);
-    //     }).catch(error => {
-    //         throw new Error('Could not patch this Product to the serveur.' + error)
-    //     })
-
-    // },
-
-    // getByFieldProducts: async function (field: string): Promise<MProduct[]> {
-    //     const productsArray: MProduct[] = [];
-    //     products.where(field, "==", true).get().then((querySnapshot) => {
-    //         querySnapshot.forEach((doc) => {
-    //             const product: MProduct = {
-    //                 id: doc.id,
-    //                 name: doc.data().name,
-    //                 price: doc.data().price,
-    //                 alcohol: doc.data().alcohol,
-    //                 description: doc.data().description,
-    //                 pictureUrl: doc.data().pictureUrl,
-    //                 available: doc.data().available,
-    //                 categorie: doc.data().categorie,
-    //             }
-    //             productsArray.push(product);
-    //         })
-    //     }).catch(error => {
-    //         throw new Error('Could not get any Products from the serveur.' + error)
-    //     })
-    //     return productsArray;
-    // },
-
-
-
-    // deleteProduct: async function (product: MProduct) {
-    //     products.doc(products.id).delete()
-    //         .then(() => {
-    //             console.log("ProductDeleted" + product.id);
-    //         })
-    //         .catch(error => {
-    //             throw new Error('Could not delete this Product to the serveur.' + error)
-    //         })
-
-    // },
 
 }
 

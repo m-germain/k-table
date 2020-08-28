@@ -76,8 +76,7 @@ export default class TableHelper extends Vue {
   }
 
   removeTable() {
-    TableService.removeTable(this.tables).then((resp) => {
-      console.log(resp);
+    TableService.removeTable(this.tables).then(() => {
       this.getTables()
     });
   }
