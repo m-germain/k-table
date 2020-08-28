@@ -26,8 +26,30 @@ export default class App extends Vue {}
 </script>
 
 <style lang="css">
-/* body {
-  overflow: hidden;
-  height: 100vh;
-} */
+/* toast action */
+.toasted .primary .action,
+.toasted.toasted-primary .action {
+  color: #ffffff !important;
+}
+
+/* toast container */
+.toasted .primary,
+.toasted.toasted-primary {
+  font-weight: 800 !important;
+  max-width: 200px;
+  padding: 6px 30px !important;
+  /* border-radius: 999px !important; */
+}
+
+.toasted .primary.success,
+.toasted.toasted-primary.success {
+  background: #26a68afd !important;
+  box-shadow: 0px 6px 16px rgba(77, 182, 142, 0.5) !important;
+}
+
+.toasted .primary.error,
+.toasted.toasted-primary.error {
+  background: #ef5350 !important;
+  box-shadow: 0px 6px 16px rgba(255, 111, 106, 0.5) !important;
+}
 </style>

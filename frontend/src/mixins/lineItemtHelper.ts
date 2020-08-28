@@ -8,7 +8,8 @@ export default class LineItemHelper extends Vue {
   private lineItemList: MLineItem[] = [];
 
   async getProducts() {
-    ProductService.getProducts().then((products: MProduct[]) => {
+    this.clear();
+    ProductService.getProductsAvailable().then((products: MProduct[]) => {
       for (const product of products) {
         const lineItem: MLineItem = {
           product: product,
@@ -17,6 +18,10 @@ export default class LineItemHelper extends Vue {
         this.lineItemList.push(lineItem);
       }
     });
+  }
+
+  clear() {
+    this.lineItemList = [];
   }
 
   get beers() {

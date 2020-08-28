@@ -79,6 +79,12 @@
         </v-row>
       </v-col>
     </v-row>
+    <v-footer padless absolute class="font-weight-thin" style="background-color: transparent; transparent; opacity:0.3">
+      <v-col class="text-center" cols="12">
+        Made with
+        <v-icon small color="primary">mdi-heart</v-icon> by La Pedale
+      </v-col>
+    </v-footer>
   </v-container>
 </template>
 

@@ -18,35 +18,38 @@ new Vue({
 
 
 //Notification managment
-Vue.use(Toasted);
+Vue.use(Toasted, {
+  iconPack: 'material' // set your iconPack, defaults to material.
+});
 
 // options to the toast
 const optionsError = {
   position: 'bottom-right',
   className: 'error',
-  icon: {
-    name: 'error_outline',
-    after: true // this will append the icon to the end of content
-  },
-  // action: [
-  //   {
-  //     text: 'OK',
-  //     onClick: (e, toastObject) => {
-  //       toastObject.goAway(0);
-  //     }
-  //   }
-  // ],
-  duration: 5000,
+  // icon: 'error-outline',
+  // icon: {
+  //   name: 'error-outline',
+  //   after: true // this will append the icon to the end of content
+  // }, 
+  action: [
+    {
+      text: 'OK',
+      onClick: (e: any, toastObject: any) => {
+        toastObject.goAway(0);
+      }
+    }
+  ],
+  duration: 50000,
   keepOnHover: true,
 };
 
 const optionsSucess = {
   position: 'bottom-right',
   className: 'success',
-  icon: {
-    name: 'check',
-    after: true // this will append the icon to the end of content
-  },
+  // icon: {
+  //   name: 'check',
+  //   after: true // this will append the icon to the end of content
+  // },
   duration: 5000,
   keepOnHover: true,
 };

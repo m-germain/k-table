@@ -40,7 +40,7 @@ import TableHelper from "../mixins/tableHelper";
 @Component({
   components: {},
 })
-export default class Barman extends Mixins(TableHelper) {
+export default class Home extends Mixins(TableHelper) {
   mounted() {
     this.getTables();
   }

@@ -9,9 +9,18 @@
       </transition>
 
       <transition name="slide-fade-invert">
-        <v-list-item-icon class="ma-0 mr-4 ma-auto" v-if="lineItem.quantity <= 0">
+        <v-list-item-icon
+          class="ma-0 mr-4 ma-auto"
+          v-if="lineItem.quantity <= 0 && lineItem.product.alcohol > 0"
+        >
           <h1>{{parseFloat(lineItem.product.alcohol)}}</h1>
-          <h4>%</h4>
+          <h2>°</h2>
+        </v-list-item-icon>
+        <v-list-item-icon
+          class="ma-0 mr-4 ma-auto"
+          v-if="lineItem.quantity <= 0 && lineItem.product.alcohol <= 0"
+        >
+          <v-icon color="black">{{lineItem.product.categorie.icon}}</v-icon>
         </v-list-item-icon>
       </transition>
       <v-list-item-content align="end" :class="lineItem.quantity > 0 ? 'success--text' : ''">
@@ -36,13 +45,6 @@
           <span class="font-weight-ligth">{{lineItem.product.description}}</span>
         </v-list-item-subtitle>
       </v-list-item-content>
-      <!-- <v-list-item-action align="end" v-if="inOrder === true">
-        <v-row no-gutters>
-          <v-col class="pa-0 mt-n2" style="width: 45px">
-            <h3>{{( parseFloat(lineItem.product.price) * parseFloat(lineItem.quantity) ) }} €</h3>
-          </v-col>
-        </v-row>
-      </v-list-item-action>-->
       <v-list-item-action>
         <v-btn small text class="pa-0" @click="lineItem.quantity = lineItem.quantity + 1">
           <v-icon>mdi-plus-circle-outline</v-icon>

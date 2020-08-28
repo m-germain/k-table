@@ -5,6 +5,7 @@ import Barman from '../views/Barman.vue';
 import Products from '../views/Products.vue';
 import Home from '../views/Home.vue';
 import Tables from '../views/Tables.vue';
+import LandingPageTable from "../views/LandingPageTable.vue";
 
 Vue.use(VueRouter)
 
@@ -16,9 +17,16 @@ const routes: Array<RouteConfig> = [
     component: Home
   },
   {
+    //Ici c'est bien le table number 
+    path: '/:tableNumber',
+    name: 'Welcome', // Nom en haut de l'ecran
+    props: true,
+    component: LandingPageTable
+  },
+  {
     //Va Changer en Table ID genre CgkImrfu06656wI
-    path: '/:number',
-    name: 'Table',
+    path: '/order/:number',
+    name: 'Table', // Nom en haut de l'ecran
     props: true,
     component: Client
   },

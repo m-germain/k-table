@@ -5,9 +5,9 @@ export const products = db.collection("products");
 
 const ProductService = {
 
-    getProducts: async function (): Promise<MProduct[]> {
+    getProductsAvailable: async function (): Promise<MProduct[]> {
         const productsArray: MProduct[] = [];
-        await products.get().then((querySnapshot) => {
+        await products.where("available", "==", true).get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 const product: MProduct = {
                     id: doc.id,

@@ -3,12 +3,12 @@ import db from "../plugins/firebase";
 
 export const tables = db.collection("tables");
 
-const ProductService = {
+const TableService = {
 
 
     // Kind of useless.
     getTables: async function (): Promise<MTable[]> {
-        const productsArray: MTable[] = [];
+        const tablessArray: MTable[] = [];
         tables.get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 const table: MTable = {
@@ -18,15 +18,40 @@ const ProductService = {
                     help: doc.data().help,
                     token: doc.data().token,
                 }
-                productsArray.push(table);
+                tablessArray.push(table);
             })
         }).catch(error => {
             throw new Error('Could not get any Tables from the serveur.' + error)
         })
-        return productsArray;
+        return tablessArray;
+    },
+
+    getTableByNumber: async function (tableNumber: number): Promise<MTable> {
+        const tablesArray: MTable[] = [];
+        await tables.get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                const table: MTable = {
+                    id: doc.id,
+                    name: doc.data().name,
+                    available: doc.data().available,
+                    help: doc.data().help,
+                    token: doc.data().token,
+                }
+                if (table.name === tableNumber) {
+                    tablesArray.push(table);
+                }
+            })
+        }).catch(error => {
+            throw new Error('Could not get any Tables from the serveur.' + error)
+        })
+        if (tablesArray.length > 0) {
+            return tablesArray[0];
+        } else throw new Error('Could not get any Tables from the serveur.');
     },
 
     addTable: async function (tableList: MTable[]) {
+        // We could specify the id of the docuement and use the table number as ID.
+        // But for now we will not do this.
         tables.add({
             name: (tableList.length + 1),
             available: true,
@@ -44,15 +69,27 @@ const ProductService = {
             return table.name === tableList.length
         })
 
-        if (lastTable)
+        // If the table is unavailable we have clients on it and don't want to delete it.
+        if (lastTable && lastTable.available)
             tables.doc(lastTable.id).delete()
                 .then(() => {
                     console.log("Table Deleted" + lastTable.id);
                 })
                 .catch(error => {
-                    throw new Error('Could not delete this Product to the serveur.' + error)
+                    throw new Error('Could not remove this Table to the serveur.' + error)
                 })
+        else throw new Error('Could not remove this Table, we have clients ordering on this table!')
     },
+
+    askHelp: async function (id: string) {
+        tables.doc(id).update({
+            help: true
+        }).then(() => {
+            console.log("Help Asked for table" + id);
+        }).catch(error => {
+            throw new Error('Could not ask for help.' + error)
+        })
+    }
 
     // updateProduct: async function (product: MProduct) {
     //     products.doc(product.id).set({
@@ -109,4 +146,4 @@ const ProductService = {
 
 }
 
-export default ProductService;
+export default TableService;

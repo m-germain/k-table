@@ -9,45 +9,6 @@
             <span class="font-weight-medium">ce soir ?</span>
           </h2>
         </v-col>
-        <!-- <v-col cols="12">
-          <h3 class="font-weight-medium">Nos Softs</h3>
-          <v-list>
-            <v-list-item-group v-model="selected" multiple active-class="secondary--text">
-              <template v-for="(item, index) in items">
-                <v-list-item :key="item.name" v-if="item.alcohol < 1">
-                  <template v-slot:default="{ active }">
-                    <v-list-item-icon class="ma-0 mr-4">
-                      <h1>{{item.alcohol}}</h1>
-                      <h4>%</h4>
-                    </v-list-item-icon>
-
-                    <v-list-item-content>
-                      <v-list-item-title>
-                        <span class="font-weight-medium">{{item.name}}</span>
-                        <span class="ml-3 font-weight-ligth">{{item.description}}</span>
-                      </v-list-item-title>
-                    </v-list-item-content>
-
-                    <v-list-item-action>
-                      <v-list-item-action-text v-text="item.action"></v-list-item-action-text>
-                      <v-icon
-                        v-if="!active"
-                        color="grey lighten-1"
-                      >mdi-checkbox-blank-circle-outline</v-icon>
-
-                      <v-icon v-else color="success">mdi-checkbox-marked-circle-outline</v-icon>
-                    </v-list-item-action>
-                  </template>
-                </v-list-item>
-
-                <v-divider
-                  v-if="index + 1 < items.length && item.alcohol < 1"
-                  :key="item.id + index"
-                ></v-divider>
-              </template>
-            </v-list-item-group>
-          </v-list>
-        </v-col>-->
       </v-row>
       <v-row class="mx-1">
         <v-col cols="12">
@@ -95,20 +56,28 @@
           />
         </v-col>
       </v-row>
+      <v-footer padless absolute class="font-weight-thin" style="background-color: transparent;">
+        <v-col class="text-center" cols="12">
+          Made with
+          <v-icon small class="mr-1" color="primary">mdi-heart</v-icon>by m.g.
+        </v-col>
+      </v-footer>
     </v-container>
 
     <v-navigation-drawer v-if="drawer" v-model="drawer" absolute bottom temporary>
-      <v-list>
+      <v-toolbar absolute flat width="100%" class="border-bottom">
         <v-list-item>
           <v-list-item-content>
             <h2 class="font-weight-light grey-darken2--text">Votre commande</h2>
           </v-list-item-content>
           <v-list-item-action>
-            <v-btn text class @click="drawer = !drawer">
+            <v-btn text class @click="closeDrawer">
               <v-icon class="primary--text">mdi-arrow-down</v-icon>
             </v-btn>
           </v-list-item-action>
         </v-list-item>
+      </v-toolbar>
+      <v-list class="mt-12">
         <ProductListItemClient
           v-for="lineItem of lineItems"
           :inOrder="true"
@@ -116,7 +85,7 @@
           :key="lineItem.product.id"
         />
         <v-divider class="ml-3 mr-16"></v-divider>
-        <v-list-item>
+        <v-list-item class="mb-12">
           <v-list-item-content>
             <h3 class="font-weight-light grey-darken2--text">Total</h3>
           </v-list-item-content>
@@ -129,19 +98,26 @@
             <v-btn small text disabled color="sucess"></v-btn>
           </v-list-item-action>
         </v-list-item>
-        <v-row justify="end" class="mr-13" v-if="totalPrice > 0 ">
-          <v-col align="end" cols="6">
-            <v-btn text color="primary">
-              Commander
-              <v-icon right>mdi-store</v-icon>
-            </v-btn>
-          </v-col>
-        </v-row>
       </v-list>
+      <v-footer padless absolute class="font-weight-medium" style="background-color: transparent;">
+        <v-col class="text-center" cols="12">
+          <v-btn block color="primary" @click="order">
+            Commander
+            <v-icon right>mdi-store</v-icon>
+          </v-btn>
+        </v-col>
+      </v-footer>
     </v-navigation-drawer>
 
     <transition name="slide-fade">
-      <v-btn v-if="lineItems.length > 0" class="absolute-btn ma-5" fab dark @click="openDrawer">
+      <v-btn
+        x-large
+        v-if="lineItems.length > 0"
+        class="absolute-btn ma-8"
+        fab
+        dark
+        @click="openDrawer"
+      >
         <v-badge left :content="numberItems" :value="numberItems" color="primary">
           <v-icon>mdi-basket</v-icon>
         </v-badge>
@@ -156,6 +132,7 @@ import { Categories, MOrder } from "../models";
 import LineItemHelper from "../mixins/lineItemtHelper";
 import ProductList from "../components/products/ProductList.vue";
 import ProductListItemClient from "../components/products/ProductListItemClient.vue";
+import OrderService from "../services/order.service";
 
 @Component({
   components: { ProductList, ProductListItemClient },
@@ -165,7 +142,6 @@ export default class Barman extends Mixins(LineItemHelper) {
   private drawer = false;
   private categories = Categories;
   private filters = [];
-
   created() {
     this.getProducts();
   }
@@ -178,15 +154,36 @@ export default class Barman extends Mixins(LineItemHelper) {
     });
     this.drawer = true;
   }
+
+  closeDrawer() {
+    window.scrollTo({
+      left: 0,
+      top: 100,
+      behavior: "smooth",
+    });
+    this.drawer = false;
+  }
+
+  order() {
+    OrderService.createOrder(3, this.lineItems).then(() => {
+      this.getProducts();
+      this.closeDrawer();
+    });
+  }
 }
 </script>
 
 
 <style scoped>
+.border-bottom {
+  border-bottom: 0.8px solid rgba(37, 37, 37, 0.082) !important;
+}
+
 .absolute-btn {
   position: fixed;
   bottom: 0;
   right: 0;
+  z-index: 3;
 }
 
 .fit-screen {
