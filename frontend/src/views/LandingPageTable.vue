@@ -13,15 +13,14 @@
       <v-col cols="3" class="mt-10" v-if="loading">
         <v-progress-circular :size="70" :width="7" color="secondary" indeterminate></v-progress-circular>
       </v-col>
-      <v-col cols="6" align="center" style="font-size: 1.5rem" v-if="!loading && !unavailable">
-        <div class="notification"></div>
+      <v-col cols="6" align="center" v-if="!loading && !unavailable">
         <v-btn x-large fab :color="notified ? 'success' : ''" @click="notify">
+          <v-icon v-if="!notified">mdi-bell</v-icon>
           <v-scroll-x-transition>
-            <v-icon class="my-8" v-if="notified">mdi-bell-check</v-icon>
+            <v-icon v-if="notified">mdi-bell-check</v-icon>
           </v-scroll-x-transition>
-          <v-icon class="my-8" v-if="!notified">mdi-bell</v-icon>
         </v-btn>
-        <span v-if="notified">
+        <span v-if="notified" style="font-size: 1.5rem">
           <br />
           <br />Un
           <strong>Bénevole</strong>
@@ -30,7 +29,7 @@
           <strong>activer</strong>
           la table {{this.$route.params.tableNumber}}.
         </span>
-        <span v-else>
+        <span v-else style="font-size: 1.5rem">
           <br />
           <br />Click ici pour appeler un
           <strong>Bénevole</strong>
@@ -68,7 +67,7 @@
           <strong>{{count}} fois</strong>
           <br />Tqt pas on arrive!
           <br />
-          <strong>Bisous du dev.</strong>
+          <strong>Des Bisous. m.g.</strong>
         </span>
       </v-col>
     </v-row>
