@@ -71,12 +71,13 @@
         <v-progress-circular :size="70" :width="7" color="secondary" indeterminate></v-progress-circular>
       </v-col>
       <v-col cols="12" v-else>
-        <div class="overline font-weight-bold">Besoin d'aide aux tables</div>
-        <v-row>
+        <div
+          v-if="tablesInNeed.length > 0"
+          class="overline font-weight-bold"
+        >Besoin d'aide aux tables</div>
+
+        <v-row v-if="tablesInNeed.length > 0">
           <v-col cols="3" v-for="table in tablesInNeed" :key="table.name">
-            <!-- <v-btn block align="center" height="3rem" color="warning" dark>
-              <h2>{{table.name}}</h2>
-            </v-btn>-->
             <TableTile :table="table" :color="'warning'" />
           </v-col>
         </v-row>
