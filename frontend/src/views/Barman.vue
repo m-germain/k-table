@@ -11,7 +11,7 @@
       <v-col cols="12">
         <v-row>
           <v-col cols="6">
-            <v-card class="mx-auto" to="/manager/admin/orders">
+            <v-card class="mx-auto" to="/admin/orders">
               <v-img
                 class="white--text align-end"
                 height="200px"
@@ -37,7 +37,7 @@
             </v-card>
           </v-col>
           <v-col cols="6">
-            <v-card class="mx-auto" to="/manager/admin/products">
+            <v-card class="mx-auto" to="/admin/products">
               <v-img
                 class="white--text align-end"
                 height="200px"
@@ -57,7 +57,7 @@
             </v-card>
           </v-col>
           <v-col cols="6">
-            <v-card class="mx-auto" to="/manager/admin/tables">
+            <v-card class="mx-auto" to="/admin/tables">
               <v-img
                 class="white--text align-end"
                 height="200px"

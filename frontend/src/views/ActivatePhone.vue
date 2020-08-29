@@ -42,19 +42,26 @@ export default class ActivatePhone extends Vue {
   mounted() {
     TokenService.decode(this.$route.params.token)
       .then((userData: MUserData) => {
-        this.$toasted.global.success({
-          message:
-            "C'est tout bon " +
-            userData.username +
-            ", ton télephone est maintenant activé pour la table " +
-            userData.table +
-            ".",
-        });
-        this.$router.push("/order");
+        if (userData.username === "admin") {
+          this.$toasted.global.success({
+            message: "Téléphone barman Activé.",
+          });
+          this.$router.push("/admin");
+        } else {
+          this.$toasted.global.success({
+            message:
+              "C'est tout bon " +
+              userData.username +
+              ", ton télephone est maintenant activé pour la table " +
+              userData.table +
+              ".",
+          });
+          this.$router.push("/order");
+        }
       })
       .catch((error) => {
         this.$toasted.global.error({
-          message: "Accès refusé !",
+          message: "Accès refusé !" + error,
         });
         this.$router.push("/");
       });

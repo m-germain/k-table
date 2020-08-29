@@ -1,7 +1,11 @@
 // import jwt_decode from 'jwt-decode'; /// IL faut @types/jwt-decode
 import jwt from "jsonwebtoken";
 import { MUserData, MTable } from "../models";
-import TableService, { tables } from "./table.service";
+import { tables } from "./table.service";
+
+// Admin Checker.
+import db from "../plugins/firebase";
+export const admin = db.collection("admin");
 
 const TOKEN_KEY = 'access_token';
 const ADMIN_TOKEN_KEY = 'admin_token';
@@ -25,7 +29,6 @@ const TokenService = {
 
     getAdminToken() {
         const token = localStorage.getItem(ADMIN_TOKEN_KEY) as string;
-        // Here we need to someHow validate the admin token.
         return token;
     },
 
@@ -53,7 +56,20 @@ const TokenService = {
     async decode(token: string): Promise<MUserData> {
         const decoded: MUserData = jwt.verify(token, 'scret-key-mdr') as MUserData;
         if (decoded) {
-            this.saveToken(token);
+            if (decoded.username === "admin") {
+                await this.checkAdminToken(token).then((resp: boolean) => {
+                    // If false
+                    if (resp) {
+                        this.saveAdminToken(token);
+                        // If token has been invalidated we clear it from the local storage
+                    } else {
+                        throw new Error("Oups, not a valid admin token...")
+                        this.removeAdminToken();
+                    }
+                })
+            } else {
+                this.saveToken(token);
+            }
             return decoded;
         } else throw new Error("Oups, something went wrong...")
     },
@@ -66,21 +82,17 @@ const TokenService = {
         const token = this.getToken() as string;
 
         if (token) {
-            console.log('token detected');
             //Decode data in Token.
             await this.decode(token).then((decodedUserData: MUserData) => {
-                console.log('token decoded', decodedUserData);
                 localUserData = decodedUserData as MUserData;
             }).catch(() => {
-                console.log('token not decoded');
                 // If we cant read the token we clear it from the user local storage.
                 this.removeToken();
                 throw new Error("Oups, your token cannot be decoded...")
             });
             await this.verifyTableToken(localUserData.tableId as string, token).then((resp: boolean) => {
-                if (resp) {
-                    console.log('token is validated in db');
-                } else {
+                // If False.
+                if (!resp) {
                     // If token has been invalidated we clear it from the local storage
                     this.removeToken();
                     throw new Error("Oups, this token is no more valid for this table...")
@@ -105,7 +117,20 @@ const TokenService = {
             console.log("Error getting document:", error);
         });
         return isVerified;
-    }
+    },
+
+    async checkAdminToken(token: string): Promise<boolean> {
+        let isVerified = false;
+        await admin.doc(token).get().then(function (doc) {
+            console.log(doc.id, token);
+            if (doc.exists) {
+                isVerified = true;
+            }
+        }).catch(function (error) {
+            console.log("Error getting document:", error);
+        });
+        return isVerified;
+    },
 
 }
 
