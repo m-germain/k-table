@@ -78,6 +78,8 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import TableService from "../services/table.service";
+import TokenService from "../services/token.service";
+import { MUserData } from "../models";
 
 @Component({
   components: {},
@@ -94,6 +96,10 @@ export default class LandingPageTable extends Vue {
 
   mounted() {
     this.getClientTable();
+    const token = TokenService.getToken();
+    if (token) {
+      this.$router.push("/order");
+    }
   }
 
   async getClientTable() {
@@ -119,7 +125,9 @@ export default class LandingPageTable extends Vue {
       .catch((error) => {
         this.$toasted.global.error({
           message:
-            "Bien essayé mais la table " + this.$route.params.tableNumber + " n'existe pas..",
+            "Bien essayé mais la table " +
+            this.$route.params.tableNumber +
+            " n'existe pas..",
         });
         this.$router.push("/");
       });

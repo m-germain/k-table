@@ -7,6 +7,8 @@ import Home from '../views/Home.vue';
 import Tables from '../views/Tables.vue';
 import LandingPageTable from "../views/LandingPageTable.vue";
 import ActivateTable from "../views/ActivateTable.vue";
+import ActivatePhone from "../views/ActivatePhone.vue";
+import PrintQRCode from "../views/PrintQRCode.vue";
 
 Vue.use(VueRouter)
 
@@ -19,15 +21,31 @@ const routes: Array<RouteConfig> = [
   },
   {
     //Ici c'est bien le table number 
-    path: '/:tableNumber',
+    path: '/table/:tableNumber',
     name: 'Welcome', // Nom en haut de l'ecran
     props: true,
     component: LandingPageTable
   },
   {
-    //Va Changer en Table ID genre CgkImrfu06656wI
-    path: '/order/:number',
-    name: 'Table', // Nom en haut de l'ecran
+    //Page pour imprimer un QR code.
+    path: '/qrcode/:tableNumber',
+    name: 'QRCode', // Nom en haut de l'ecran
+    props: true,
+    component: PrintQRCode
+  },
+  {
+    // Activate a token => Store it on the user phone and redirect him to the 
+    // Addapted page for him.
+    path: '/activate/:token',
+    name: '', // Nom en haut de l'ecran
+    props: true,
+    component: ActivatePhone
+  },
+  {
+    // La route order va récupérer le client dans le local Storage.
+    // Il trouvera seul la bonne table et data du client.
+    path: '/order',
+    name: '', // Nom en haut de l'ecran
     props: true,
     component: Client
   },

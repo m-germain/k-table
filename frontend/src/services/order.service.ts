@@ -1,4 +1,4 @@
-import { MOrder, MLineItem } from "../models";
+import { MOrder, MLineItem, MUserData } from "../models";
 import db from "../plugins/firebase";
 
 export const orders = db.collection("orders");
@@ -69,12 +69,11 @@ const OrderService = {
     //     return productsArray;
     // },
 
-    createOrder: async function (table: number, lineItems: MLineItem[]) {
+    createOrder: async function (userData: MUserData, lineItems: MLineItem[]) {
         orders.add({
-            table: table,
+            client: userData,
             timestamp: new Date(),
             completed: false,
-            clientToken: "",
             lineItems: lineItems,
         }).then(docRef => {
             console.log("Sucess new Order Placed Id :" + docRef.id);

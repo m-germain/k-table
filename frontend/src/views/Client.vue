@@ -1,12 +1,14 @@
 <template>
   <span>
-    <v-container>
+    <v-container v-if="!loadingUser">
       <v-row class="mx-1">
         <v-col cols="12">
-          <h2 class="font-weight-medium">Que souhaitez vous</h2>
+          <h1 class="font-weight-bold">Hello {{clientData.username}},</h1>
+          <h2 class="font-weight-medium">que souhaitez vous</h2>
           <h2>
-            déguster
-            <span class="font-weight-medium">ce soir ?</span>
+            commander
+            <span class="font-weight-medium">pour la table</span>
+            {{clientData.table}}.
           </h2>
         </v-col>
       </v-row>
@@ -62,6 +64,13 @@
           <v-icon small class="mr-1" color="primary">mdi-heart</v-icon>by m.g.
         </v-col>
       </v-footer>
+    </v-container>
+    <v-container v-else>
+      <v-row align="center" justify="center" class="mt-16">
+        <v-col cols="3" class="mt-10">
+          <v-progress-circular :size="70" :width="7" color="secondary" indeterminate></v-progress-circular>
+        </v-col>
+      </v-row>
     </v-container>
 
     <v-navigation-drawer v-if="drawer" v-model="drawer" absolute bottom temporary>
@@ -128,11 +137,13 @@
 
 <script lang="ts">
 import { Component, Mixins } from "vue-property-decorator";
-import { Categories, MOrder } from "../models";
+import { Categories, MOrder, MUserData } from "../models";
 import LineItemHelper from "../mixins/lineItemtHelper";
 import ProductList from "../components/products/ProductList.vue";
 import ProductListItemClient from "../components/products/ProductListItemClient.vue";
 import OrderService from "../services/order.service";
+import TokenService from "../services/token.service";
+import { error } from "console";
 
 @Component({
   components: { ProductList, ProductListItemClient },
@@ -142,8 +153,35 @@ export default class Barman extends Mixins(LineItemHelper) {
   private drawer = false;
   private categories = Categories;
   private filters = [];
-  created() {
+  private loadingUser = true;
+
+  // Client Data
+  private clientData: MUserData = {
+    username: "",
+    tableId: "",
+    table: "",
+    iat: -1,
+    exp: -1,
+  };
+
+  mounted() {
+    this.checkUser();
     this.getProducts();
+  }
+
+  async checkUser() {
+    await TokenService.getAndDecodeToken()
+      .then((userData: any) => {
+        this.clientData = userData as MUserData;
+        this.loadingUser = false;
+      })
+      .catch(() => {
+        // If there is no token or it is expiered or invalid for this table.
+        this.$toasted.global.error({
+          message: "Télephone n'est plus activé. Si besoin demandez de l'aide.",
+        });
+        this.$router.push("/");
+      });
   }
 
   openDrawer() {
@@ -165,10 +203,29 @@ export default class Barman extends Mixins(LineItemHelper) {
   }
 
   order() {
-    OrderService.createOrder(3, this.lineItems).then(() => {
-      this.getProducts();
-      this.closeDrawer();
-    });
+    TokenService.getAndDecodeToken()
+      .then((userData: MUserData) => {
+        OrderService.createOrder(userData, this.lineItems)
+          .then(() => {
+            this.$toasted.global.success({
+              message: "Yes ! Ta commande en cours de préparation...",
+            });
+            this.getProducts();
+            this.closeDrawer();
+          })
+          .catch(() => {
+            this.$toasted.global.error({
+              message: "Imposible de préparer la commande, essayez plus tard..",
+            });
+          });
+      })
+      .catch((error) => {
+        this.$toasted.global.error({
+          message:
+            "Imposible de préparer la commande, ton téléphone à été désactivé..",
+        });
+        this.$router.push("/");
+      });
   }
 }
 </script>

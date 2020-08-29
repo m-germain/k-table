@@ -7,6 +7,18 @@
     </template>
     <v-card>
       <HeadLine class="my-2" :title="'Table ' + table.name" weight="bold">
+        <template v-slot:start>
+          <v-btn
+            text
+            align="center"
+            class="mr-2"
+            :to="{path: '/qrcode/'+ table.name}"
+            target="_blank"
+          >
+            <v-icon left>mdi-printer</v-icon>
+            <v-icon right>mdi-qrcode</v-icon>
+          </v-btn>
+        </template>
         <template v-slot:end>
           <v-btn depressed align="center" :color="table.available ? 'success' : 'primary'" dark>
             <h3>{{table.available ? "Disponible": "Occupée"}}</h3>
@@ -70,6 +82,7 @@ export default class ProductListItemClient extends Vue {
 
   private dialog = false;
   private helpMessage = "Besoin d'aide";
+  private tableUrl = "";
 
   mounted() {
     if (this.table.available) {

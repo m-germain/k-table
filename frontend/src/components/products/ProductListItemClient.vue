@@ -74,12 +74,6 @@ import { MProduct, MLineItem } from "../../models";
 export default class ProductListItemClient extends Vue {
   @Prop() lineItem!: MLineItem;
   @Prop({ default: false }) inOrder!: boolean;
-
-  mounted() {
-    console.log(this.inOrder);
-
-    console.log(this.lineItem);
-  }
 }
 </script>
 

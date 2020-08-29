@@ -82,7 +82,7 @@ import TokenService from "../services/token.service";
 @Component({
   components: { QrcodeVue },
 })
-export default class Home extends Vue {
+export default class ActivateTable extends Vue {
   private clientName = "";
   private loading = false;
   private activated = false;

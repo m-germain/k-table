@@ -39,6 +39,8 @@ export interface MTable {
     token: string;
 }
 
+export interface MUserData { username?: string; tableId?: string; table?: string; iat?: number; exp?: number }
+
 
 export const Categories: MCategorie[] = [
     { name: "Beers", icon: "mdi-beer" },
