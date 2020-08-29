@@ -26,6 +26,11 @@ export default class App extends Vue {}
 </script>
 
 <style lang="css">
+/* This Patch the double tap zoom on mobile, Works Nicely everywhere and on all devices tested*/
+* {
+  touch-action: manipulation;
+}
+
 /* toast action */
 .toasted .primary .action,
 .toasted.toasted-primary .action {
