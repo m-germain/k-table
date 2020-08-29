@@ -3,7 +3,9 @@ import jwt from "jsonwebtoken";
 import { MUserData, MTable } from "../models";
 import TableService, { tables } from "./table.service";
 
-const TOKEN_KEY = 'access_token'
+const TOKEN_KEY = 'access_token';
+const ADMIN_TOKEN_KEY = 'admin_token';
+
 
 export interface Token {
     exp: number;
@@ -19,6 +21,20 @@ const TokenService = {
     getToken() {
         const token = localStorage.getItem(TOKEN_KEY) as string;
         return token;
+    },
+
+    getAdminToken() {
+        const token = localStorage.getItem(ADMIN_TOKEN_KEY) as string;
+        // Here we need to someHow validate the admin token.
+        return token;
+    },
+
+    saveAdminToken(adminToken: string) {
+        localStorage.setItem(ADMIN_TOKEN_KEY, adminToken)
+    },
+
+    removeAdminToken() {
+        localStorage.removeItem(ADMIN_TOKEN_KEY)
     },
 
     saveToken(accessToken: string) {
@@ -64,7 +80,11 @@ const TokenService = {
             await this.verifyTableToken(localUserData.tableId as string, token).then((resp: boolean) => {
                 if (resp) {
                     console.log('token is validated in db');
-                } else throw new Error("Oups, this token is no more valid for this table...")
+                } else {
+                    // If token has been invalidated we clear it from the local storage
+                    this.removeToken();
+                    throw new Error("Oups, this token is no more valid for this table...")
+                }
             })
 
         } else throw new Error("Oups, no token found...")
