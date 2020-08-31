@@ -107,7 +107,7 @@ export default class ActivateTable extends Vue {
   }
 
   backToTablePage() {
-    this.$router.push("/manager/admin/tables");
+    this.$router.push("/admin/tables");
   }
 }
 </script>

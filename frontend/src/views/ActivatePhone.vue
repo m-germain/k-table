@@ -16,14 +16,6 @@
         <v-progress-circular :size="70" :width="7" color="secondary" indeterminate></v-progress-circular>
       </v-col>
     </v-row>
-    <v-row align="center" justify="center" v-else>
-      <v-col cols="12" align="center" class="mt-10">
-        <v-btn class="mt-10" text align="center" color="success" black height="4rem">
-          Retourner à la page des tables
-          <v-icon right>mdi-view-dashboard-outline</v-icon>
-        </v-btn>
-      </v-col>
-    </v-row>
   </v-container>
 </template>
 
