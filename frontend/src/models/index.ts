@@ -19,10 +19,10 @@ export interface MTable {
 
 export interface MOrder {
     id: string;
-    table: number;
+    orderCode: string;
+    client: MUserData;
     timestamp: Date;
-    completed: boolean;
-    clientToken: string;
+    state: string;
     lineItems: MLineItem[];
 }
 
@@ -51,6 +51,14 @@ export const Categories: MCategorie[] = [
 export interface MCategorie {
     icon: string;
     name: string;
+}
+
+export const OrderStates = {
+    placed: "PLACED",
+    preparated: "PREPARATED",
+    served: "SERVED",
+    payed: "PAYED",
+    canceled: "CANCELED",
 }
 
 

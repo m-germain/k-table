@@ -1,4 +1,4 @@
-import { MOrder, MLineItem, MUserData } from "../models";
+import { MLineItem, MUserData, OrderStates } from "../models";
 import db from "../plugins/firebase";
 
 export const orders = db.collection("orders");
@@ -70,15 +70,30 @@ const OrderService = {
     // },
 
     createOrder: async function (userData: MUserData, lineItems: MLineItem[]) {
-        orders.add({
-            client: userData,
-            timestamp: new Date(),
-            completed: false,
-            lineItems: lineItems,
-        }).then(docRef => {
-            console.log("Sucess new Order Placed Id :" + docRef.id);
+        if (userData.username && userData.table) {
+            orders.add({
+                orderCode: userData.username.charAt(0) + userData.table + "-" + Date.now()
+                    .toString()
+                    .substr(Date.now().toString().length - 3),
+                client: userData,
+                timestamp: new Date(),
+                state: OrderStates.placed,
+                lineItems: lineItems,
+            }).then(docRef => {
+                console.log("Sucess new Order Placed Id :" + docRef.id);
+            }).catch(error => {
+                throw new Error('Could not add this Order to the serveur.' + error)
+            })
+        } else throw new Error('Invalid User.')
+    },
+
+    patchOrder: async function (id: string, newState: string) {
+        orders.doc(id).update({
+            state: newState,
+        }).then(() => {
+            console.log("Order " + id + " Patched to state" + newState);
         }).catch(error => {
-            throw new Error('Could not add this Order to the serveur.' + error)
+            throw new Error('Could not patch this Order to the serveur.' + error)
         })
     },
 

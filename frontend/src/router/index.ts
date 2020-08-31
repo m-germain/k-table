@@ -9,6 +9,7 @@ import LandingPageTable from "../views/LandingPageTable.vue";
 import ActivateTable from "../views/ActivateTable.vue";
 import ActivatePhone from "../views/ActivatePhone.vue";
 import PrintQRCode from "../views/PrintQRCode.vue";
+import Orders from "../views/Orders.vue";
 import TokenService from '@/services/token.service';
 
 Vue.use(VueRouter)
@@ -85,6 +86,14 @@ const routes: Array<RouteConfig> = [
     path: '/admin/tables',
     name: 'Tables',
     component: Tables,
+    meta: {
+      public: false,  // Only for admins
+    }
+  },
+  {
+    path: '/admin/orders',
+    name: 'Tables',
+    component: Orders,
     meta: {
       public: false,  // Only for admins
     }

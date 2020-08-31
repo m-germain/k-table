@@ -10,7 +10,7 @@
       </v-col>
     </v-row>
     <v-row align="center" justify="center" class="mt-16">
-      <v-col cols="3" class="mt-10" v-if="loading">
+      <v-col block align="center" class="mt-10" v-if="loading">
         <v-progress-circular :size="70" :width="7" color="secondary" indeterminate></v-progress-circular>
       </v-col>
       <v-col cols="6" align="center" v-if="!loading && !unavailable">
@@ -78,7 +78,6 @@
 import { Component, Vue } from "vue-property-decorator";
 import TableService from "../services/table.service";
 import TokenService from "../services/token.service";
-import { MUserData } from "../models";
 
 @Component({
   components: {},
@@ -121,7 +120,7 @@ export default class LandingPageTable extends Vue {
           }
         }
       })
-      .catch((error) => {
+      .catch(() => {
         this.$toasted.global.error({
           message:
             "Bien essayé mais la table " +

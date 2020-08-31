@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import { MProduct } from '@/models';
-import ProductService, { products } from '@/services/product.service';
+import { products } from '@/services/product.service';
 
 @Component
 export default class ProductHelper extends Vue {

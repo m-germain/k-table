@@ -39,7 +39,7 @@
       </v-col>
     </v-row>
     <v-row align="center" justify="center">
-      <v-col cols="4" v-if="products.length < 1">
+      <v-col block align="center" v-if="products.length < 1">
         <v-progress-circular :size="70" :width="7" color="secondary" indeterminate></v-progress-circular>
       </v-col>
       <v-col cols="12" v-else>

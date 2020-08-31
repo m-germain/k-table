@@ -10,6 +10,9 @@ export const admin = db.collection("admin");
 const TOKEN_KEY = 'access_token';
 const ADMIN_TOKEN_KEY = 'admin_token';
 
+const SECRET_KEY = 'all_secured_in_bd_no_secret_here';
+
+
 
 export interface Token {
     exp: number;
@@ -49,29 +52,33 @@ const TokenService = {
     },
 
     generateToken(username: string, tableId: string, table: string): string {
-        const token = jwt.sign({ username: username, tableId: tableId, table: table }, 'scret-key-mdr', { expiresIn: '4h' });
-        return token;
+        if (SECRET_KEY) {
+            const token = jwt.sign({ username: username, tableId: tableId, table: table }, SECRET_KEY, { expiresIn: '4h' });
+            return token;
+        } else throw new Error("Oups, No Secret KEY for TOKEN GENERATION...")
     },
 
     async decode(token: string): Promise<MUserData> {
-        const decoded: MUserData = jwt.verify(token, 'scret-key-mdr') as MUserData;
-        if (decoded) {
-            if (decoded.username === "admin") {
-                await this.checkAdminToken(token).then((resp: boolean) => {
-                    // If false
-                    if (resp) {
-                        this.saveAdminToken(token);
-                        // If token has been invalidated we clear it from the local storage
-                    } else {
-                        throw new Error("Oups, not a valid admin token...")
-                        this.removeAdminToken();
-                    }
-                })
-            } else {
-                this.saveToken(token);
-            }
-            return decoded;
-        } else throw new Error("Oups, something went wrong...")
+        if (SECRET_KEY) {
+            const decoded: MUserData = jwt.verify(token, SECRET_KEY) as MUserData;
+            if (decoded) {
+                if (decoded.username === "admin") {
+                    await this.checkAdminToken(token).then((resp: boolean) => {
+                        // If false
+                        if (resp) {
+                            this.saveAdminToken(token);
+                            // If token has been invalidated we clear it from the local storage
+                        } else {
+                            this.removeAdminToken();
+                            throw new Error("Oups, not a valid admin token...")
+                        }
+                    })
+                } else {
+                    this.saveToken(token);
+                }
+                return decoded;
+            } else throw new Error("Oups, something went wrong...")
+        } else throw new Error("Oups, No Secret KEY for TOKEN DECODE...")
     },
 
     async getAndDecodeToken(): Promise<MUserData> {

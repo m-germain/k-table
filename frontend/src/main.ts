@@ -31,14 +31,14 @@ const optionsError = {
   //   name: 'error-outline',
   //   after: true // this will append the icon to the end of content
   // }, 
-  action: [
-    {
-      text: 'OK',
-      onClick: (e: any, toastObject: any) => {
-        toastObject.goAway(0);
-      }
-    }
-  ],
+  // action: [
+  //   {
+  //     text: 'OK',
+  //     onClick: (e: any, toastObject: ToastObject) => {
+  //       toastObject.goAway(0);
+  //     }
+  //   }
+  // ],
   duration: 50000,
   keepOnHover: true,
 };

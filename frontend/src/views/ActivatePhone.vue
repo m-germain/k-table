@@ -12,7 +12,7 @@
       </v-col>
     </v-row>
     <v-row align="center" justify="center" v-if="loading">
-      <v-col cols="3" class="mt-10">
+      <v-col  block align="center" class="mt-10">
         <v-progress-circular :size="70" :width="7" color="secondary" indeterminate></v-progress-circular>
       </v-col>
     </v-row>
@@ -30,7 +30,6 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import TokenService from "../services/token.service";
-import { error } from "console";
 import { MUserData } from "../models";
 
 @Component({

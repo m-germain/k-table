@@ -67,7 +67,7 @@
       </v-col>
     </v-row>
     <v-row class="mx-1" align="center" justify="center">
-      <v-col cols="4" v-if="tables.length < 1">
+      <v-col block align="center" v-if="tables.length < 1">
         <v-progress-circular :size="70" :width="7" color="secondary" indeterminate></v-progress-circular>
       </v-col>
       <v-col cols="12" v-else>

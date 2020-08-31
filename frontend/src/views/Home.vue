@@ -10,7 +10,7 @@
       </v-col>
     </v-row>
     <v-row align="center" justify="center">
-      <v-col cols="3" class="mt-10" v-if="tables.length < 1">
+      <v-col block align="center" class="mt-10" v-if="tables.length < 1">
         <v-progress-circular :size="70" :width="7" color="secondary" indeterminate></v-progress-circular>
       </v-col>
       <v-col cols="6" align="center" style="font-size: 1.5rem" v-else-if="available">

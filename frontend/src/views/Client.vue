@@ -28,7 +28,7 @@
         </v-col>
       </v-row>
       <v-row align="center" justify="center" class="mb-15">
-        <v-col cols="4" v-if="lineItemList.length < 1">
+        <v-col block align="center" v-if="lineItemList.length < 1">
           <v-progress-circular :size="70" :width="7" color="secondary" indeterminate></v-progress-circular>
         </v-col>
         <v-col cols="12" v-else>
@@ -67,7 +67,7 @@
     </v-container>
     <v-container v-else>
       <v-row align="center" justify="center" class="mt-16">
-        <v-col cols="3" class="mt-10">
+        <v-col block align="center" class="mt-10">
           <v-progress-circular :size="70" :width="7" color="secondary" indeterminate></v-progress-circular>
         </v-col>
       </v-row>
@@ -137,13 +137,12 @@
 
 <script lang="ts">
 import { Component, Mixins } from "vue-property-decorator";
-import { Categories, MOrder, MUserData } from "../models";
+import { Categories, MUserData } from "../models";
 import LineItemHelper from "../mixins/lineItemtHelper";
 import ProductList from "../components/products/ProductList.vue";
 import ProductListItemClient from "../components/products/ProductListItemClient.vue";
 import OrderService from "../services/order.service";
 import TokenService from "../services/token.service";
-import { error } from "console";
 
 @Component({
   components: { ProductList, ProductListItemClient },
@@ -171,7 +170,7 @@ export default class Barman extends Mixins(LineItemHelper) {
 
   async checkUser() {
     await TokenService.getAndDecodeToken()
-      .then((userData: any) => {
+      .then((userData: MUserData) => {
         this.clientData = userData as MUserData;
         this.loadingUser = false;
       })
@@ -219,7 +218,7 @@ export default class Barman extends Mixins(LineItemHelper) {
             });
           });
       })
-      .catch((error) => {
+      .catch(() => {
         this.$toasted.global.error({
           message:
             "Imposible de préparer la commande, ton téléphone à été désactivé..",

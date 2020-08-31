@@ -2,11 +2,19 @@
   <v-list-item :key="lineItem.product.id" v-if="lineItem.product.available">
     <template>
       <transition name="slide-fade">
-        <v-list-item-icon class="ma-0 mr-4 ma-auto success--text" v-if="lineItem.quantity > 0">
-          <h3 :class="inOrder ? 'mt-1' :'mt-3' ">x</h3>
+        <v-list-item-icon
+          class="ma-0 mr-4 ma-auto success--text"
+          v-if="lineItem.quantity > 0 && !inPreparation"
+        >
+          <h3 :class="inOrder ? 'mt-2' :'mt-3' ">x</h3>
           <h1>{{lineItem.quantity}}</h1>
         </v-list-item-icon>
       </transition>
+
+      <v-list-item-icon class="ma-0 mr-4 ma-auto" v-if="inPreparation">
+        <h2 class="mt-2">x</h2>
+        <h1 style="font-size:45px">{{lineItem.quantity}}</h1>
+      </v-list-item-icon>
 
       <transition name="slide-fade-invert">
         <v-list-item-icon
@@ -23,7 +31,11 @@
           <v-icon color="black">{{lineItem.product.categorie.icon}}</v-icon>
         </v-list-item-icon>
       </transition>
-      <v-list-item-content align="end" :class="lineItem.quantity > 0 ? 'success--text' : ''">
+      <v-list-item-content
+        align="end"
+        v-if="!inPreparation"
+        :class="lineItem.quantity > 0 ? 'success--text' : ''"
+      >
         <v-list-item-title>
           <transition name="slide-fade">
             <v-icon
@@ -36,7 +48,7 @@
 
           <span class="font-weight-medium">{{lineItem.product.name}}</span>
         </v-list-item-title>
-        <v-list-item-subtitle v-if="inOrder === true">
+        <v-list-item-subtitle v-if="inOrder">
           <span
             class="font-weight-bold"
           >{{( parseFloat(lineItem.product.price) * parseFloat(lineItem.quantity) ) }} €</span>
@@ -45,7 +57,15 @@
           <span class="font-weight-ligth">{{lineItem.product.description}}</span>
         </v-list-item-subtitle>
       </v-list-item-content>
-      <v-list-item-action>
+      <v-list-item-content align="end" v-if="inPreparation">
+        <v-list-item-title>
+          <h1 class="font-weight-bold">{{lineItem.product.name}}</h1>
+        </v-list-item-title>
+        <v-list-item-subtitle v-if="inOrder === false">
+          <span class="font-weight-ligth">{{lineItem.product.description}}</span>
+        </v-list-item-subtitle>
+      </v-list-item-content>
+      <v-list-item-action v-if="!hideBtns">
         <v-btn small text class="pa-0" @click="lineItem.quantity = lineItem.quantity + 1">
           <v-icon>mdi-plus-circle-outline</v-icon>
         </v-btn>
@@ -66,7 +86,7 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import ProductForm from "./ProductForm.vue";
 import HeadLine from "../communs/HeadLine.vue";
-import { MProduct, MLineItem } from "../../models";
+import { MLineItem } from "../../models";
 
 @Component({
   components: { ProductForm, HeadLine },
@@ -74,6 +94,12 @@ import { MProduct, MLineItem } from "../../models";
 export default class ProductListItemClient extends Vue {
   @Prop() lineItem!: MLineItem;
   @Prop({ default: false }) inOrder!: boolean;
+  @Prop({ default: false }) hideBtns!: boolean;
+  @Prop({ default: false }) inPreparation!: boolean;
+
+  mounted() {
+    console.log(this.lineItem);
+  }
 }
 </script>
 
