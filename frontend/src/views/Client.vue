@@ -2,7 +2,7 @@
   <span>
     <v-container v-if="!loadingUser">
       <v-row class="mx-1">
-        <v-col cols="12">
+        <v-col cols="9">
           <h1 class="font-weight-bold">Hello {{clientData.username}},</h1>
           <h2 class="font-weight-medium">que souhaitez vous</h2>
           <h2>
@@ -10,6 +10,14 @@
             <span class="font-weight-medium">pour la table</span>
             {{clientData.table}}.
           </h2>
+        </v-col>
+        <v-col cols="3">
+          <v-btn fab depressed text :color="notified ? 'success' : ''" @click="notify">
+            <v-icon v-if="!notified">mdi-bell</v-icon>
+            <v-scroll-x-transition>
+              <v-icon v-if="notified">mdi-bell-check</v-icon>
+            </v-scroll-x-transition>
+          </v-btn>
         </v-col>
       </v-row>
       <v-row class="mx-1">
@@ -143,6 +151,7 @@ import ProductList from "../components/products/ProductList.vue";
 import ProductListItemClient from "../components/products/ProductListItemClient.vue";
 import OrderService from "../services/order.service";
 import TokenService from "../services/token.service";
+import TableService from "../services/table.service";
 
 @Component({
   components: { ProductList, ProductListItemClient },
@@ -153,6 +162,9 @@ export default class Barman extends Mixins(LineItemHelper) {
   private categories = Categories;
   private filters = [];
   private loadingUser = true;
+
+  // Counting everytime the user spam.
+  private count = 0;
 
   // Client Data
   private clientData: MUserData = {
@@ -225,6 +237,19 @@ export default class Barman extends Mixins(LineItemHelper) {
         });
         this.$router.push("/");
       });
+  }
+
+  notify() {
+    // Send the notification if the user is spaming we dont send more we just count for fun ;).
+    if (this.count === 0 && this.clientData.tableId) {
+      // We don't need to catch the fail here bcs if it fail the counter will not increment and we want this.
+      // The service take in charge all the web notifications.
+      TableService.askHelp(this.clientData.tableId).then(() => this.count++);
+    } else this.count++;
+  }
+
+  get notified() {
+    return this.count >= 1;
   }
 }
 </script>
