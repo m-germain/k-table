@@ -33,12 +33,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item
-          two-line
-          v-if="order.state == localStateEnum.canceled"
-          class="primary"
-          dark
-        >
+        <v-list-item two-line v-if="order.state == localStateEnum.canceled" class="primary" dark>
           <v-list-item-content>
             <v-list-item-title class="headline font-weight-medium">
               <v-row align="center" justify="end" no-gutters>
@@ -71,6 +66,17 @@
             :lineItem="lineItem"
             :key="i"
           />
+          <v-divider class="mx-4" v-if="order.state == 'SERVED' && detailed"></v-divider>
+          <v-list-item v-if="order.state == 'SERVED' && detailed">
+            <v-list-item-content>
+              <h3 class="font-weight-light grey-darken2--text">Total</h3>
+            </v-list-item-content>
+            <v-list-item-content align="end">
+              <v-list-item-title>
+                <span class="font-weight-bold">{{totalPrice}} €</span>
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </v-list>
 
         <v-divider></v-divider>
@@ -216,7 +222,7 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import HeadLine from "../communs/HeadLine.vue";
 import ProductListItemClient from "../products/ProductListItemClient.vue";
-import { MOrder, OrderStates } from "../../models";
+import { MOrder, OrderStates, MLineItem } from "../../models";
 import OrderService from "../../services/order.service";
 
 @Component({
@@ -260,6 +266,14 @@ export default class OrderTile extends Vue {
   updatedState(newState: string) {
     OrderService.patchOrder(this.order.id, newState);
     this.dialog = false;
+  }
+
+  get totalPrice() {
+    let totalPrice = 0;
+    this.order.lineItems.forEach((lineItem: MLineItem) => {
+      totalPrice += lineItem.quantity * lineItem.product.price;
+    });
+    return totalPrice;
   }
 }
 </script>
