@@ -56,8 +56,8 @@
           @closeDialog="closeDialog"
         />
         <ProductList
-          v-if="softs.length > 0 && filters.includes(1) || filters.length == 0"
-          :lilistProductst="softs"
+          v-if="softs.length == 1 && filters.includes(1) || filters.length == 0"
+          :listProduct="softs"
           title="Softs"
           @closeDialog="closeDialog"
         />
