@@ -92,7 +92,7 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/admin/orders',
-    name: 'Tables',
+    name: 'Commandes',
     component: Orders,
     meta: {
       public: false,  // Only for admins
