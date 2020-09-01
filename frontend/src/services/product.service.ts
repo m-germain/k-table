@@ -1,5 +1,6 @@
 import { MProduct } from "../models";
 import db from "../plugins/firebase";
+import Vue from "vue";
 
 export const products = db.collection("products");
 
@@ -24,8 +25,6 @@ const ProductService = {
         }).catch(error => {
             throw new Error('Could not get any Products from the serveur.' + error)
         })
-        console.log(productsArray);
-
         return productsArray;
     },
 
@@ -40,8 +39,9 @@ const ProductService = {
             available: product.available,
             categorie: product.categorie,
         }).then(() => {
-            console.log("ProductUpdated" + product.id);
+            Vue.toasted.global.success({ message: "Product " + product.name + " Updated" });
         }).catch(error => {
+            Vue.toasted.global.error({ message: "Could not updated" + product.name });
             throw new Error('Could not patch this Product to the serveur.' + error)
         })
 
@@ -79,8 +79,10 @@ const ProductService = {
             available: product.available,
             categorie: product.categorie,
         }).then(docRef => {
-            console.log("Sucess new Product Id :" + docRef.id);
+            Vue.toasted.global.success({ message: "New Product " + product.name + " Created" });
+            return docRef.id
         }).catch(error => {
+            Vue.toasted.global.error({ message: "Could not Create" + product.name });
             throw new Error('Could not add this Product to the serveur.' + error)
         })
     },
@@ -88,9 +90,10 @@ const ProductService = {
     deleteProduct: async function (product: MProduct) {
         products.doc(products.id).delete()
             .then(() => {
-                console.log("ProductDeleted" + product.id);
+                Vue.toasted.global.success({ message: "Product " + product.name + " Deleted" });
             })
             .catch(error => {
+                Vue.toasted.global.error({ message: "Could not Deleted" + product.name + error });
                 throw new Error('Could not delete this Product to the serveur.' + error)
             })
 

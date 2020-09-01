@@ -1,5 +1,6 @@
 import { MTable } from "../models";
 import db from "../plugins/firebase";
+import Vue from "vue";
 
 export const tables = db.collection("tables");
 
@@ -58,8 +59,10 @@ const TableService = {
             help: false,
             token: "",
         }).then(docRef => {
-            console.log("Success Add new Table Id :" + docRef.id);
+            Vue.toasted.global.success({ message: "Table ajoutée." })
+            return docRef.id
         }).catch(error => {
+            Vue.toasted.global.error({ message: "Erreur de l'ajout de table sur le serveur." })
             throw new Error('Could not add this Table to the serveur.' + error)
         })
     },
@@ -73,20 +76,26 @@ const TableService = {
         if (lastTable && lastTable.available)
             tables.doc(lastTable.id).delete()
                 .then(() => {
-                    console.log("Table Deleted" + lastTable.id);
+                    Vue.toasted.global.success({ message: "Table suprimée." })
+                    return lastTable.id
                 })
                 .catch(error => {
+                    Vue.toasted.global.error({ message: "Erreur de la suppresion de cette table sur le serveur." })
                     throw new Error('Could not remove this Table to the serveur.' + error)
                 })
-        else throw new Error('Could not remove this Table, we have clients ordering on this table!')
+        else {
+            Vue.toasted.global.error({ message: "Tu dois d'abord libérer la table avant de la supprimer." })
+            throw new Error('Could not remove this Table, we have clients ordering on this table!')
+        }
     },
 
     askHelp: async function (id: string) {
         tables.doc(id).update({
             help: true
         }).then(() => {
-            console.log("Help Asked for table" + id);
+            Vue.toasted.global.success({ message: "Appel enregistré, veuillez patienter." })
         }).catch(error => {
+            Vue.toasted.global.error({ message: "Erreur lors de l'Appel, veuillez patienter." })
             throw new Error('Could not ask for help.' + error)
         })
     },
@@ -95,8 +104,9 @@ const TableService = {
         tables.doc(id).update({
             help: false
         }).then(() => {
-            console.log("Table" + id + " helped");
+            Vue.toasted.global.success({ message: "Changement enregistré !" })
         }).catch(error => {
+            Vue.toasted.global.error({ message: "Erreur lors du changement d'etat Aide !" })
             throw new Error('Could resolve help.' + error)
         })
     },
@@ -106,7 +116,8 @@ const TableService = {
             available: true,
             token: ""
         }).then(() => {
-            console.log("Table" + id + " liberated");
+            Vue.toasted.global.success({ message: "Table Libérée !" })
+            return id
         }).catch(error => {
             throw new Error('Could liberate table.' + error)
         })
@@ -117,8 +128,9 @@ const TableService = {
             available: false,
             token: token,
         }).then(() => {
-            console.log("Table" + id + " Activated");
+            Vue.toasted.global.success({ message: "Table Activée !" })
         }).catch(error => {
+            Vue.toasted.global.error({ message: "Erreur Imposible d'activer la table !" })
             throw new Error('Could liberate table.' + error)
         })
     },

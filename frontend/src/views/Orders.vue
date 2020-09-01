@@ -2,7 +2,7 @@
   <v-container>
     <HeadLine title="Commandes">
       <template v-slot:end>
-        <v-text-field
+        <!-- <v-text-field
           v-model="search"
           dense
           solo
@@ -14,7 +14,7 @@
           hide-details
           prepend-inner-icon="mdi-database-search"
           label="Search"
-        ></v-text-field>
+        ></v-text-field> -->
         <v-switch v-model="tracking" class="mt-5" color="teal ligthen-2" label="Suivi de commandes"></v-switch>
       </template>
     </HeadLine>
@@ -149,7 +149,7 @@ import OrderHelper from "../mixins/orderHelper";
   components: { HeadLine, OrderTile, OrderTabItem },
 })
 export default class Orders extends Mixins(OrderHelper) {
-  private search = "";
+  // private search = "";
   private tracking = false;
   private tab = null;
 

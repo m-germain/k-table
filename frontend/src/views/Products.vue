@@ -1,8 +1,8 @@
 <template>
   <v-container>
     <HeadLine title="Nos Produits">
-      <template v-slot:end>
-        <v-text-field
+      <template v-slot:end> 
+        <!-- <v-text-field
           v-model="search"
           dense
           solo
@@ -14,7 +14,7 @@
           disabled
           prepend-inner-icon="mdi-database-search"
           label="Search"
-        ></v-text-field>
+        ></v-text-field>  -->
         <v-dialog v-model="dialog" persistent max-width="600px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn small text fab color="primary" v-bind="attrs" v-on="on">
@@ -95,7 +95,7 @@ const defaultProduct: MProduct = {
   components: { HeadLine, ProductForm, ProductList },
 })
 export default class Products extends Mixins(ProductHelper) {
-  private search = "";
+  // private search = "";
   private categories = Categories;
   private filters = [];
   private newProduct = JSON.parse(JSON.stringify(defaultProduct));

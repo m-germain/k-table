@@ -99,7 +99,6 @@ export default class ActivateTable extends Vue {
     TableService.activateTable(this.$route.params.tableId, token).then(() => {
       {
         this.activated = true;
-        console.log(token);
         this.activationLink += "/activate/" + token;
         this.loading = false;
       }

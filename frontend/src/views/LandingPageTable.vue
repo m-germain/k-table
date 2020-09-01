@@ -114,10 +114,6 @@ export default class LandingPageTable extends Vue {
         if (!table.available) {
           // We activate the unavailable on this page to display a special message
           this.unavailable = true;
-          // Regarder le token du telephone. Si le token est valide on le redirige.
-          if (table.token == "coucou") {
-            console.log("redirection");
-          }
         }
       })
       .catch(() => {

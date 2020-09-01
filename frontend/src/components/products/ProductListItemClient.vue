@@ -96,10 +96,6 @@ export default class ProductListItemClient extends Vue {
   @Prop({ default: false }) inOrder!: boolean;
   @Prop({ default: false }) hideBtns!: boolean;
   @Prop({ default: false }) inPreparation!: boolean;
-
-  mounted() {
-    console.log(this.lineItem);
-  }
 }
 </script>
 

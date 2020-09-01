@@ -113,7 +113,6 @@ const TokenService = {
     async verifyTableToken(tableId: string, token: string): Promise<boolean> {
         let isVerified = false;
         await tables.doc(tableId).get().then(function (doc) {
-            console.log(doc.data());
             if (doc.exists) {
                 const table = doc.data() as MTable;
                 if (table.token === token && doc.id === tableId) {
@@ -121,7 +120,7 @@ const TokenService = {
                 }
             }
         }).catch(function (error) {
-            console.log("Error getting document:", error);
+            throw new Error("Error getting document:" + error)
         });
         return isVerified;
     },
@@ -129,12 +128,11 @@ const TokenService = {
     async checkAdminToken(token: string): Promise<boolean> {
         let isVerified = false;
         await admin.doc(token).get().then(function (doc) {
-            console.log(doc.id, token);
             if (doc.exists) {
                 isVerified = true;
             }
         }).catch(function (error) {
-            console.log("Error getting document:", error);
+            throw new Error("Error getting document:" + error)
         });
         return isVerified;
     },
