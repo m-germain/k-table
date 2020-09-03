@@ -43,10 +43,12 @@ export interface MUserData { username?: string; tableId?: string; table?: string
 
 
 export const Categories: MCategorie[] = [
-    { name: "Beers", icon: "mdi-beer" },
+    { name: "Recommended", icon: "mdi-star" },
+    { name: "Tap Beers", icon: "mdi-beer" },
+    { name: "Bottled Beers", icon: "mdi-bottle-soda" },
+    { name: "Wines", icon: "mdi-bottle-wine" },
     { name: "Softs", icon: "mdi-cup-water" },
     { name: "Foods", icon: "mdi-food-fork-drink" },
-    { name: "Recommended", icon: "mdi-star" }
 ]
 export interface MCategorie {
     icon: string;

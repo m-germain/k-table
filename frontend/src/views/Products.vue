@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <HeadLine title="Nos Produits">
-      <template v-slot:end> 
+      <template v-slot:end>
         <!-- <v-text-field
           v-model="search"
           dense
@@ -14,7 +14,7 @@
           disabled
           prepend-inner-icon="mdi-database-search"
           label="Search"
-        ></v-text-field>  -->
+        ></v-text-field>-->
         <v-dialog v-model="dialog" persistent max-width="600px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn small text fab color="primary" v-bind="attrs" v-on="on">
@@ -44,25 +44,37 @@
       </v-col>
       <v-col cols="12" v-else>
         <ProductList
-          v-if="recomendations.length > 0 && filters.includes(3) || filters.length == 0"
+          v-if="recomendations.length > 0 && (filters.includes(0) || filters.length == 0)"
           :listProduct="recomendations"
           title="Recommended"
           @closeDialog="closeDialog"
         />
         <ProductList
-          v-if="beers.length > 0 && filters.includes(0) || filters.length == 0"
-          :listProduct="beers"
-          title="Beers"
+          v-if="tapBeers.length > 0 && (filters.includes(1) || filters.length == 0)"
+          :listProduct="tapBeers"
+          title="Tap Beers"
           @closeDialog="closeDialog"
         />
         <ProductList
-          v-if="softs.length == 1 && filters.includes(1) || filters.length == 0"
+          v-if="bottledBeers.length > 0 && (filters.includes(2) || filters.length == 0)"
+          :listProduct="bottledBeers"
+          title="Bottled Beers"
+          @closeDialog="closeDialog"
+        />
+        <ProductList
+          v-if="wines.length > 0 && (filters.includes(3) || filters.length == 0)"
+          :listProduct="wines"
+          title="Wines"
+          @closeDialog="closeDialog"
+        />
+        <ProductList
+          v-if="softs.length == 1 && (filters.includes(4) || filters.length == 0)"
           :listProduct="softs"
           title="Softs"
           @closeDialog="closeDialog"
         />
         <ProductList
-          v-if="foods.length > 0 && filters.includes(2) || filters.length == 0"
+          v-if="foods.length > 0 && (filters.includes(5) || filters.length == 0)"
           :listProduct="foods"
           title="Foods"
           @closeDialog="closeDialog"

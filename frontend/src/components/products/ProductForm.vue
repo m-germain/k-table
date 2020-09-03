@@ -54,7 +54,7 @@
               v-model="formProduct.name"
             ></v-text-field>
           </v-col>
-          <v-col cols="6" sm="6" md="6">
+          <v-col cols="6" sm="6" md="6" class="py-0">
             <v-text-field
               label="Degré d'alcool*"
               hint="exemple : 5.5 (Avec un point)"
@@ -67,7 +67,7 @@
               v-model="formProduct.alcohol"
             ></v-text-field>
           </v-col>
-          <v-col cols="6" sm="6" md="6">
+          <v-col cols="6" sm="6" md="6" class="py-0">
             <v-text-field
               label="Prix*"
               hint="exemple : 3.50 (Avec un point)"
@@ -80,7 +80,7 @@
               v-model="formProduct.price"
             ></v-text-field>
           </v-col>
-          <v-col cols="12" sm="12" md="12">
+          <v-col cols="12" sm="12" md="12" class="py-0">
             <v-text-field
               label="Description*"
               hint="exemple : Une bière légère et sucrée"
@@ -91,7 +91,7 @@
               v-model="formProduct.description"
             ></v-text-field>
           </v-col>
-          <v-col cols="12" sm="12" md="12">
+          <v-col cols="12" sm="12" md="12" class="py-0">
             <v-text-field
               label="Url Image du Produit"
               color="secondary"
@@ -100,7 +100,7 @@
               v-model="formProduct.pictureUrl"
             ></v-text-field>
           </v-col>
-          <v-col cols="12" sm="12" md="12">
+          <v-col cols="12" sm="12" md="12" class="py-0">
             <v-switch
               v-model="formProduct.available"
               color="teal ligthen-2"
@@ -112,11 +112,11 @@
       <small>*champs obligatoires</small>
     </v-card-text>
 
-    <v-card-actions v-if="!update">
+    <v-card-actions v-if="!update" class="pr-2">
       <v-spacer></v-spacer>
       <v-btn text @click="close">Annuler</v-btn>
       <v-btn
-        color="primary"
+        color="success"
         :disabled="!productFormValid"
         depressed
         class="mx-6"
@@ -125,12 +125,14 @@
     </v-card-actions>
 
     <v-card-actions v-else>
+      <v-btn outlined color="primary" class="ml-1 mb-2" @click="deleteProduct()">
+        <v-icon left>mdi-delete-outline</v-icon>Supprimer
+      </v-btn>
       <v-spacer></v-spacer>
-      <v-btn text @click="close">Annuler</v-btn>
       <v-btn
         depressed
-        color="primary"
-        class="mx-6 mb-2"
+        color="success"
+        class="ml-1 mb-2"
         :disabled="!productFormValid"
         @click="updateProduct()"
       >Enregistrer</v-btn>
@@ -173,6 +175,10 @@ export default class ProductForm extends Vue {
 
   async updateProduct() {
     ProductService.updateProduct(this.formProduct).then(() => this.close());
+  }
+
+  async deleteProduct() {
+    ProductService.deleteProduct(this.product).then(() => this.close());
   }
 }
 </script>

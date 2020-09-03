@@ -88,15 +88,13 @@ const ProductService = {
     },
 
     deleteProduct: async function (product: MProduct) {
-        products.doc(products.id).delete()
-            .then(() => {
-                Vue.toasted.global.success({ message: "Product " + product.name + " Deleted" });
-            })
-            .catch(error => {
-                Vue.toasted.global.error({ message: "Could not Deleted" + product.name + error });
-                throw new Error('Could not delete this Product to the serveur.' + error)
-            })
-
+        console.log(product);
+        products.doc(product.id.toString()).delete().then(() => {
+            Vue.toasted.global.success({ message: "Product " + product.name + " Deleted" });
+        }).catch(error => {
+            Vue.toasted.global.error({ message: "Could not Deleted" + product.name + error });
+            throw new Error('Could not delete this Product to the serveur.' + error)
+        })
     },
 
 }

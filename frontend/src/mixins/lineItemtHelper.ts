@@ -24,12 +24,28 @@ export default class LineItemHelper extends Vue {
     this.lineItemList = [];
   }
 
-  get beers() {
+  get tapBeers() {
     const beers: MLineItem[] = [];
     for (const lineItem of this.lineItemList) {
-      if (lineItem.product.categorie.name === "Beers") beers.push(lineItem);
+      if (lineItem.product.categorie.name === "Tap Beers") beers.push(lineItem);
     }
     return beers;
+  }
+
+  get bottledBeers() {
+    const bottledBeers: MLineItem[] = [];
+    for (const lineItem of this.lineItemList) {
+      if (lineItem.product.categorie.name === "Bottled Beers") bottledBeers.push(lineItem);
+    }
+    return bottledBeers;
+  }
+
+  get wines() {
+    const wines: MLineItem[] = [];
+    for (const lineItem of this.lineItemList) {
+      if (lineItem.product.categorie.name === "Wines") wines.push(lineItem);
+    }
+    return wines;
   }
 
   get softs() {

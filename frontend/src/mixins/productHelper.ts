@@ -46,12 +46,12 @@ export default class ProductHelper extends Vue {
     this.products = localProducts;
   }
 
-  get beers() {
-    const beers: MProduct[] = [];
+  get tapBeers() {
+    const tapBeers: MProduct[] = [];
     for (const product of this.products) {
-      if (product.categorie.name === "Beers") beers.push(product);
+      if (product.categorie.name === "Tap Beers") tapBeers.push(product);
     }
-    return beers;
+    return tapBeers;
   }
 
   get softs() {
@@ -77,5 +77,23 @@ export default class ProductHelper extends Vue {
         recomendations.push(product);
     }
     return recomendations;
+  }
+
+  get bottledBeers() {
+    const bottledBeers: MProduct[] = [];
+    for (const product of this.products) {
+      if (product.categorie.name === "Bottled Beers")
+        bottledBeers.push(product);
+    }
+    return bottledBeers;
+  }
+
+  get wines() {
+    const wines: MProduct[] = [];
+    for (const product of this.products) {
+      if (product.categorie.name === "Wines")
+        wines.push(product);
+    }
+    return wines;
   }
 }

@@ -8,14 +8,20 @@
       <v-list-item-title class="font-weight-medium">{{item.name}}</v-list-item-title>
     </v-list-item-content>
     <v-list-item-action>
-      <v-dialog v-model="dialog" persistent max-width="600px">
+      <v-dialog v-model="dialog" max-width="600px">
         <template v-slot:activator="{ on, attrs }">
           <v-btn small text fab color="primary" v-bind="attrs" v-on="on">
             <v-icon>mdi-pencil</v-icon>
           </v-btn>
         </template>
         <v-card>
-          <HeadLine title="Ajouter un Produit" />
+          <HeadLine title="Modifier un Produit">
+            <template slot="end">
+              <v-btn text fab small @click="closeDialog">
+                <v-icon>mdi-close-circle</v-icon>
+              </v-btn>
+            </template>
+          </HeadLine>
           <ProductForm :product="item" update="true" @closeDialog="closeDialog" />
         </v-card>
       </v-dialog>

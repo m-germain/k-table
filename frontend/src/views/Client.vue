@@ -41,25 +41,37 @@
         </v-col>
         <v-col cols="12" v-else>
           <ProductList
-            v-if="recomendations.length > 0 && filters.includes(3) || filters.length == 0"
+            v-if="recomendations.length > 0 && (filters.includes(0) || filters.length == 0)"
             :listLineItem="recomendations"
             title="Recommended"
             client="true"
           />
           <ProductList
-            v-if="beers.length > 0 && filters.includes(0) || filters.length == 0"
-            :listLineItem="beers"
-            title="Beers"
+            v-if="tapBeers.length > 0 && (filters.includes(1) || filters.length == 0)"
+            :listLineItem="tapBeers"
+            title="Tap Beers"
             client="true"
           />
           <ProductList
-            v-if="softs.length > 0 && filters.includes(1) || filters.length == 0"
+            v-if="bottledBeers.length > 0 && (filters.includes(2) || filters.length == 0)"
+            :listLineItem="bottledBeers"
+            title="Bottled Beers"
+            client="true"
+          />
+          <ProductList
+            v-if="wines.length > 0 && (filters.includes(3) || filters.length == 0)"
+            :listLineItem="wines"
+            title="Wines"
+            client="true"
+          />
+          <ProductList
+            v-if="softs.length == 1 && (filters.includes(4) || filters.length == 0)"
             :listLineItem="softs"
             title="Softs"
             client="true"
           />
           <ProductList
-            v-if="foods.length > 0 && filters.includes(2) || filters.length == 0"
+            v-if="foods.length > 0 && (filters.includes(5) || filters.length == 0)"
             :listLineItem="foods"
             title="Foods"
             client="true"
