@@ -93,7 +93,7 @@
       </v-row>
     </v-container>
 
-    <v-navigation-drawer v-if="drawer" v-model="drawer" absolute bottom temporary>
+    <v-navigation-drawer style="min-height: 75%" app v-if="drawer" v-model="drawer" bottom>
       <v-toolbar absolute flat width="100%" class="border-bottom">
         <v-list-item>
           <v-list-item-content>
@@ -210,7 +210,7 @@ export default class Barman extends Mixins(LineItemHelper) {
   openDrawer() {
     window.scrollTo({
       left: 0,
-      top: document.body.scrollHeight,
+      top: window.innerHeight,
       behavior: "smooth",
     });
     this.drawer = true;
@@ -219,7 +219,7 @@ export default class Barman extends Mixins(LineItemHelper) {
   closeDrawer() {
     window.scrollTo({
       left: 0,
-      top: 100,
+      top: 0,
       behavior: "smooth",
     });
     this.drawer = false;
