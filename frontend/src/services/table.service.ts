@@ -15,6 +15,8 @@ const TableService = {
                 const table: MTable = {
                     id: doc.id,
                     name: doc.data().name,
+                    clientsAtTable: doc.data().clientsAtTable,
+                    clientName: doc.data().clientName,
                     available: doc.data().available,
                     help: doc.data().help,
                     token: doc.data().token,
@@ -35,6 +37,8 @@ const TableService = {
                     id: doc.id,
                     name: doc.data().name,
                     available: doc.data().available,
+                    clientsAtTable: doc.data().clientsAtTable,
+                    clientName: doc.data().clientName,
                     help: doc.data().help,
                     token: doc.data().token,
                 }
@@ -56,6 +60,8 @@ const TableService = {
         tables.add({
             name: (tableList.length + 1),
             available: true,
+            clientsAtTable: "",
+            clientName: "",
             help: false,
             token: "",
         }).then(docRef => {
@@ -123,9 +129,11 @@ const TableService = {
         })
     },
 
-    activateTable: async function (id: string, token: string) {
+    activateTable: async function (id: string, clientName: string, clientsAtTable: string, token: string) {
         tables.doc(id).update({
             available: false,
+            clientsAtTable: clientsAtTable,
+            clientName: clientName,
             token: token,
         }).then(() => {
             Vue.toasted.global.success({ message: "Table Activée !" })

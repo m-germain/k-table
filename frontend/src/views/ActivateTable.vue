@@ -30,17 +30,34 @@
           v-model="clientName"
           align="center"
           color="success"
+          class="py-0"
           black
           label="Table est au prénom de :"
           persistent-hint
           hint="Pour garder le ptit nom de la personne"
         ></v-text-field>
       </v-col>
-      <v-col cols="8">
+      <v-col cols="8" class>
+        <v-text-field
+          block
+          outlined
+          class="py-0"
+          v-model="clientsAtTable"
+          align="center"
+          color="success"
+          type="text"
+          pattern="\d*"
+          black
+          label="Nombres de personnes à la table."
+          persistent-hint
+          hint="Pour savoir combiens ils sont ;)"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="8" class="mt-5">
         <v-btn
           block
           outlined
-          :disabled="clientName.length < 2"
+          :disabled="clientName.length < 2 && clientsAtTable.length <= 1"
           align="center"
           color="success"
           black
@@ -84,6 +101,7 @@ import TokenService from "../services/token.service";
 })
 export default class ActivateTable extends Vue {
   private clientName = "";
+  private clientsAtTable = "";
   private loading = false;
   private activated = false;
   private activationLink = "https://k-table.firebaseapp.com";
@@ -93,10 +111,16 @@ export default class ActivateTable extends Vue {
     this.loading = true;
     const token = TokenService.generateToken(
       this.clientName,
+      this.clientsAtTable,
       this.$route.params.tableId,
       this.$route.params.tableNumber
     );
-    TableService.activateTable(this.$route.params.tableId, token).then(() => {
+    TableService.activateTable(
+      this.$route.params.tableId,
+      this.clientName,
+      this.clientsAtTable,
+      token
+    ).then(() => {
       {
         this.activated = true;
         this.activationLink += "/activate/" + token;

@@ -51,9 +51,9 @@ const TokenService = {
         localStorage.removeItem(TOKEN_KEY)
     },
 
-    generateToken(username: string, tableId: string, table: string): string {
+    generateToken(username: string, clientsAtTable: string, tableId: string, table: string): string {
         if (SECRET_KEY) {
-            const token = jwt.sign({ username: username, tableId: tableId, table: table }, SECRET_KEY, { expiresIn: '4h' });
+            const token = jwt.sign({ username: username, clientsAtTable: clientsAtTable, tableId: tableId, table: table }, SECRET_KEY, { expiresIn: '4h' });
             return token;
         } else throw new Error("Oups, No Secret KEY for TOKEN GENERATION...")
     },

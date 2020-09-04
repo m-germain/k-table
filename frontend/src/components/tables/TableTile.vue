@@ -1,12 +1,29 @@
 <template>
   <v-dialog v-model="dialog" max-width="600px">
     <template v-slot:activator="{ on, attrs }">
-      <v-btn block align="center" height="3rem" :color="color" dark v-bind="attrs" v-on="on">
-        <h2>{{table.name}}</h2>
-      </v-btn>
+      <v-badge
+        :content="table.clientsAtTable"
+        :value="table.clientsAtTable"
+        :color="color"
+        style="width:100%"
+        class="pa-0 ma-0"
+        overlap
+      >
+        <v-btn
+          style="width:100%"
+          align="center"
+          height="3rem"
+          :color="color"
+          dark
+          v-bind="attrs"
+          v-on="on"
+        >
+          <h2>{{table.name}}</h2>
+        </v-btn>
+      </v-badge>
     </template>
     <v-card>
-      <HeadLine class="my-2" :title="'Table ' + table.name" weight="bold">
+      <HeadLine class="my-2" :title="'T-' + table.name" weight="bold">
         <template v-slot:start>
           <v-btn
             text
@@ -29,6 +46,10 @@
         </template>
       </HeadLine>
       <v-row align="center" justify="center" class="mx-1 my-2">
+        <v-col v-if="!table.available" cols="12" class="headline">
+          Table de {{table.clientsAtTable}} personnes, au nom de
+          <strong>{{table.clientName}}.</strong>
+        </v-col>
         <v-col>
           <v-btn
             block

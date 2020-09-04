@@ -60,7 +60,8 @@
               hint="exemple : 5.5 (Avec un point)"
               color="secondary"
               append-icon="°"
-              type="number"
+              type="text"
+              pattern="\d*"
               persistent-hint
               :rules="[v => !!v || 'Le prix est obligatoire']"
               required
@@ -74,7 +75,8 @@
               color="secondary"
               append-icon="mdi-currency-eur"
               persistent-hint
-              type="number"
+              type="text"
+              pattern="\d*"
               :rules="[v => !!v || 'Le prix est obligatoire']"
               required
               v-model="formProduct.price"

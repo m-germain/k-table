@@ -21,6 +21,8 @@ export default class TableHelper extends Vue {
         const table: MTable = {
           id: change.doc.id,
           name: change.doc.data().name,
+          clientsAtTable: change.doc.data().clientsAtTable,
+          clientName: change.doc.data().clientName,
           available: change.doc.data().available,
           help: change.doc.data().help,
           token: change.doc.data().token,
@@ -68,6 +70,8 @@ export default class TableHelper extends Vue {
         tablesInNeed.push(table);
       }
     }
+    console.log(tablesInNeed);
+    
     return tablesInNeed;
   }
 

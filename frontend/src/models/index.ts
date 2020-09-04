@@ -35,11 +35,13 @@ export interface MTable {
     id: string;
     name: number;
     available: boolean;
+    clientsAtTable: string;
+    clientName: string;
     help: boolean;
     token: string;
 }
 
-export interface MUserData { username?: string; tableId?: string; table?: string; iat?: number; exp?: number }
+export interface MUserData { username?: string; clientsAtTable?: string; tableId?: string; table?: string; iat?: number; exp?: number }
 
 
 export const Categories: MCategorie[] = [
