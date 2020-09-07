@@ -6,6 +6,7 @@ import TableService, { tables } from "../services/table.service";
 @Component
 export default class TableHelper extends Vue {
   private tables: MTable[] = [];
+  private loading = false;
 
   async getTables() {
     this.realTimeListenner();
@@ -70,24 +71,28 @@ export default class TableHelper extends Vue {
         tablesInNeed.push(table);
       }
     }
-    console.log(tablesInNeed);
-    
     return tablesInNeed;
   }
 
   addTable() {
-    TableService.addTable(this.tables).then(() => this.getTables());
+    this.blockActions();
+    TableService.addTable();
   }
 
   removeTable() {
-    TableService.removeTable(this.tables).then(() => {
-      this.getTables()
-    });
+    this.blockActions();
+    TableService.removeTable();
   }
-
 
   get available() {
     return this.numberOfTablesAvailable > 0;
+  }
+
+  blockActions() {
+    this.loading = true;
+    setTimeout(() => {
+      this.loading = false;
+    }, 600);
   }
 
 }

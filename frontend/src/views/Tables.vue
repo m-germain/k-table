@@ -18,9 +18,9 @@
       </template>-->
     </HeadLine>
     <v-card class="mx-4 my-3">
-      <v-row align="center" justify="space-between">
+      <v-row align="center" class="mx-2" justify="space-between">
         <v-col>
-          <v-btn text color="primary" @click="removeTable">
+          <v-btn text :loading="loading" :disabled="loading" color="primary" @click="removeTable">
             <v-icon>mdi-minus-circle</v-icon>
           </v-btn>
         </v-col>
@@ -28,7 +28,7 @@
           <h2>{{numberOfTables}}</h2>
         </v-col>
         <v-col align="right">
-          <v-btn text color="success" @click="addTable">
+          <v-btn text :loading="loading" :disabled="loading" color="success" @click="addTable">
             <v-icon>mdi-plus-circle</v-icon>
           </v-btn>
         </v-col>
@@ -101,7 +101,7 @@ import TableHelper from "../mixins/tableHelper";
 @Component({
   components: { HeadLine, TableTile },
 })
-export default class Products extends Mixins(TableHelper) {
+export default class Tables extends Mixins(TableHelper) {
   private search = "";
   private filters = [];
 
