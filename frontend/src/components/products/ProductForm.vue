@@ -62,6 +62,7 @@
               append-icon="°"
               type="text"
               pattern="\d*"
+              step="0.1"
               persistent-hint
               :rules="[v => !!v || 'Le prix est obligatoire']"
               required
@@ -77,6 +78,7 @@
               persistent-hint
               type="text"
               pattern="\d*"
+              step="0.1"
               :rules="[v => !!v || 'Le prix est obligatoire']"
               required
               v-model="formProduct.price"

@@ -65,7 +65,7 @@
             client="true"
           />
           <ProductList
-            v-if="softs.length == 1 && (filters.includes(4) || filters.length == 0)"
+            v-if="softs.length > 0  && (filters.includes(4) || filters.length == 0)"
             :listLineItem="softs"
             title="Softs"
             client="true"

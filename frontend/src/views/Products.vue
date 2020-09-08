@@ -68,7 +68,7 @@
           @closeDialog="closeDialog"
         />
         <ProductList
-          v-if="softs.length == 1 && (filters.includes(4) || filters.length == 0)"
+          v-if="softs.length > 0 && (filters.includes(4) || filters.length == 0)"
           :listProduct="softs"
           title="Softs"
           @closeDialog="closeDialog"
@@ -95,8 +95,8 @@ import { MProduct, Categories } from "../models";
 const defaultProduct: MProduct = {
   name: "",
   id: "-1",
-  price: -1,
-  alcohol: -1,
+  price: -1.0,
+  alcohol: -1.0,
   pictureUrl: "",
   description: "",
   available: true,
