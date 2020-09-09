@@ -53,6 +53,19 @@
           hint="Pour savoir combiens ils sont ;)"
         ></v-text-field>
       </v-col>
+      <v-col cols="8">
+        <v-switch
+          inset
+          v-model="minor"
+          color="success"
+          black
+          class="py-0 v-input--reverse v-input--expand"
+          persistent-hint
+          hint="A cocher pour indiquer qu'il y a des clients de -18ans, si le truc est vert ca veut dire que tu as coché"
+        >
+          <template #label>Mineurs à la table</template>
+        </v-switch>
+      </v-col>
       <v-col cols="8" class="mt-5">
         <v-btn
           block
@@ -103,6 +116,7 @@ export default class ActivateTable extends Vue {
   private clientName = "";
   private clientsAtTable = "";
   private loading = false;
+  private minor = false;
   private activated = false;
   private activationLink = "https://k-table.firebaseapp.com";
   private size = 300;
@@ -112,6 +126,7 @@ export default class ActivateTable extends Vue {
     const token = TokenService.generateToken(
       this.clientName,
       this.clientsAtTable,
+      this.minor,
       this.$route.params.tableId,
       this.$route.params.tableNumber
     );
@@ -119,6 +134,7 @@ export default class ActivateTable extends Vue {
       this.$route.params.tableId,
       this.clientName,
       this.clientsAtTable,
+      this.minor,
       token
     ).then(() => {
       {
@@ -136,5 +152,29 @@ export default class ActivateTable extends Vue {
 </script>
 
 
-<style scoped>
+<style lang="scss">
+.v-input--reverse .v-input__slot {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  .v-application--is-ltr & {
+    .v-input--selection-controls__input {
+      margin-right: 0;
+      margin-left: 8px;
+    }
+  }
+  .v-application--is-rtl & {
+    .v-input--selection-controls__input {
+      margin-left: 0;
+      margin-right: 8px;
+    }
+  }
+}
+
+.v-input--expand .v-input__slot {
+  // justify-content: space-between;
+  .v-label {
+    display: block;
+    flex: 1;
+  }
+}
 </style>

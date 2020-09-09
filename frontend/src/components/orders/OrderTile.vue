@@ -16,6 +16,16 @@
               <v-row align="center" justify="end" no-gutters>
                 <v-col>
                   <span>Table {{order.client.table}} | {{order.orderCode}}</span>
+                  <!-- <v-chip
+                    height="10px"
+                    small
+                    v-if="order.client.minor"
+                    class="mx-3 mt-n1"
+                    color="warning"
+                    text-color="primary darken-4"
+                  >
+                    <v-icon left class="mt-n2">mdi-badge-account-alert</v-icon>-18 ANS
+                  </v-chip>-->
                 </v-col>
                 <v-col align="end">
                   <v-btn
@@ -29,7 +39,23 @@
                 </v-col>
               </v-row>
             </v-list-item-title>
-            <v-list-item-subtitle>{{order.timestamp.toLocaleString()}}</v-list-item-subtitle>
+            <v-list-item-subtitle>
+              <v-row align="center" justify="end" no-gutters>
+                <v-col>{{order.timestamp.toLocaleString()}}</v-col>
+                <v-col align="end">
+                  <v-chip
+                    height="10px"
+                    small
+                    v-if="order.client.minor"
+                    class="mr-3"
+                    color="warning"
+                    text-color="primary darken-4"
+                  >
+                    <v-icon left class="mt-n2">mdi-badge-account-alert</v-icon>-18 ANS
+                  </v-chip>
+                </v-col>
+              </v-row>
+            </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
 
@@ -82,6 +108,9 @@
         <v-divider></v-divider>
 
         <v-card-actions>
+          <v-btn small v-if="quickFinishBtn" text v-bind="attrs" v-on="on">
+            <v-icon right>mdi-pencil</v-icon>
+          </v-btn>
           <v-spacer></v-spacer>
           <span v-if="detailed">
             <v-btn
@@ -111,12 +140,13 @@
           </span>
           <v-btn
             v-if="quickFinishBtn"
-            text
+            depressed
+            class="success"
             v-bind="attrs"
             v-on="on"
             @click="updatedState(localStateEnum.payed)"
           >
-            Complètement traitée
+            J'ai dead ca
             <v-icon right>mdi-check</v-icon>
           </v-btn>
           <v-btn v-if="edit" text v-bind="attrs" v-on="on">

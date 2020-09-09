@@ -8,7 +8,7 @@
           <h3>En attente de {{title}}...</h3>
         </v-col>
         <v-col cols="12" v-else>
-          <div class="overline font-weight-bold">{{title}}</div>
+          <div style="font-size: 15px !important" class="overline font-weight-bold">{{title}}</div>
           <v-row v-if="orders.length > 0">
             <v-col cols="12" v-for="order in orders" :key="order.id">
               <OrderTile :detailed="edit ? false : true" :edit="edit" :order="order" />

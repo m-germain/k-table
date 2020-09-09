@@ -4,16 +4,15 @@
       <transition name="slide-fade">
         <v-list-item-icon
           class="ma-0 mr-4 ma-auto success--text"
-          v-if="lineItem.quantity > 0 && !inPreparation"
+          v-if="lineItem.quantity > 0 && !inPreparation && !hideBtns"
         >
           <h3 :class="inOrder ? 'mt-2' :'mt-3' ">x</h3>
           <h1>{{lineItem.quantity}}</h1>
         </v-list-item-icon>
       </transition>
 
-      <v-list-item-icon class="ma-0 mr-4 ma-auto" v-if="inPreparation">
-        <h2 class="mt-2">x</h2>
-        <h1 style="font-size:45px">{{lineItem.quantity}}</h1>
+      <v-list-item-icon class="ma-0 mr-4 ma-auto success--text" v-if="hideBtns">
+        <v-icon>{{lineItem.product.categorie.icon}}</v-icon>
       </v-list-item-icon>
 
       <transition name="slide-fade-invert">
@@ -45,7 +44,8 @@
               color="success"
             >mdi-checkbox-marked-circle-outline</v-icon>
           </transition>
-
+          <span v-if="hideBtns" style="font-size: 12px">x</span>
+          <span v-if="hideBtns" class="font-weight-medium mr-2">{{lineItem.quantity}}</span>
           <span class="font-weight-medium">{{lineItem.product.name}}</span>
         </v-list-item-title>
         <v-list-item-subtitle v-if="inOrder">
@@ -59,7 +59,10 @@
       </v-list-item-content>
       <v-list-item-content align="end" v-if="inPreparation">
         <v-list-item-title>
-          <h1 class="font-weight-bold">{{lineItem.product.name}}</h1>
+          <h1 class="font-weight-bold">
+            <span style="font-size: 20px">x</span>
+            {{lineItem.quantity}} | {{lineItem.product.name}}
+          </h1>
         </v-list-item-title>
         <v-list-item-subtitle v-if="inOrder === false">
           <span class="font-weight-ligth">{{lineItem.product.description}}</span>
@@ -78,6 +81,10 @@
           <v-icon>mdi-minus-circle-outline</v-icon>
         </v-btn>
       </v-list-item-action>
+      <!-- <v-list-item-icon align="end" v-else class="ml-4 ma-auto">
+        <h2 class="mt-5">x</h2>
+        <h2 style="font-size: 42px">{{lineItem.quantity}}</h2>
+      </v-list-item-icon>-->
     </template>
   </v-list-item>
 </template>

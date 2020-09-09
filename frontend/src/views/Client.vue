@@ -1,6 +1,37 @@
 <template>
   <span>
     <v-container v-if="!loadingUser">
+      <!-- <v-footer rounded class="warning">
+        <div>Attention, il y a des mineurs à ta table. Nous allons particulièrement faire attentions lors du service de vos commandes</div>
+        <v-spacer></v-spacer>
+        <v-icon>mdi-alert-decagram</v-icon>
+      </v-footer>-->
+      <v-banner v-model="banner" two-line>
+        <v-avatar slot="icon" color="primary accent-4" size="40">
+          <v-icon icon="mdi-lock" color="white">mdi-alert-decagram</v-icon>
+        </v-avatar>Attention, il y a des mineurs à ta table. Nous pouvons refuser de vous servir certaines boisons.
+        <template
+          v-slot:actions="{ dismiss }"
+        >
+          <v-btn text color="primary" @click="dismiss">J'ai compris</v-btn>
+        </template>
+      </v-banner>
+      <v-banner v-model="bannertuto" two-line>
+        <v-avatar slot="icon" color="success" size="40">
+          <v-icon icon="mdi-lock" color="white">mdi-information</v-icon>
+        </v-avatar>Voici l'interface de commande à table.
+        Clique sur + pour selectionner des produits. Puis clique sur le petit pannier noir qui va apparaitre en bas à droite pour passer commande.
+        La
+        <v-icon class="mx-1">mdi-bell</v-icon>permet d'appeler un barman pour avoir de l'aide ou pour indiquer que vous voulez avoir vos jetons.
+        Le
+        <v-icon class="mt-n1 mx-1">mdi-order-bool-descending-variant</v-icon>permet de visualiser tes commandes passés.
+        Si tu fermes la page de ton telephone tu peux simplement scanner le qr code sur ta table, tu seras envoyé ici ! Bonne soirée.
+        <template
+          v-slot:actions="{ dismiss }"
+        >
+          <v-btn text color="success" @click="dismiss">J'ai compris</v-btn>
+        </template>
+      </v-banner>
       <v-row class="mx-1">
         <v-col cols="9">
           <h1 class="font-weight-bold">Hello {{clientData.username}},</h1>
@@ -18,6 +49,9 @@
               <v-icon v-if="notified">mdi-bell-check</v-icon>
             </v-scroll-x-transition>
           </v-btn>
+          <!-- <v-btn fab depressed text>
+            <v-icon class="mt-n1">mdi-order-bool-descending-variant</v-icon>
+          </v-btn> -->
         </v-col>
       </v-row>
       <v-row class="mx-1">
@@ -171,6 +205,8 @@ import TableService from "../services/table.service";
 export default class Barman extends Mixins(LineItemHelper) {
   // To show the client's command
   private drawer = false;
+  private banner = true;
+  private bannertuto = true;
   private categories = Categories;
   private filters = [];
   private loadingUser = true;
@@ -183,6 +219,7 @@ export default class Barman extends Mixins(LineItemHelper) {
     username: "",
     tableId: "",
     table: "",
+    minor: false,
     iat: -1,
     exp: -1,
   };
@@ -196,6 +233,9 @@ export default class Barman extends Mixins(LineItemHelper) {
     await TokenService.getAndDecodeToken()
       .then((userData: MUserData) => {
         this.clientData = userData as MUserData;
+        if (userData.minor) {
+          this.banner = true;
+        }
         this.loadingUser = false;
       })
       .catch(() => {
@@ -233,6 +273,9 @@ export default class Barman extends Mixins(LineItemHelper) {
             this.$toasted.global.success({
               message: "Yes ! Ta commande en cours de préparation...",
             });
+            if (this.clientData.minor) {
+              this.banner = true;
+            }
             this.getProducts();
             this.closeDrawer();
           })

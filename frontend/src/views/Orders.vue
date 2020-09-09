@@ -14,8 +14,15 @@
           hide-details
           prepend-inner-icon="mdi-database-search"
           label="Search"
-        ></v-text-field> -->
-        <v-switch v-model="tracking" class="mt-5" color="teal ligthen-2" label="Suivi de commandes"></v-switch>
+        ></v-text-field>-->
+        <v-switch
+          inset
+          v-model="tracking"
+          color="success"
+          class="mt-7 v-input--reverse"
+        >
+          <template #label>Suivi commandes</template>
+        </v-switch>
       </template>
     </HeadLine>
     <v-row class="mx-1" align="center" justify="space-between">
@@ -60,6 +67,7 @@
         <v-col cols="12">
           <div
             class="overline font-weight-bold"
+            style="font-size: 20px !important"
             v-if="numberOfOrdersUncompleted > 0"
           >Commandes à traiter !</div>
 
@@ -68,7 +76,8 @@
               <OrderTile :quickFinishBtn="true" :order="order" />
             </v-col>
           </v-row>
-          <div v-if="numberOfOrdersToday > 0" class="overline font-weight-bold">Toutes les Commandes</div>
+          <v-divider class="my-5"></v-divider>
+          <div v-if="numberOfOrdersToday > 0" style="font-size: 17px !important" class=" overline font-weight-bold">Toutes les Commandes</div>
           <v-row v-if="numberOfOrdersToday > 0">
             <v-col
               cols="12"
@@ -160,5 +169,30 @@ export default class Orders extends Mixins(OrderHelper) {
 </script>
 
 
-<style scoped>
+
+<style lang="scss">
+.v-input--reverse .v-input__slot {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  .v-application--is-ltr & {
+    .v-input--selection-controls__input {
+      margin-right: 0;
+      margin-left: 8px;
+    }
+  }
+  .v-application--is-rtl & {
+    .v-input--selection-controls__input {
+      margin-left: 0;
+      margin-right: 8px;
+    }
+  }
+}
+
+.v-input--expand .v-input__slot {
+  // justify-content: space-between;
+  .v-label {
+    display: block;
+    flex: 1;
+  }
+}
 </style>

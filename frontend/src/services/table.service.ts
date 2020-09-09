@@ -15,6 +15,7 @@ const TableService = {
                     name: doc.data().name,
                     clientsAtTable: doc.data().clientsAtTable,
                     clientName: doc.data().clientName,
+                    minor: doc.data().minor,
                     available: doc.data().available,
                     help: doc.data().help,
                     token: doc.data().token,
@@ -37,6 +38,7 @@ const TableService = {
                     available: doc.data().available,
                     clientsAtTable: doc.data().clientsAtTable,
                     clientName: doc.data().clientName,
+                    minor: doc.data().minor,
                     help: doc.data().help,
                     token: doc.data().token,
                 }
@@ -61,6 +63,7 @@ const TableService = {
                 available: true,
                 clientsAtTable: "",
                 clientName: "",
+                minor: false,
                 help: false,
                 token: "",
             }).then(docRef => {
@@ -125,6 +128,7 @@ const TableService = {
             token: "",
             clientsAtTable: "",
             clientName: "",
+            minor: false,
             help: false,
         }).then(() => {
             Vue.toasted.global.success({ message: "Table Libérée !" })
@@ -134,11 +138,12 @@ const TableService = {
         })
     },
 
-    activateTable: async function (id: string, clientName: string, clientsAtTable: string, token: string) {
+    activateTable: async function (id: string, clientName: string, clientsAtTable: string, minor: boolean, token: string) {
         tables.doc(id).update({
             available: false,
             clientsAtTable: clientsAtTable,
             clientName: clientName,
+            minor: minor,
             token: token,
         }).then(() => {
             Vue.toasted.global.success({ message: "Table Activée !" })

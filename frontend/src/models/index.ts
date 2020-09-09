@@ -12,6 +12,9 @@ export interface MProduct {
 export interface MTable {
     id: string;
     name: number;
+    clientsAtTable: string;
+    clientName: string;
+    minor: boolean;
     available: boolean;
     help: boolean;
     token: string;
@@ -31,17 +34,7 @@ export interface MLineItem {
     quantity: number;
 }
 
-export interface MTable {
-    id: string;
-    name: number;
-    available: boolean;
-    clientsAtTable: string;
-    clientName: string;
-    help: boolean;
-    token: string;
-}
-
-export interface MUserData { username?: string; clientsAtTable?: string; tableId?: string; table?: string; iat?: number; exp?: number }
+export interface MUserData { username?: string; clientsAtTable?: string; tableId?: string; table?: string; minor?: boolean; iat?: number; exp?: number }
 
 
 export const Categories: MCategorie[] = [

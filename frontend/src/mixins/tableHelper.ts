@@ -24,6 +24,7 @@ export default class TableHelper extends Vue {
           name: change.doc.data().name,
           clientsAtTable: change.doc.data().clientsAtTable,
           clientName: change.doc.data().clientName,
+          minor: change.doc.data().minor,
           available: change.doc.data().available,
           help: change.doc.data().help,
           token: change.doc.data().token,
