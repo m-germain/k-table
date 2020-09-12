@@ -118,7 +118,7 @@ export default class ActivateTable extends Vue {
   private loading = false;
   private minor = false;
   private activated = false;
-  private activationLink = "https://k-table.firebaseapp.com";
+  private activationLink = "https://k-table.kfet-insa.fr";
   private size = 300;
 
   activateTable() {

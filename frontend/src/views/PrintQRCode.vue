@@ -21,7 +21,7 @@ import QrcodeVue from "qrcode.vue";
 export default class PrintQrCode extends Vue {
   private tableNumber = "";
   private size = 350;
-  private link = "k-table.firebaseapp.com/table/";
+  private link = "k-table.kfet-insa.fr/table/";
 
   mounted() {
     this.tableNumber = this.$route.params.tableNumber;
