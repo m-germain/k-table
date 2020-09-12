@@ -4,7 +4,7 @@
       <v-col cols="12">
         <h1 class="font-weight-bold">Hello,</h1>
         <h2>
-          <span class="font-weight-medium">tu veux une</span> bière
+          tu veux venir
           <span class="font-weight-medium">à la</span> K-Fêt?
         </h2>
       </v-col>

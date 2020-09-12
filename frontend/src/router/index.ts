@@ -10,6 +10,7 @@ import ActivateTable from "../views/ActivateTable.vue";
 import ActivatePhone from "../views/ActivatePhone.vue";
 import PrintQRCode from "../views/PrintQRCode.vue";
 import Orders from "../views/Orders.vue";
+import MyOrders from "../views/MyOrders.vue";
 import TokenService from '@/services/token.service';
 
 Vue.use(VueRouter)
@@ -62,6 +63,17 @@ const routes: Array<RouteConfig> = [
     name: '', // Nom en haut de l'ecran
     props: true,
     component: Client,
+    meta: {
+      public: true,  // Allow access to even if not logged in
+    }
+  },
+  {
+    // La route order va récupérer le client dans le local Storage.
+    // Il trouvera seul la bonne table et data du client.
+    path: '/myorders',
+    name: '', // Nom en haut de l'ecran
+    props: true,
+    component: MyOrders,
     meta: {
       public: true,  // Allow access to even if not logged in
     }

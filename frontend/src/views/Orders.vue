@@ -15,12 +15,7 @@
           prepend-inner-icon="mdi-database-search"
           label="Search"
         ></v-text-field>-->
-        <v-switch
-          inset
-          v-model="tracking"
-          color="success"
-          class="mt-7 v-input--reverse"
-        >
+        <v-switch inset v-model="tracking" color="success" class="mt-7 v-input--reverse">
           <template #label>Suivi commandes</template>
         </v-switch>
       </template>
@@ -76,8 +71,26 @@
               <OrderTile :quickFinishBtn="true" :order="order" />
             </v-col>
           </v-row>
-          <v-divider class="my-5"></v-divider>
-          <div v-if="numberOfOrdersToday > 0" style="font-size: 17px !important" class=" overline font-weight-bold">Toutes les Commandes</div>
+          <v-divider
+            v-if="numberOfOrdersUncompleted > 0"
+            class="mt-5 primary"
+            style="    min-height: 5px;"
+          ></v-divider>
+          <span
+            v-if="numberOfOrdersUncompleted > 0"
+            style="opacity: 9%;"
+          >pour lele pour lele pour lele</span>
+          <v-divider
+            v-if="numberOfOrdersUncompleted > 0"
+            class="mb-5 primary"
+            style="    min-height: 5px;"
+          ></v-divider>
+
+          <div
+            v-if="numberOfOrdersToday > 0"
+            style="font-size: 17px !important"
+            class="overline font-weight-bold"
+          >Toutes les Commandes</div>
           <v-row v-if="numberOfOrdersToday > 0">
             <v-col
               cols="12"

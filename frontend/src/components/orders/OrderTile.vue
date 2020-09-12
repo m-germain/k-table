@@ -92,8 +92,11 @@
             :lineItem="lineItem"
             :key="i"
           />
-          <v-divider class="mx-4" v-if="order.state == 'SERVED' && detailed"></v-divider>
-          <v-list-item v-if="order.state == 'SERVED' && detailed">
+          <v-divider
+            class="mx-4"
+            v-if="(order.state == 'SERVED' && detailed) || client || quickFinishBtn"
+          ></v-divider>
+          <v-list-item v-if="(order.state == 'SERVED' && detailed) || client || quickFinishBtn">
             <v-list-item-content>
               <h3 class="font-weight-light grey-darken2--text">Total</h3>
             </v-list-item-content>
@@ -107,7 +110,7 @@
 
         <v-divider></v-divider>
 
-        <v-card-actions>
+        <v-card-actions v-if="!client">
           <v-btn small v-if="quickFinishBtn" text v-bind="attrs" v-on="on">
             <v-icon right>mdi-pencil</v-icon>
           </v-btn>
@@ -152,6 +155,19 @@
           <v-btn v-if="edit" text v-bind="attrs" v-on="on">
             éditer
             <v-icon right>mdi-pencil</v-icon>
+          </v-btn>
+        </v-card-actions>
+        <v-card-actions v-else>
+          <v-spacer></v-spacer>
+          <v-btn
+            outlined
+            align="center"
+            :color="order.state == localStateEnum.payed ? 'success': 'grey'"
+          >
+            <h3
+              v-if="(order.state !== localStateEnum.payed) && (order.state !== localStateEnum.canceled)"
+            >Traitement en cours</h3>
+            <h3 v-else>{{order.state == localStateEnum.payed ? 'Traitée': 'Annulée'}}</h3>
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -263,6 +279,7 @@ export default class OrderTile extends Vue {
   // @Prop() color!: string;
   @Prop({ default: false }) detailed!: boolean;
   @Prop({ default: false }) quickFinishBtn!: boolean;
+  @Prop({ default: false }) client!: boolean;
   @Prop({ default: false }) edit!: boolean;
 
   private dialog = false;

@@ -21,9 +21,11 @@
           <v-icon icon="mdi-lock" color="white">mdi-information</v-icon>
         </v-avatar>Voici l'interface de commande à table.
         Clique sur + pour selectionner des produits. Puis clique sur le petit pannier noir qui va apparaitre en bas à droite pour passer commande.
-        La
-        <v-icon class="mx-1">mdi-bell</v-icon>permet d'appeler un barman pour avoir de l'aide ou pour indiquer que vous voulez avoir vos jetons.
-        Le
+        <br />
+        <br />La
+        <v-icon class="mx-1">mdi-bell</v-icon>permet d'appeler un barman pour avoir de l'aide ou pour indiquer que vous avez fini votre soirée et vous voulez avoir vos jetons.
+        <br />
+        <br />Le
         <v-icon class="mt-n1 mx-1">mdi-order-bool-descending-variant</v-icon>permet de visualiser tes commandes passés.
         Si tu fermes la page de ton telephone tu peux simplement scanner le qr code sur ta table, tu seras envoyé ici ! Bonne soirée.
         <template
@@ -49,9 +51,9 @@
               <v-icon v-if="notified">mdi-bell-check</v-icon>
             </v-scroll-x-transition>
           </v-btn>
-          <!-- <v-btn fab depressed text>
+          <v-btn fab depressed text to="/myorders">
             <v-icon class="mt-n1">mdi-order-bool-descending-variant</v-icon>
-          </v-btn> -->
+          </v-btn>
         </v-col>
       </v-row>
       <v-row class="mx-1">
@@ -205,7 +207,7 @@ import TableService from "../services/table.service";
 export default class Barman extends Mixins(LineItemHelper) {
   // To show the client's command
   private drawer = false;
-  private banner = true;
+  private banner = false; // Minor banner
   private bannertuto = true;
   private categories = Categories;
   private filters = [];
@@ -276,6 +278,7 @@ export default class Barman extends Mixins(LineItemHelper) {
             if (this.clientData.minor) {
               this.banner = true;
             }
+            this.$router.push("/myorders");
             this.getProducts();
             this.closeDrawer();
           })
