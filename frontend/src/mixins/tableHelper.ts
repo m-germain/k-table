@@ -23,6 +23,7 @@ export default class TableHelper extends Vue {
           id: change.doc.id,
           name: change.doc.data().name,
           clientsAtTable: change.doc.data().clientsAtTable,
+          capacity: change.doc.data().capacity,
           clientName: change.doc.data().clientName,
           minor: change.doc.data().minor,
           available: change.doc.data().available,
@@ -53,6 +54,14 @@ export default class TableHelper extends Vue {
 
   get numberOfTablesAvailable() {
     return this.tablesAvailable.length;
+  }
+
+  get numberOfPlacesAvailable() {
+    let count = 0;
+    this.tablesAvailable.forEach((table: MTable) => {
+      count += parseInt(table.capacity.toString());
+    })
+    return count;
   }
 
   get tablesAvailable() {

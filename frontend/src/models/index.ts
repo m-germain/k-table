@@ -12,6 +12,7 @@ export interface MProduct {
 export interface MTable {
     id: string;
     name: number;
+    capacity: number;
     clientsAtTable: string;
     clientName: string;
     minor: boolean;

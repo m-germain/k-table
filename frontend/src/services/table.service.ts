@@ -14,6 +14,7 @@ const TableService = {
                     id: doc.id,
                     name: doc.data().name,
                     clientsAtTable: doc.data().clientsAtTable,
+                    capacity: doc.data().capacity,
                     clientName: doc.data().clientName,
                     minor: doc.data().minor,
                     available: doc.data().available,
@@ -36,6 +37,7 @@ const TableService = {
                     id: doc.id,
                     name: doc.data().name,
                     available: doc.data().available,
+                    capacity: doc.data().capacity,
                     clientsAtTable: doc.data().clientsAtTable,
                     clientName: doc.data().clientName,
                     minor: doc.data().minor,
@@ -62,6 +64,7 @@ const TableService = {
                 name: (tableList.length + 1),
                 available: true,
                 clientsAtTable: "",
+                capacity: 5,
                 clientName: "",
                 minor: false,
                 help: false,
@@ -97,6 +100,18 @@ const TableService = {
                 Vue.toasted.global.error({ message: "Tu dois d'abord libérer la table avant de la supprimer." })
                 throw new Error('Could not remove this Table, we have clients ordering on this table!')
             }
+        })
+    },
+
+    updateTable: async function (table: MTable) {
+        tables.doc(table.id).update({
+            clientsAtTable: table.clientsAtTable,
+            capacity: table.capacity,
+        }).then(() => {
+            Vue.toasted.global.success({ message: "Paramètres de la table  enregistrés." })
+        }).catch(error => {
+            Vue.toasted.global.error({ message: "Erreur lors de la modification..." })
+            throw new Error('Error patching table' + error)
         })
     },
 

@@ -20,8 +20,25 @@
           style="font-size: 20vh"
         >mdi-checkbox-marked-circle-outline</v-icon>
         <br />Il reste
-        <strong>{{numberOfTablesAvailable}}</strong> tables disponibles.
+        <strong>{{numberOfTablesAvailable}}</strong> tables et
+        <strong>{{numberOfPlacesAvailable}}</strong> places disponibles.
+        <br />
         <strong>Venez vite !</strong>
+        <v-expansion-panels popout class="mt-10">
+          <v-expansion-panel>
+            <v-expansion-panel-header
+              style="font-size:20px"
+              class="success--text"
+            >Voir les tables disponibles</v-expansion-panel-header>
+            <v-expansion-panel-content align="start">
+              <div v-for="table in tablesAvailable" :key="table.id" class="my-3">
+                <strong>La table {{table.name}}</strong>
+                si vous êtes
+                <strong>{{table.capacity}}</strong> personnes ou moins.
+              </div>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
       </v-col>
       <v-col cols="7" style="font-size: 1.5rem" v-else>
         <v-icon color="primary" class="my-8" style="font-size: 20vh">mdi-close-circle-outline</v-icon>
