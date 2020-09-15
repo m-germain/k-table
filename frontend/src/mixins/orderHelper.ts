@@ -8,16 +8,16 @@ export default class OrderHelper extends Vue {
   private orders: MOrder[] = [];
   private ordersPlaced: MOrder[] = [];
   private ordersPreparated: MOrder[] = [];
-  private ordersServed: MOrder[] = [];
+  private ordersPayed: MOrder[] = [];
   private ordersUncompleted: MOrder[] = [];
 
 
   @Watch("orders")
   filterOrderByTypes() {
-    this.ordersPlaced = this.filterOrder(OrderStates.placed);
-    this.ordersPreparated = this.filterOrder(OrderStates.preparated);
-    this.ordersServed = this.filterOrder(OrderStates.served);
-    this.ordersUncompleted = [... this.ordersPlaced, ... this.ordersPreparated, ...this.ordersServed];
+    this.ordersPlaced = this.filterOrder(OrderStates.placed); // Orders à servir
+    this.ordersPreparated = this.filterOrder(OrderStates.preparated); // Orders à encaisser 
+    this.ordersPayed = this.filterOrder(OrderStates.payed); // Orders à déposer
+    this.ordersUncompleted = [... this.ordersPlaced, ... this.ordersPreparated, ...this.ordersPayed];
   }
 
   async getOrders() {
@@ -82,8 +82,8 @@ export default class OrderHelper extends Vue {
     return this.ordersPreparated.length;
   }
 
-  get numberOfOrdersServed() {
-    return this.ordersServed.length;
+  get numberOfOrdersPayed() {
+    return this.ordersPayed.length;
   }
 
   filterOrder(state: string) {

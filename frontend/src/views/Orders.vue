@@ -126,18 +126,18 @@
         <v-tab href="#tab-3">
           <v-chip outlined class="mt-2" style="margin-top: 3px important!" color="primary">
             <v-avatar left>
-              <v-icon>mdi-table-chair</v-icon>
+              <v-icon>mdi-cash</v-icon>
             </v-avatar>
             {{numberOfOrdersPreparated}}
-          </v-chip>à déposer
+          </v-chip>à encaisser
         </v-tab>
         <v-tab href="#tab-4">
           <v-chip outlined class="mt-2" style="margin-top: 3px important!" color="primary">
             <v-avatar left>
-              <v-icon>mdi-cash</v-icon>
+              <v-icon>mdi-table-chair</v-icon>
             </v-avatar>
-            {{numberOfOrdersServed}}
-          </v-chip>à encaisser
+            {{numberOfOrdersPayed}}
+          </v-chip>à déposer
         </v-tab>
 
         <v-tabs-items v-model="tab">
@@ -148,12 +148,8 @@
             :number="1"
           />
           <OrderTabItem :orders="ordersPlaced" title="Commandes à préparer" :number="2" />
-          <OrderTabItem
-            :orders="ordersPreparated"
-            title="Commandes à déposer à une table"
-            :number="3"
-          />
-          <OrderTabItem :orders="ordersServed" title="Commandes à encaisser" :number="4" />
+          <OrderTabItem :orders="ordersPreparated" title="Commandes à encaisser" :number="3" />
+          <OrderTabItem :orders="ordersPayed" title="Commandes à déposer à une table" :number="4" />
         </v-tabs-items>
       </v-tabs>
     </v-card>

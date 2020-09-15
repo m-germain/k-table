@@ -8,8 +8,8 @@
         <v-list-item
           two-line
           v-if="order.state !== localStateEnum.canceled"
-          :class="order.state == localStateEnum.payed ? 'success darken-1': 'orange lighten-5'"
-          :dark="order.state == localStateEnum.payed"
+          :class="order.state == localStateEnum.served ? 'success darken-1': 'orange lighten-5'"
+          :dark="order.state == localStateEnum.served"
         >
           <v-list-item-content>
             <v-list-item-title class="headline font-weight-medium">
@@ -31,7 +31,7 @@
                   <v-btn
                     text
                     x-large
-                    :color="(timeFromNow.includes('H') && order.state !== localStateEnum.payed ? 'primary' : '' )"
+                    :color="(timeFromNow.includes('H') && order.state !== localStateEnum.served ? 'primary' : '' )"
                   >
                     Passée il y à {{timeFromNow}}
                     <v-icon medium right>mdi-timer-sand</v-icon>
@@ -127,17 +127,17 @@
             <v-btn
               text
               v-if="order.state == localStateEnum.preparated"
-              @click="updatedState(localStateEnum.served)"
+              @click="updatedState(localStateEnum.payed)"
             >
-              Dépot terminée
+              Encaissement terminée
               <v-icon right>mdi-check</v-icon>
             </v-btn>
             <v-btn
               text
-              v-if="order.state == localStateEnum.served"
-              @click="updatedState(localStateEnum.payed)"
+              v-if="order.state == localStateEnum.payed"
+              @click="updatedState(localStateEnum.served)"
             >
-              Encaissement terminée
+              Dépot terminée
               <v-icon right>mdi-check</v-icon>
             </v-btn>
           </span>
@@ -147,7 +147,7 @@
             class="success"
             v-bind="attrs"
             v-on="on"
-            @click="updatedState(localStateEnum.payed)"
+            @click="updatedState(localStateEnum.served)"
           >
             J'ai dead ca
             <v-icon right>mdi-check</v-icon>
@@ -162,12 +162,12 @@
           <v-btn
             outlined
             align="center"
-            :color="order.state == localStateEnum.payed ? 'success': 'grey'"
+            :color="order.state == localStateEnum.served ? 'success': 'grey'"
           >
             <h3
-              v-if="(order.state !== localStateEnum.payed) && (order.state !== localStateEnum.canceled)"
+              v-if="(order.state !== localStateEnum.served) && (order.state !== localStateEnum.canceled)"
             >Traitement en cours</h3>
-            <h3 v-else>{{order.state == localStateEnum.payed ? 'Traitée': 'Annulée'}}</h3>
+            <h3 v-else>{{order.state == localStateEnum.served ? 'Traitée': 'Annulée'}}</h3>
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -182,7 +182,7 @@
           <v-btn
             outlined
             align="center"
-            :color="order.state == localStateEnum.payed ? 'success': 'warning'"
+            :color="order.state == localStateEnum.served ? 'success': 'warning'"
           >
             <h3>{{order.state}}</h3>
           </v-btn>
@@ -216,7 +216,7 @@
             height="3rem"
             @click="updatedState(localStateEnum.preparated)"
           >
-            <v-icon>mdi-table-chair</v-icon>
+            <v-icon>mdi-cash</v-icon>
           </v-btn>
         </v-col>
         <v-col cols="4">
@@ -228,10 +228,11 @@
             height="3rem"
             @click="updatedState(localStateEnum.served)"
           >
-            <v-icon>mdi-cash</v-icon>
+            <v-icon>mdi-table-chair</v-icon>
           </v-btn>
         </v-col>
       </v-row>
+
       <v-row align="center" justify="center" class="mx-1">
         <v-col cols="6">
           <v-btn
@@ -253,7 +254,7 @@
             align="center"
             black
             height="3rem"
-            @click="updatedState(localStateEnum.payed)"
+            @click="updatedState(localStateEnum.preparated)"
           >
             Terminée
             <v-icon right>mdi-check</v-icon>
@@ -320,7 +321,7 @@ export default class OrderTile extends Vue {
     this.order.lineItems.forEach((lineItem: MLineItem) => {
       totalPrice += lineItem.quantity * lineItem.product.price;
     });
-    return totalPrice;
+    return Math.round((totalPrice + Number.EPSILON) * 100) / 100;
   }
 }
 </script>
