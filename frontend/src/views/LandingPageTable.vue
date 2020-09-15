@@ -76,6 +76,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { HelpStates } from "../models";
 import TableService from "../services/table.service";
 import TokenService from "../services/token.service";
 
@@ -107,7 +108,7 @@ export default class LandingPageTable extends Vue {
       .then((table) => {
         // Keep the table id on the device.
         this.tableId = table.id;
-        if (table.help) {
+        if (table.help.state != HelpStates.noNeed.state) {
           this.count = 1;
         }
         // if table is unavailable.
@@ -133,7 +134,10 @@ export default class LandingPageTable extends Vue {
     if (this.count === 0) {
       // We don't need to catch the fail here bcs if it fail the counter will not increment and we want this.
       // The service take in charge all the web notifications.
-      TableService.askHelp(this.tableId).then(() => this.count++);
+      TableService.askHelp(
+        this.tableId,
+        this.unavailable ? HelpStates.helpTableLock : HelpStates.activationTable
+      ).then(() => this.count++);
     } else this.count++;
   }
 

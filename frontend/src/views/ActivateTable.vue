@@ -60,8 +60,6 @@
           color="success"
           black
           class="py-0 v-input--reverse v-input--expand"
-          persistent-hint
-          hint="A cocher pour indiquer qu'il y a des clients de -18ans, si le truc est vert ca veut dire que tu as coché"
         >
           <template #label>Mineurs à la table</template>
         </v-switch>
@@ -108,6 +106,7 @@ import { Component, Vue } from "vue-property-decorator";
 import QrcodeVue from "qrcode.vue";
 import TableService from "../services/table.service";
 import TokenService from "../services/token.service";
+import { MUserData } from "../models";
 
 @Component({
   components: { QrcodeVue },
@@ -121,7 +120,7 @@ export default class ActivateTable extends Vue {
   private activationLink = "https://k-table.kfet-insa.fr";
   private size = 300;
 
-  activateTable() {
+  async activateTable() {
     this.loading = true;
     const token = TokenService.generateToken(
       this.clientName,
@@ -130,19 +129,16 @@ export default class ActivateTable extends Vue {
       this.$route.params.tableId,
       this.$route.params.tableNumber
     );
-    TableService.activateTable(
-      this.$route.params.tableId,
-      this.clientName,
-      this.clientsAtTable,
-      this.minor,
-      token
-    ).then(() => {
-      {
-        this.activated = true;
-        this.activationLink += "/activate/" + token;
-        this.loading = false;
+    const client: MUserData = await TokenService.decode(token);
+    TableService.activateTable(this.$route.params.tableId, client, token).then(
+      () => {
+        {
+          this.activated = true;
+          this.activationLink += "/activate/" + token;
+          this.loading = false;
+        }
       }
-    });
+    );
   }
 
   backToTablePage() {

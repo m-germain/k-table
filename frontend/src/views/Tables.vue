@@ -19,8 +19,7 @@
             <v-row align="center" justify="center" class="mx-1 my-2">
               <v-col cols="12" align="center">
                 Ce bouton va retirer les notifications d'aide sur toutes les tables et va libérer toutes les tables.
-                <br />
-(Ca ne touche pas au nombre de tables ni a la capacité des tables.)
+                <br />(Ca ne touche pas au nombre de tables ni a la capacité des tables.)
                 <br />
                 <br />
 
@@ -95,7 +94,7 @@
 
         <v-row v-if="tablesInNeed.length > 0">
           <v-col cols="3" v-for="table in tablesInNeed" :key="table.name">
-            <TableTile :table="table" :color="'warning'" />
+            <TableTile :table="table" :color="table.help.color" />
           </v-col>
         </v-row>
         <div class="overline font-weight-bold">Activitée des tables</div>

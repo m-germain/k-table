@@ -62,7 +62,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { MOrder, MUserData } from "../models";
+import { HelpStates, MOrder, MUserData } from "../models";
 import OrderTile from "../components/orders/OrderTile.vue";
 import OrderService from "../services/order.service";
 import TokenService from "../services/token.service";
@@ -125,7 +125,7 @@ export default class MyOrders extends Vue {
     if (this.count === 0 && this.clientData.tableId) {
       // We don't need to catch the fail here bcs if it fail the counter will not increment and we want this.
       // The service take in charge all the web notifications.
-      TableService.askHelp(this.clientData.tableId).then(() => this.count++);
+      TableService.askHelp(this.clientData.tableId, HelpStates.helpInOrder).then(() => this.count++);
     } else this.count++;
   }
 

@@ -13,11 +13,9 @@ export interface MTable {
     id: string;
     name: number;
     capacity: number;
-    clientsAtTable: string;
-    clientName: string;
-    minor: boolean;
+    client: MUserData;
     available: boolean;
-    help: boolean;
+    help: MHelp;
     token: string;
 }
 
@@ -57,6 +55,20 @@ export const OrderStates = {
     served: "SERVED",
     payed: "PAYED",
     canceled: "CANCELED",
+}
+
+export const HelpStates = {
+    activationTable: { state: "ACTIVATION_TABLE", color: "warning", message: "Demmande d'activation" },
+    leaveTable: { state: "LEAVE_TABLE", color: "brown darken-2", message: "Demmande Jetons" },
+    helpInOrder: { state: "HELP_IN_ORDER", color: "indigo darken-2", message: "Besoin d'aide Commande" },
+    helpTableLock: { state: "HELP_TABLE_LOCK", color: "blue-grey darken-2", message: "Problème De Télephone" },
+    noNeed: { state: "NO_NEED", color: "success", message: "Tout est OK" },
+}
+
+export interface MHelp {
+    state: string;
+    color: string;
+    message: string;
 }
 
 

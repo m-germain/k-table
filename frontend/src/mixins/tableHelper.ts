@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { MTable } from '@/models';
+import { HelpStates, MTable } from '@/models';
 import TableService, { tables } from "../services/table.service";
 
 @Component
@@ -22,10 +22,8 @@ export default class TableHelper extends Vue {
         const table: MTable = {
           id: change.doc.id,
           name: change.doc.data().name,
-          clientsAtTable: change.doc.data().clientsAtTable,
+          client: change.doc.data().client,
           capacity: change.doc.data().capacity,
-          clientName: change.doc.data().clientName,
-          minor: change.doc.data().minor,
           available: change.doc.data().available,
           help: change.doc.data().help,
           token: change.doc.data().token,
@@ -77,7 +75,7 @@ export default class TableHelper extends Vue {
   get tablesInNeed() {
     const tablesInNeed: MTable[] = []
     for (const table of this.tables) {
-      if (table.help) {
+      if (table.help.state !== HelpStates.noNeed.state) {
         tablesInNeed.push(table);
       }
     }

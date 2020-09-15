@@ -1,4 +1,4 @@
-import { MTable } from "../models";
+import { MTable, MUserData, MHelp, HelpStates } from "../models";
 import db from "../plugins/firebase";
 import Vue from "vue";
 
@@ -13,10 +13,8 @@ const TableService = {
                 const table: MTable = {
                     id: doc.id,
                     name: doc.data().name,
-                    clientsAtTable: doc.data().clientsAtTable,
+                    client: doc.data().client,
                     capacity: doc.data().capacity,
-                    clientName: doc.data().clientName,
-                    minor: doc.data().minor,
                     available: doc.data().available,
                     help: doc.data().help,
                     token: doc.data().token,
@@ -38,9 +36,7 @@ const TableService = {
                     name: doc.data().name,
                     available: doc.data().available,
                     capacity: doc.data().capacity,
-                    clientsAtTable: doc.data().clientsAtTable,
-                    clientName: doc.data().clientName,
-                    minor: doc.data().minor,
+                    client: doc.data().client,
                     help: doc.data().help,
                     token: doc.data().token,
                 }
@@ -63,11 +59,9 @@ const TableService = {
             tables.add({
                 name: (tableList.length + 1),
                 available: true,
-                clientsAtTable: "",
+                client: "",
                 capacity: 5,
-                clientName: "",
-                minor: false,
-                help: false,
+                help: HelpStates.noNeed,
                 token: "",
             }).then(docRef => {
                 Vue.toasted.global.success({ message: "Table ajoutée." })
@@ -105,7 +99,7 @@ const TableService = {
 
     updateTable: async function (table: MTable) {
         tables.doc(table.id).update({
-            clientsAtTable: table.clientsAtTable,
+            client: table.client,
             capacity: table.capacity,
         }).then(() => {
             Vue.toasted.global.success({ message: "Paramètres de la table  enregistrés." })
@@ -115,9 +109,9 @@ const TableService = {
         })
     },
 
-    askHelp: async function (id: string) {
+    askHelp: async function (id: string, help: MHelp) {
         tables.doc(id).update({
-            help: true
+            help: help
         }).then(() => {
             Vue.toasted.global.success({ message: "Appel enregistré, veuillez patienter." })
         }).catch(error => {
@@ -126,11 +120,11 @@ const TableService = {
         })
     },
 
-    resolveHelp: async function (id: string) {
+    resolveHelp: async function (id: string, tableName: number) {
         tables.doc(id).update({
-            help: false
+            help: HelpStates.noNeed
         }).then(() => {
-            Vue.toasted.global.success({ message: "Changement enregistré !" })
+            Vue.toasted.global.success({ message: "Vous vous occupez de la table : " + tableName })
         }).catch(error => {
             Vue.toasted.global.error({ message: "Erreur lors du changement d'etat Aide !" })
             throw new Error('Could resolve help.' + error)
@@ -141,10 +135,8 @@ const TableService = {
         tables.doc(id).update({
             available: true,
             token: "",
-            clientsAtTable: "",
-            clientName: "",
-            minor: false,
-            help: false,
+            client: "",
+            help: HelpStates.noNeed,
         }).then(() => {
             Vue.toasted.global.success({ message: "Table Libérée !" })
             return id
@@ -153,13 +145,12 @@ const TableService = {
         })
     },
 
-    activateTable: async function (id: string, clientName: string, clientsAtTable: string, minor: boolean, token: string) {
+    activateTable: async function (id: string, client: MUserData, token: string) {
         tables.doc(id).update({
             available: false,
-            clientsAtTable: clientsAtTable,
-            clientName: clientName,
-            minor: minor,
+            client: client,
             token: token,
+            help: HelpStates.noNeed,
         }).then(() => {
             Vue.toasted.global.success({ message: "Table Activée !" })
         }).catch(error => {

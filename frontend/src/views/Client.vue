@@ -23,7 +23,10 @@
         Clique sur + pour selectionner des produits. Puis clique sur le petit pannier noir qui va apparaitre en bas à droite pour passer commande.
         <br />
         <br />La
-        <v-icon class="mx-1">mdi-bell</v-icon>permet d'appeler un barman pour avoir de l'aide ou pour indiquer que vous avez fini votre soirée et vous voulez avoir vos jetons.
+        <v-icon class="mx-1">mdi-bell</v-icon>permet d'appeler un barman pour avoir de l'aide au sujet d'une commande.
+        <br />
+        <br />Le
+        <v-icon class="mt-n1 mx-1">mdi-exit-run</v-icon>permet d'indiquer que vous avez fini votre soirée et vous voulez avoir vos jetons.
         <br />
         <br />Le
         <v-icon class="mt-n1 mx-1">mdi-order-bool-descending-variant</v-icon>permet de visualiser tes commandes passés.
@@ -45,11 +48,14 @@
           </h2>
         </v-col>
         <v-col cols="3">
-          <v-btn fab depressed text :color="notified ? 'success' : ''" @click="notify">
+          <v-btn fab depressed text :class="notified ? 'success' : ''" @click="help">
             <v-icon v-if="!notified">mdi-bell</v-icon>
             <v-scroll-x-transition>
               <v-icon v-if="notified">mdi-bell-check</v-icon>
             </v-scroll-x-transition>
+          </v-btn>
+          <v-btn fab depressed text :class="askLeaving ? 'success' : ''" @click="askLeave">
+            <v-icon class="mt-n1">mdi-exit-run</v-icon>
           </v-btn>
           <v-btn fab depressed text to="/myorders">
             <v-icon class="mt-n1">mdi-order-bool-descending-variant</v-icon>
@@ -193,7 +199,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from "vue-property-decorator";
-import { Categories, MUserData } from "../models";
+import { Categories, MUserData, HelpStates, MHelp } from "../models";
 import LineItemHelper from "../mixins/lineItemtHelper";
 import ProductList from "../components/products/ProductList.vue";
 import ProductListItemClient from "../components/products/ProductListItemClient.vue";
@@ -215,6 +221,7 @@ export default class Barman extends Mixins(LineItemHelper) {
 
   // Counting everytime the user spam.
   private count = 0;
+  private leave = 0;
 
   // Client Data
   private clientData: MUserData = {
@@ -297,17 +304,31 @@ export default class Barman extends Mixins(LineItemHelper) {
       });
   }
 
-  notify() {
+  notify(count: number, help: MHelp) {
     // Send the notification if the user is spaming we dont send more we just count for fun ;).
-    if (this.count === 0 && this.clientData.tableId) {
+    if (count === 0 && this.clientData.tableId) {
       // We don't need to catch the fail here bcs if it fail the counter will not increment and we want this.
       // The service take in charge all the web notifications.
-      TableService.askHelp(this.clientData.tableId).then(() => this.count++);
-    } else this.count++;
+      TableService.askHelp(this.clientData.tableId, help).then(() => count++);
+    } else count++;
+  }
+
+  help() {
+    this.notify(this.count, HelpStates.helpInOrder);
+  }
+
+  askLeave() {
+    this.notify(this.leave, HelpStates.leaveTable);
   }
 
   get notified() {
     return this.count >= 1;
+  }
+
+  get askLeaving() {
+    console.log(this.leave >= 1);
+
+    return this.leave >= 1;
   }
 }
 </script>

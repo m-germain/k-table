@@ -2,8 +2,8 @@
   <v-dialog v-model="dialog" max-width="600px">
     <template v-slot:activator="{ on, attrs }">
       <v-badge
-        :content="table.available ? table.capacity : table.clientsAtTable "
-        :value="table.available ? table.capacity : table.clientsAtTable "
+        :content="table.available ? table.capacity : table.client.clientsAtTable "
+        :value="table.available ? table.capacity : table.client.clientsAtTable "
         :color="color"
         style="width:100%"
         class="pa-0 ma-0"
@@ -57,32 +57,30 @@
               <v-container fluid>
                 <v-row align="center" justify="center">
                   <v-col v-if="!table.available" cols="12" class="headline">
-                    Table de {{table.clientsAtTable}} personnes, au nom de
-                    <strong>{{table.clientName}}.</strong>
+                    Table de
+                    <strong>{{table.client.clientsAtTable}}</strong> personnes, au nom de
+                    <strong>{{table.client.username}}.</strong>
                   </v-col>
                   <v-col>
+                    <v-btn block outlined align="center" :color="table.help.color" height="3rem">
+                      {{table.help.message}}
+                      <v-icon
+                        small
+                        right
+                      >{{table.help.state == noNeedHelp.state ? "mdi-bell": "mdi-bell-ring"}}</v-icon>
+                    </v-btn>
+                  </v-col>
+                  <v-col v-if="table.help.state != noNeedHelp.state">
                     <v-btn
                       block
                       depressed
-                      :outlined="!table.help"
-                      align="center"
-                      :color="!table.help ? 'success': 'warning'"
-                      height="3rem"
-                    >
-                      {{!table.help ? "tout est ok": helpMessage}}
-                      <v-icon small right>{{!table.help ? "mdi-bell": "mdi-bell-ring"}}</v-icon>
-                    </v-btn>
-                  </v-col>
-                  <v-col cols="3" v-if="table.help">
-                    <v-btn
-                      block
-                      outlined
                       align="center"
                       color="success"
                       height="3rem"
                       @click="dismissNotify"
                     >
-                      <v-icon>mdi-account-multiple-check-outline</v-icon>
+                      J'aide cette table
+                      <v-icon class="mt-n1" right>mdi-account-multiple-check-outline</v-icon>
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -90,9 +88,9 @@
                   <v-col cols="12">
                     <v-btn
                       block
-                      outlined
+                      :outlined="true"
                       align="center"
-                      black
+                      :class="table.available ? 'success white--text' : 'grey darken-3 white--text' "
                       height="3rem"
                       @click="table.available ? activateTable() : liberateTable() "
                     >
@@ -124,36 +122,49 @@
                       hint="Pour calculer et afficher les tables et places restantes"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" v-if="table.clientsAtTable != ''">
+                  <v-col cols="12" v-if="table.client != ''">
+                    <v-text-field
+                      block
+                      outlined
+                      v-model="table.client.username"
+                      align="center"
+                      color="success"
+                      class="py-0"
+                      black
+                      label="Table est au prénom de :"
+                      persistent-hint
+                      hint="Pour garder le ptit nom de la personne"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" v-if="table.client != ''">
                     <v-text-field
                       block
                       outlined
                       class="py-0"
-                      v-model="table.clientsAtTable"
+                      v-model="table.client.clientsAtTable"
                       align="center"
                       color="success"
-                      type="number"
+                      type="text"
                       pattern="\d*"
                       black
                       label="Nombres de personnes à la table."
                       persistent-hint
-                      hint="Si des personnes se rajoutend tu peux les ajouter ici."
+                      hint="Pour savoir combiens ils sont ;)"
                     ></v-text-field>
                   </v-col>
-                  <!-- <v-col cols="12">
+                  <v-col cols="12" v-if="table.client != ''">
                     <v-switch
                       inset
-                      v-model="table.minor"
-                      
+                      v-model="table.client.minor"
                       color="success"
                       black
                       class="py-0 v-input--reverse v-input--expand"
                       persistent-hint
-                      hint="Pas encore disponible..."
+                      hint="A cocher pour indiquer qu'il y a des clients de -18ans, si le truc est vert ca veut dire que tu as coché"
                     >
                       <template #label>Mineurs à la table</template>
                     </v-switch>
-                  </v-col>-->
+                  </v-col>
                   <v-col cols="12" align="end">
                     <v-btn depressed align="center" color="success" dark @click="saveChanges">
                       Enregistrer
@@ -173,7 +184,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import HeadLine from "../communs/HeadLine.vue";
-import { MTable } from "../../models";
+import { HelpStates, MTable } from "../../models";
 import TableService from "../../services/table.service";
 
 @Component({
@@ -194,7 +205,7 @@ export default class ProductListItemClient extends Vue {
   }
 
   dismissNotify() {
-    TableService.resolveHelp(this.table.id);
+    TableService.resolveHelp(this.table.id, this.table.name);
   }
 
   activateTable() {
@@ -208,6 +219,10 @@ export default class ProductListItemClient extends Vue {
 
   saveChanges() {
     TableService.updateTable(this.table);
+  }
+
+  get noNeedHelp() {
+    return HelpStates.noNeed;
   }
 }
 </script>
