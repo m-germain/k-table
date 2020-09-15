@@ -94,9 +94,11 @@
           />
           <v-divider
             class="mx-4"
-            v-if="(order.state == 'SERVED' && detailed) || client || quickFinishBtn"
+            v-if="(order.state == localStateEnum.preparated && detailed) || client || quickFinishBtn"
           ></v-divider>
-          <v-list-item v-if="(order.state == 'SERVED' && detailed) || client || quickFinishBtn">
+          <v-list-item
+            v-if="(order.state == localStateEnum.preparated  && detailed) || client || quickFinishBtn"
+          >
             <v-list-item-content>
               <h3 class="font-weight-light grey-darken2--text">Total</h3>
             </v-list-item-content>
