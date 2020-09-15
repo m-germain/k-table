@@ -41,7 +41,7 @@
             <v-list-item-content>
               <div class="overline font-weight-bold mb-4">Tables Disponibles</div>
               <v-list-item-title class="headline mb-1">
-                <v-btn x-large  block text color="success">
+                <v-btn x-large block text color="success">
                   <h1>{{numberOfTablesAvailable}}</h1>
                   <v-icon class="ml-3" large right>mdi-checkbox-marked-circle-outline</v-icon>
                 </v-btn>

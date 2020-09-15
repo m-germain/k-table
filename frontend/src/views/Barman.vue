@@ -22,12 +22,12 @@
                   <h2>Commandes</h2>
                 </v-card-title>
               </v-img>
-<!-- 
+              <!-- 
               <v-card-subtitle class="pb-0">Nombre de commandes : {{numberOfOrdersToday}}</v-card-subtitle>
 
               <v-card-text class="text--primary">
                 <div>Reste à traiter :</div>
-              </v-card-text> -->
+              </v-card-text>-->
 
               <!-- <v-card-actions>
                 <v-btn color="orange" text>Share</v-btn>
@@ -53,7 +53,7 @@
 
               <v-card-text class="text--primary">
                 <div>Indisponibles :</div>
-              </v-card-text> -->
+              </v-card-text>-->
             </v-card>
           </v-col>
           <v-col cols="6" xl="4" lg="4" md="4">
@@ -73,7 +73,7 @@
 
               <v-card-text class="text--primary">
                 <div>Tables Libres : {{numberOfTablesAvailable}}</div>
-              </v-card-text> -->
+              </v-card-text>-->
             </v-card>
           </v-col>
         </v-row>

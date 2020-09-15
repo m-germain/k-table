@@ -128,20 +128,23 @@ const router = new VueRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const isPublic = to.matched.some(record => record.meta.public)
-  const adminToken = TokenService.getAdminToken();
 
-  if (!isPublic && !adminToken) {
-    // We cannot show any message notifications here bcs the vue toasted isn't defined...
-    return next({
-      path: '',
+  if (!isPublic) {
+    // We get the token from the storage.
+    await TokenService.getAdminToken().then(() => {
+      // If the token is valid the user can continue.
+      next();
+    }).catch(() => {
+      // If there is an error this mean the token is invalid or we cannot find it on the user device.
+      // we send the user back home.
+      router.push('/');
+      return next({
+        path: '',
+      });
     });
-    // With no token on a private route the user is redirected to the home.
-  }
-
-  next();
+  } else next();
 })
-
 
 export default router

@@ -12,8 +12,6 @@ const ADMIN_TOKEN_KEY = 'admin_token';
 
 const SECRET_KEY = 'all_secured_in_bd_no_secret_here';
 
-
-
 export interface Token {
     exp: number;
 }
@@ -30,9 +28,19 @@ const TokenService = {
         return token;
     },
 
-    getAdminToken() {
+    async getAdminToken(): Promise<string> {
         const token = localStorage.getItem(ADMIN_TOKEN_KEY) as string;
-        return token;
+        if (token) {
+            // The decode func is great bcs is doing the check and the clear for us.
+            await this.decode(token).catch((error) => {
+                // This error can only be that the token is no more valid.
+                // We pass the error to redirect the user.
+                throw new Error(error);
+            });
+            return token;
+        } else {
+            throw new Error("No token in local storage.");
+        }
     },
 
     saveAdminToken(adminToken: string) {
