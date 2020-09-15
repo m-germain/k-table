@@ -47,6 +47,10 @@
           <span v-if="hideBtns" style="font-size: 12px">x</span>
           <span v-if="hideBtns" class="font-weight-medium mr-2">{{lineItem.quantity}}</span>
           <span class="font-weight-medium">{{lineItem.product.name}}</span>
+          <span
+            v-if="!hideBtn && !lineItem.quantity > 0 && (lineItem.product.categorie.name == 'Softs' || lineItem.product.categorie.name == 'Foods' )"
+            class="ml-1"
+          >| {{lineItem.product.price}} €</span>
         </v-list-item-title>
         <v-list-item-subtitle v-if="inOrder">
           <span
