@@ -31,9 +31,9 @@ export default class OrderHelper extends Vue {
     const localOrders: MOrder[] = [];
     // We check only the dates 
     const today = new Date();
-    // Convert it to today midNigth
+    // Convert it to today 00h30
     today.setHours(0);
-    today.setMinutes(0);
+    today.setMinutes(30);
     today.setSeconds(0);
 
     // We get only the orders of today day.

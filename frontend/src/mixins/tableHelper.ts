@@ -105,4 +105,10 @@ export default class TableHelper extends Vue {
     }, 600);
   }
 
+  freshStart() {
+    this.tables.forEach((table) => {
+      TableService.liberateTable(table.id);
+    })
+  }
+
 }

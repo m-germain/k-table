@@ -1,21 +1,38 @@
 <template>
   <v-container>
     <HeadLine title="Nos Tables">
-      <!-- <template v-slot:end>
-        <v-text-field
-          v-model="search"
-          dense
-          solo
-          :clearable="search.length > 2"
-          filled
-          flat
-          disabled
-          style="max-width: 9rem"
-          hide-details
-          prepend-inner-icon="mdi-database-search"
-          label="Search"
-        ></v-text-field>
-      </template>-->
+      <template v-slot:end>
+        <v-dialog v-model="dialog" max-width="600px">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn text color="primary" :disabled="!canActivateFreshStart" v-bind="attrs" v-on="on">
+              <v-icon>mdi-eraser</v-icon>
+            </v-btn>
+          </template>
+          <v-card>
+            <HeadLine class="my-2" :title="'Réinitialiser les tables'" weight="bold">
+              <template v-slot:end>
+                <v-btn color="error" outlined>
+                  <v-icon>mdi-alert</v-icon>
+                </v-btn>
+              </template>
+            </HeadLine>
+            <v-row align="center" justify="center" class="mx-1 my-2">
+              <v-col cols="12" align="center">
+                Ce bouton va retirer les notifications d'aide sur toutes les tables et va libérer toutes les tables.
+                <br />
+(Ca ne touche pas au nombre de tables ni a la capacité des tables.)
+                <br />
+                <br />
+
+                <v-btn depressed align="center" color="black" dark @click="freshStart">
+                  Réinitialiser
+                  <v-icon right>mdi-nuke</v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-dialog>
+      </template>
     </HeadLine>
     <v-card class="mx-4 my-3">
       <v-row align="center" class="mx-2" justify="space-between">
@@ -102,11 +119,35 @@ import TableHelper from "../mixins/tableHelper";
   components: { HeadLine, TableTile },
 })
 export default class Tables extends Mixins(TableHelper) {
-  private search = "";
+  private dialog = false;
   private filters = [];
 
   mounted() {
     this.getTables();
+  }
+
+  // The btn fresh start alow the user to liberate all tables.
+  get canActivateFreshStart(): boolean {
+    let canActivate = false;
+    // We check only the dates
+    const now = new Date();
+    // Convert it to today 00h30
+    const today0030 = new Date();
+    const today1830 = new Date();
+
+    today0030.setHours(0);
+    today0030.setMinutes(30);
+    today0030.setSeconds(0);
+
+    today1830.setHours(18);
+    today1830.setMinutes(30);
+    today1830.setSeconds(0);
+
+    if (now < today1830 && now > today0030) {
+      // So we are btw 00H30 and 18H30 so we can manage tables.
+      canActivate = true;
+    }
+    return canActivate;
   }
 }
 </script>

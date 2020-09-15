@@ -39,10 +39,8 @@
         </template>
         <template v-slot:end>
           <v-btn depressed align="center" :color="table.available ? 'success' : 'primary'" dark>
-            <h3>{{table.available ? "Disponible": "Occupée"}}</h3>
-            <v-icon
-              right
-            >{{table.available ? "mdi-checkbox-marked-circle-outline": "mdi-close-circle-outline"}}</v-icon>
+            <!-- <h3>{{table.available ? "Dispo": "Occupée"}}</h3> -->
+            <v-icon>{{table.available ? "mdi-checkbox-marked-circle-outline": "mdi-close-circle-outline"}}</v-icon>
           </v-btn>
         </template>
       </HeadLine>
