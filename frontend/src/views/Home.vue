@@ -24,6 +24,14 @@
         <strong>{{numberOfPlacesAvailable}}</strong> places disponibles.
         <br />
         <strong>Venez vite !</strong>
+      </v-col>
+      <v-col cols="7" style="font-size: 1.5rem" v-else>
+        <v-icon color="primary" class="my-8" style="font-size: 20vh">mdi-close-circle-outline</v-icon>
+        <br />Il ne reste
+        <strong>PAS</strong> de tables disponibles.
+        <strong>Venez plus tard.</strong>
+      </v-col>
+      <v-col cols="12" align="center" style="font-size: 1.5rem" v-if="tables.length > 1">
         <v-expansion-panels popout class="mt-10">
           <v-expansion-panel>
             <v-expansion-panel-header
@@ -39,12 +47,6 @@
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
-      </v-col>
-      <v-col cols="7" style="font-size: 1.5rem" v-else>
-        <v-icon color="primary" class="my-8" style="font-size: 20vh">mdi-close-circle-outline</v-icon>
-        <br />Il ne reste
-        <strong>PAS</strong> de tables disponibles.
-        <strong>Venez plus tard.</strong>
       </v-col>
     </v-row>
   </v-container>
