@@ -58,7 +58,8 @@
                 <v-row align="center" justify="center">
                   <v-col v-if="!table.available" cols="12" class="headline">
                     Table de
-                    <strong>{{table.client.clientsAtTable}}</strong> personnes, au nom de
+                    <strong>{{table.client.clientsAtTable}}</strong> personnes, dont
+                    <strong>{{table.client.minor}}</strong> mineurs, au nom de
                     <strong>{{table.client.username}}.</strong>
                   </v-col>
                   <v-col>
@@ -122,56 +123,23 @@
                       hint="Pour calculer et afficher les tables et places restantes"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" v-if="table.client != ''">
-                    <v-text-field
+                </v-row>
+                <UserDataForm :client="table.client" :cols="12">
+                  <template slot="btn">
+                    <v-btn
+                      depressed
                       block
-                      outlined
-                      v-model="table.client.username"
+                      height="4rem"
                       align="center"
                       color="success"
-                      class="py-0"
-                      black
-                      label="Table est au prénom de :"
-                      persistent-hint
-                      hint="Pour garder le ptit nom de la personne"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" v-if="table.client != ''">
-                    <v-text-field
-                      block
-                      outlined
-                      class="py-0"
-                      v-model="table.client.clientsAtTable"
-                      align="center"
-                      color="success"
-                      type="text"
-                      pattern="\d*"
-                      black
-                      label="Nombres de personnes à la table."
-                      persistent-hint
-                      hint="Pour savoir combiens ils sont ;)"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" v-if="table.client != ''">
-                    <v-switch
-                      inset
-                      v-model="table.client.minor"
-                      color="success"
-                      black
-                      class="py-0 v-input--reverse v-input--expand"
-                      persistent-hint
-                      hint="A cocher pour indiquer qu'il y a des clients de -18ans, si le truc est vert ca veut dire que tu as coché"
+                      dark
+                      @click="saveChanges"
                     >
-                      <template #label>Mineurs à la table</template>
-                    </v-switch>
-                  </v-col>
-                  <v-col cols="12" align="end">
-                    <v-btn depressed align="center" color="success" dark @click="saveChanges">
                       Enregistrer
                       <v-icon right>mdi-check</v-icon>
                     </v-btn>
-                  </v-col>
-                </v-row>
+                  </template>
+                </UserDataForm>
               </v-container>
             </v-tab-item>
           </v-tabs>
@@ -186,9 +154,10 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import HeadLine from "../communs/HeadLine.vue";
 import { HelpStates, MTable } from "../../models";
 import TableService from "../../services/table.service";
+import UserDataForm from "../forms/UserDataForm.vue";
 
 @Component({
-  components: { HeadLine },
+  components: { HeadLine, UserDataForm },
 })
 export default class ProductListItemClient extends Vue {
   @Prop() table!: MTable;

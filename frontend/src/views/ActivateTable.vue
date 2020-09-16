@@ -11,7 +11,7 @@
         </h2>
       </v-col>
       <v-col cols="12" v-else>
-        <h1 class="font-weight-bold">Voila {{clientName}} !</h1>
+        <h1 class="font-weight-bold">Voila {{client.username}} !</h1>
         <h2>
           <span class="font-weight-medium">La table</span>
           {{this.$route.params.tableNumber}} est Activée.
@@ -22,53 +22,12 @@
         </h2>
       </v-col>
     </v-row>
-    <v-row align="center" justify="center" v-if="!activated">
-      <v-col cols="8" class="mt-10">
-        <v-text-field
-          block
-          outlined
-          v-model="clientName"
-          align="center"
-          color="success"
-          class="py-0"
-          black
-          label="Table est au prénom de :"
-          persistent-hint
-          hint="Pour garder le ptit nom de la personne"
-        ></v-text-field>
-      </v-col>
-      <v-col cols="8" class>
-        <v-text-field
-          block
-          outlined
-          class="py-0"
-          v-model="clientsAtTable"
-          align="center"
-          color="success"
-          type="text"
-          pattern="\d*"
-          black
-          label="Nombres de personnes à la table."
-          persistent-hint
-          hint="Pour savoir combiens ils sont ;)"
-        ></v-text-field>
-      </v-col>
-      <v-col cols="8">
-        <v-switch
-          inset
-          v-model="minor"
-          color="success"
-          black
-          class="py-0 v-input--reverse v-input--expand"
-        >
-          <template #label>Mineurs à la table</template>
-        </v-switch>
-      </v-col>
-      <v-col cols="8" class="mt-5">
+    <UserDataForm :client="client" v-if="!activated">
+      <template slot="btn">
         <v-btn
           block
           outlined
-          :disabled="clientName.length < 2 && clientsAtTable.length <= 1"
+          :disabled="client.username.length < 2 || client.clientsAtTable <= 1 || client.minor > client.clientsAtTable"
           align="center"
           color="success"
           black
@@ -79,10 +38,10 @@
           Activer la table
           <v-icon right>mdi-checkbox-marked-circle-outline</v-icon>
         </v-btn>
-      </v-col>
-    </v-row>
+      </template>
+    </UserDataForm>
     <v-row align="center" justify="center" v-else>
-      <v-col cols="12" align="center" class="mt-10">
+      <v-col cols="12" align="center">
         <qrcode-vue :value="activationLink" :size="size" level="L"></qrcode-vue>
         <v-btn
           class="mt-10"
@@ -104,18 +63,22 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import QrcodeVue from "qrcode.vue";
+import UserDataForm from "../components/forms/UserDataForm.vue";
 import TableService from "../services/table.service";
 import TokenService from "../services/token.service";
 import { MUserData } from "../models";
 
 @Component({
-  components: { QrcodeVue },
+  components: { QrcodeVue, UserDataForm },
 })
 export default class ActivateTable extends Vue {
-  private clientName = "";
-  private clientsAtTable = "";
+  private client: MUserData = {
+    username: "",
+    clientsAtTable: 0,
+    minor: 0,
+  } as MUserData;
+
   private loading = false;
-  private minor = false;
   private activated = false;
   private activationLink = "https://k-table.kfet-insa.fr";
   private size = 300;
@@ -123,9 +86,9 @@ export default class ActivateTable extends Vue {
   async activateTable() {
     this.loading = true;
     const token = TokenService.generateToken(
-      this.clientName,
-      this.clientsAtTable,
-      this.minor,
+      this.client.username,
+      this.client.clientsAtTable,
+      this.client.minor,
       this.$route.params.tableId,
       this.$route.params.tableNumber
     );

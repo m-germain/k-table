@@ -59,7 +59,7 @@ const TokenService = {
         localStorage.removeItem(TOKEN_KEY)
     },
 
-    generateToken(username: string, clientsAtTable: string, minor: boolean, tableId: string, table: string): string {
+    generateToken(username: string, clientsAtTable: number, minor: number, tableId: string, table: string): string {
         if (SECRET_KEY) {
             const token = jwt.sign({ username: username, clientsAtTable: clientsAtTable, minor: minor, tableId: tableId, table: table }, SECRET_KEY, { expiresIn: '4h' });
             return token;
@@ -93,7 +93,7 @@ const TokenService = {
         // Get the token in storage, 
         // If good retrive the user datas.
         // Else we clean the localstorage of the fake or expiered token.
-        let localUserData: MUserData = {}
+        let localUserData: MUserData = { username: "", clientsAtTable: 0, minor: 0 };
         const token = this.getToken() as string;
 
         if (token) {

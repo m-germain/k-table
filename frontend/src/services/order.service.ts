@@ -17,6 +17,7 @@ const OrderService = {
                     orderCode: doc.data().orderCode,
                     client: doc.data().client,
                     timestamp: orderDate,
+                    message: doc.data().message,
                     state: doc.data().state,
                     lineItems: doc.data().lineItems,
                 };
@@ -40,6 +41,7 @@ const OrderService = {
                 client: userData,
                 timestamp: new Date(),
                 state: OrderStates.placed,
+                message: "",
                 lineItems: lineItems,
             }).then(docRef => {
                 return docRef.id;
@@ -49,11 +51,21 @@ const OrderService = {
         } else throw new Error('Invalid User.')
     },
 
-    patchOrder: async function (id: string, newState: string) {
+    patchStateOrder: async function (id: string, newState: string) {
         orders.doc(id).update({
             state: newState,
         }).then(() => {
             Vue.toasted.global.success({ message: "Commande passée à l'état : " + newState })
+        }).catch(error => {
+            throw new Error('Could not patch this Order to the serveur.' + error)
+        })
+    },
+    patchLineItemsOrder: async function (id: string, newlineItems: MLineItem[]) {
+        orders.doc(id).update({
+            lineItems: newlineItems,
+            message: "Votre commande à été modifiée par le bar."
+        }).then(() => {
+            Vue.toasted.global.success({ message: "Commande modifiée." })
         }).catch(error => {
             throw new Error('Could not patch this Order to the serveur.' + error)
         })

@@ -24,6 +24,7 @@ export interface MOrder {
     orderCode: string;
     client: MUserData;
     timestamp: Date;
+    message: string;
     state: string;
     lineItems: MLineItem[];
 }
@@ -33,8 +34,7 @@ export interface MLineItem {
     quantity: number;
 }
 
-export interface MUserData { username?: string; clientsAtTable?: string; tableId?: string; table?: string; minor?: boolean; iat?: number; exp?: number }
-
+export interface MUserData { username: string; clientsAtTable: number; minor: number; tableId?: string; table?: string; iat?: number; exp?: number }
 
 export const Categories: MCategorie[] = [
     { name: "Recommended", icon: "mdi-star" },
@@ -61,7 +61,7 @@ export const HelpStates = {
     activationTable: { state: "ACTIVATION_TABLE", color: "warning", message: "Demmande d'activation" },
     leaveTable: { state: "LEAVE_TABLE", color: "brown darken-2", message: "Demmande Jetons" },
     helpInOrder: { state: "HELP_IN_ORDER", color: "indigo darken-2", message: "Besoin d'aide Commande" },
-    helpTableLock: { state: "HELP_TABLE_LOCK", color: "blue-grey darken-2", message: "Problème De Télephone" },
+    helpTableLock: { state: "HELP_TABLE_LOCK", color: "pink  lighten-3", message: "Problème De Télephone" },
     noNeed: { state: "NO_NEED", color: "success", message: "Tout est OK" },
 }
 

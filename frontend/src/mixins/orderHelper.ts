@@ -1,11 +1,13 @@
 
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { MOrder, OrderStates } from '@/models';
+import { MOrder, MUserData, OrderStates } from '@/models';
 import { orders } from "../services/order.service";
 
 @Component
 export default class OrderHelper extends Vue {
   private orders: MOrder[] = [];
+  private clientOrders: MOrder[] = [];
+
   private ordersPlaced: MOrder[] = [];
   private ordersPreparated: MOrder[] = [];
   private ordersPayed: MOrder[] = [];
@@ -45,6 +47,7 @@ export default class OrderHelper extends Vue {
           orderCode: change.doc.data().orderCode,
           client: change.doc.data().client,
           timestamp: orderDate,
+          message: change.doc.data().message,
           state: change.doc.data().state,
           lineItems: change.doc.data().lineItems,
         }
@@ -64,6 +67,48 @@ export default class OrderHelper extends Vue {
       });
     });
     this.orders = localOrders;
+  }
+
+  //Listen to the db and fetch the changes on all devices.
+  clientRealTimeListenner(userData: MUserData) {
+    //Ref to the collection in table service.
+    //Local Order array. Bcs I Can't acces to this.orders mdr
+    const localOrders: MOrder[] = [];
+
+    // We get only the orders of today day.
+    orders.where('client', "==", userData).onSnapshot(function (snapshot) {
+      snapshot.docChanges().forEach(function (change) {
+        const orderDate: Date = new Date(change.doc.data().timestamp.seconds * 1000);
+        const order: MOrder = {
+          id: change.doc.id,
+          orderCode: change.doc.data().orderCode,
+          client: change.doc.data().client,
+          timestamp: orderDate,
+          message: change.doc.data().message,
+          state: change.doc.data().state,
+          lineItems: change.doc.data().lineItems,
+        }
+        if (change.type === "added") {
+          localOrders.push(order);
+        }
+        if (change.type === "modified") {
+          const index = localOrders.findIndex(item => item.id == order.id)
+          localOrders.splice(index, 1, order)
+        }
+        if (change.type === "removed") {
+          const index = localOrders.findIndex(item => item.id == order.id)
+          if (index >= 0) {
+            localOrders.splice(index, 1)
+          }
+        }
+      });
+    });
+    // We sort it by Desc timestamp. to diplay the latest order on the top.
+    localOrders.sort((a: MOrder, b: MOrder) => {
+      return (b.timestamp.getTime() - a.timestamp.getTime())
+    });
+    
+    this.clientOrders = localOrders;
   }
 
   get numberOfOrdersToday() {

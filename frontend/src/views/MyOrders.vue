@@ -33,13 +33,13 @@
         </v-col>
       </v-row>
       <v-row align="center" justify="center" class="mb-15">
-        <v-col block align="center" v-if="myOrders.length < 1">
+        <v-col block align="center" v-if="clientOrders.length < 1">
           <v-progress-circular :size="70" :width="7" color="secondary" indeterminate></v-progress-circular>
           <br />
           <br />En attente de commandes.
           <br />Vous n'avez peut etre pas encore passé de commandes...
         </v-col>
-        <v-col cols="12" v-for="order in myOrders" :key="order.id">
+        <v-col cols="12" v-for="order in clientOrders" :key="order.id">
           <OrderTile :client="true" :order="order" />
         </v-col>
       </v-row>
@@ -61,37 +61,30 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { HelpStates, MOrder, MUserData } from "../models";
+import { Component, Mixins } from "vue-property-decorator";
+import { HelpStates, MUserData } from "../models";
 import OrderTile from "../components/orders/OrderTile.vue";
-import OrderService from "../services/order.service";
 import TokenService from "../services/token.service";
 import TableService from "../services/table.service";
+import OrderHelper from "../mixins/orderHelper";
 
 @Component({
   components: { OrderTile },
 })
-export default class MyOrders extends Vue {
+export default class MyOrders extends Mixins(OrderHelper) {
   private loadingUser = true;
-  private myOrders: MOrder[] = [];
   private bannertuto = true;
 
   // Counting everytime the user spam.
   private count = 0;
-
-  // Set an Interval to fetch the orders every 2 min
-  private interval = setInterval(() => {
-    this.getOrders();
-  }, 120000);
 
   // Client Data
   private clientData: MUserData = {
     username: "",
     tableId: "",
     table: "",
-    minor: false,
-    iat: -1,
-    exp: -1,
+    clientsAtTable: 0,
+    minor: 0,
   };
 
   mounted() {
@@ -102,7 +95,7 @@ export default class MyOrders extends Vue {
     await TokenService.getAndDecodeToken()
       .then((userData: MUserData) => {
         this.clientData = userData as MUserData;
-        this.getOrders();
+        this.clientRealTimeListenner(this.clientData);
         this.loadingUser = false;
       })
       .catch(() => {
@@ -114,18 +107,15 @@ export default class MyOrders extends Vue {
       });
   }
 
-  async getOrders() {
-    // Get orders of a given client.
-    this.myOrders = await OrderService.getOrdersOfClient(this.clientData);
-    console.log(this.myOrders);
-  }
-
   notify() {
     // Send the notification if the user is spaming we dont send more we just count for fun ;).
     if (this.count === 0 && this.clientData.tableId) {
       // We don't need to catch the fail here bcs if it fail the counter will not increment and we want this.
       // The service take in charge all the web notifications.
-      TableService.askHelp(this.clientData.tableId, HelpStates.helpInOrder).then(() => this.count++);
+      TableService.askHelp(
+        this.clientData.tableId,
+        HelpStates.helpInOrder
+      ).then(() => this.count++);
     } else this.count++;
   }
 

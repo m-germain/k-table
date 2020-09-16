@@ -18,7 +18,7 @@
       <transition name="slide-fade-invert">
         <v-list-item-icon
           class="ma-0 mr-4 ma-auto"
-          v-if="lineItem.quantity <= 0 && lineItem.product.alcohol > 0"
+          v-if="lineItem.quantity <= 0 && lineItem.product.alcohol > 0 && !showIcon"
         >
           <h1>{{parseFloat(lineItem.product.alcohol)}}</h1>
           <h2>°</h2>
@@ -106,6 +106,7 @@ export default class ProductListItemClient extends Vue {
   @Prop() lineItem!: MLineItem;
   @Prop({ default: false }) inOrder!: boolean;
   @Prop({ default: false }) hideBtns!: boolean;
+  @Prop({ default: false }) showIcon!: boolean;
   @Prop({ default: false }) inPreparation!: boolean;
 }
 </script>

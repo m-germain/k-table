@@ -1,11 +1,6 @@
 <template>
   <span>
     <v-container v-if="!loadingUser">
-      <!-- <v-footer rounded class="warning">
-        <div>Attention, il y a des mineurs à ta table. Nous allons particulièrement faire attentions lors du service de vos commandes</div>
-        <v-spacer></v-spacer>
-        <v-icon>mdi-alert-decagram</v-icon>
-      </v-footer>-->
       <v-banner v-model="banner" two-line>
         <v-avatar slot="icon" color="primary accent-4" size="40">
           <v-icon icon="mdi-lock" color="white">mdi-alert-decagram</v-icon>
@@ -228,9 +223,8 @@ export default class Barman extends Mixins(LineItemHelper) {
     username: "",
     tableId: "",
     table: "",
-    minor: false,
-    iat: -1,
-    exp: -1,
+    clientsAtTable: 0,
+    minor: 0,
   };
 
   mounted() {
@@ -242,7 +236,7 @@ export default class Barman extends Mixins(LineItemHelper) {
     await TokenService.getAndDecodeToken()
       .then((userData: MUserData) => {
         this.clientData = userData as MUserData;
-        if (userData.minor) {
+        if (userData.minor > 0) {
           this.banner = true;
         }
         this.loadingUser = false;
@@ -282,7 +276,7 @@ export default class Barman extends Mixins(LineItemHelper) {
             this.$toasted.global.success({
               message: "Yes ! Ta commande en cours de préparation...",
             });
-            if (this.clientData.minor) {
+            if (this.clientData.minor > 0) {
               this.banner = true;
             }
             this.$router.push("/myorders");
