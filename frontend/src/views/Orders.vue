@@ -15,9 +15,9 @@
           prepend-inner-icon="mdi-database-search"
           label="Search"
         ></v-text-field>-->
-        <v-switch inset v-model="tracking" color="success" class="mt-7 v-input--reverse">
+        <!-- <v-switch inset v-model="tracking" color="success" class="mt-7 v-input--reverse">
           <template #label>Suivi commandes</template>
-        </v-switch>
+        </v-switch> -->
       </template>
     </HeadLine>
     <v-row class="mx-1" align="center" justify="space-between">
@@ -168,7 +168,7 @@ import OrderHelper from "../mixins/orderHelper";
 })
 export default class Orders extends Mixins(OrderHelper) {
   // private search = "";
-  private tracking = false;
+  private tracking = true; // We go in full Tracking of the orders for the moment
   private tab = null;
 
   mounted() {
