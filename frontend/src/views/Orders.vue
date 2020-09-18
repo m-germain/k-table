@@ -129,7 +129,7 @@
               <v-icon>mdi-cash</v-icon>
             </v-avatar>
             {{numberOfOrdersPreparated}}
-          </v-chip>à encaisser
+          </v-chip>à faire payer
         </v-tab>
         <v-tab href="#tab-4">
           <v-chip outlined class="mt-2" style="margin-top: 3px important!" color="primary">
@@ -148,7 +148,7 @@
             :number="1"
           />
           <OrderTabItem :orders="ordersPlaced" title="Commandes à préparer" :number="2" />
-          <OrderTabItem :orders="ordersPreparated" title="Commandes à encaisser" :number="3" />
+          <OrderTabItem :orders="ordersPreparated" title="Commandes à faire payer" :number="3" />
           <OrderTabItem :orders="ordersPayed" title="Commandes à déposer à une table" :number="4" />
         </v-tabs-items>
       </v-tabs>

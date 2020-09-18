@@ -4,20 +4,28 @@
       <!-- <v-btn block align="center" height="3rem" :color="color" dark v-bind="attrs" v-on="on">
         <h2>{{order.timestamp}}</h2>
       </v-btn>-->
+
       <v-card>
         <v-list-item
           two-line
           v-if="order.state !== localStateEnum.canceled"
-          :class="order.state == localStateEnum.served ? 'success darken-1': 'orange lighten-5'"
+          :class="
+            order.state == localStateEnum.served
+              ? 'success darken-1'
+              : 'orange lighten-5'
+          "
           :dark="order.state == localStateEnum.served"
         >
           <v-list-item-content>
             <v-list-item-title class="headline font-weight-medium">
               <v-row align="center" justify="end" no-gutters>
                 <v-col>
-                  <span>Table {{order.client.table}} | {{order.orderCode}} |</span>
+                  <span
+                    >Table {{ order.client.table }} |
+                    {{ order.orderCode }} |</span
+                  >
                   <v-chip small class="mx-2 mt-n1" color="success" pill>
-                    <h2>{{order.client.clientsAtTable}}</h2>
+                    <h2>{{ order.client.clientsAtTable }}</h2>
                     <v-icon right>mdi-account-outline</v-icon>
                   </v-chip>
                 </v-col>
@@ -25,9 +33,14 @@
                   <v-btn
                     text
                     x-large
-                    :color="(timeFromNow.includes('H') && order.state !== localStateEnum.served ? 'primary' : '' )"
+                    :color="
+                      timeFromNow.includes('H') &&
+                      order.state !== localStateEnum.served
+                        ? 'primary'
+                        : ''
+                    "
                   >
-                    Passée il y à {{timeFromNow}}
+                    Passée il y à {{ timeFromNow }}
                     <v-icon medium right>mdi-timer-sand</v-icon>
                   </v-btn>
                 </v-col>
@@ -35,7 +48,7 @@
             </v-list-item-title>
             <v-list-item-subtitle>
               <v-row align="center" justify="end" no-gutters>
-                <v-col>{{order.timestamp.toLocaleString()}}</v-col>
+                <v-col>{{ order.timestamp.toLocaleString() }}</v-col>
                 <v-col align="end">
                   <v-chip
                     height="10px"
@@ -46,7 +59,10 @@
                     text-color="primary darken-4"
                   >
                     <v-icon left class="mt-n2">mdi-badge-account-alert</v-icon>
-                    <h2 class="mr-1">{{order.client.minor}}/{{order.client.clientsAtTable}} -18 ANS</h2>
+                    <h2 class="mr-1">
+                      {{ order.client.minor }}/{{ order.client.clientsAtTable }}
+                      -18 ANS
+                    </h2>
                   </v-chip>
                 </v-col>
               </v-row>
@@ -54,14 +70,27 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item two-line v-if="order.state == localStateEnum.canceled" class="primary" dark>
+        <v-list-item
+          two-line
+          v-if="order.state == localStateEnum.canceled"
+          class="primary"
+          dark
+        >
           <v-list-item-content>
             <v-list-item-title class="headline font-weight-medium">
               <v-row align="center" justify="end" no-gutters>
                 <v-col>
-                  <span>Table {{order.client.table}} | {{order.orderCode}} |</span>
-                  <v-chip small class="mx-2 mt-n1" color="primary lighten-2" pill>
-                    <h2>{{order.client.clientsAtTable}}</h2>
+                  <span
+                    >Table {{ order.client.table }} |
+                    {{ order.orderCode }} |</span
+                  >
+                  <v-chip
+                    small
+                    class="mx-2 mt-n1"
+                    color="primary lighten-2"
+                    pill
+                  >
+                    <h2>{{ order.client.clientsAtTable }}</h2>
                     <v-icon right>mdi-account-outline</v-icon>
                   </v-chip>
                 </v-col>
@@ -70,9 +99,14 @@
                     text
                     x-large
                     dark
-                    :color="(timeFromNow.includes('H') && order.state !== localStateEnum.canceled ? 'primary' : '' )"
+                    :color="
+                      timeFromNow.includes('H') &&
+                      order.state !== localStateEnum.canceled
+                        ? 'primary'
+                        : ''
+                    "
                   >
-                    Passée il y à {{timeFromNow}}
+                    Passée il y à {{ timeFromNow }}
                     <v-icon medium right>mdi-timer-sand</v-icon>
                   </v-btn>
                 </v-col>
@@ -80,7 +114,7 @@
             </v-list-item-title>
             <v-list-item-subtitle>
               <v-row align="center" justify="end" no-gutters>
-                <v-col>{{order.timestamp.toLocaleString()}}</v-col>
+                <v-col>{{ order.timestamp.toLocaleString() }}</v-col>
                 <v-col align="end">
                   <v-chip
                     height="10px"
@@ -91,7 +125,10 @@
                     text-color="primary darken-4"
                   >
                     <v-icon left class="mt-n2">mdi-badge-account-alert</v-icon>
-                    <h2 class="mr-1">{{order.client.minor}}/{{order.client.clientsAtTable}} -18 ANS</h2>
+                    <h2 class="mr-1">
+                      {{ order.client.minor }}/{{ order.client.clientsAtTable }}
+                      -18 ANS
+                    </h2>
                   </v-chip>
                 </v-col>
               </v-row>
@@ -101,7 +138,7 @@
 
         <v-list class="transparent">
           <ProductListItemClient
-            v-for="(lineItem,i) of order.lineItems"
+            v-for="(lineItem, i) of order.lineItems"
             :inOrder="true"
             :hideBtns="true"
             :showIcon="true"
@@ -111,17 +148,27 @@
           />
           <v-divider
             class="mx-4"
-            v-if="(order.state == localStateEnum.preparated && detailed) || (order.state == localStateEnum.placed  && detailed)|| client || quickFinishBtn"
+            v-if="
+              (order.state == localStateEnum.preparated && detailed) ||
+                (order.state == localStateEnum.placed && detailed) ||
+                client ||
+                quickFinishBtn
+            "
           ></v-divider>
           <v-list-item
-            v-if="(order.state == localStateEnum.preparated  && detailed) || (order.state == localStateEnum.placed  && detailed) || client || quickFinishBtn"
+            v-if="
+              (order.state == localStateEnum.preparated && detailed) ||
+                (order.state == localStateEnum.placed && detailed) ||
+                client ||
+                quickFinishBtn
+            "
           >
             <v-list-item-content>
               <h3 class="font-weight-light grey-darken2--text">Total</h3>
             </v-list-item-content>
             <v-list-item-content align="end">
               <v-list-item-title>
-                <span class="font-weight-bold">{{totalPrice}} €</span>
+                <span class="font-weight-bold">{{ totalPrice }} €</span>
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
@@ -137,7 +184,7 @@
                 <v-avatar slot="icon" color="white accent-4" size="40">
                   <v-icon icon="mdi-lock" color="primary">mdi-alert</v-icon>
                 </v-avatar>
-                {{order.message}}
+                {{ order.message }}
                 <template v-slot:actions="{ dismiss }">
                   <v-btn text color="white" @click="dismiss">OK</v-btn>
                 </template>
@@ -151,12 +198,24 @@
         <v-card-actions v-if="!client">
           <v-btn
             small
-            v-if="quickFinishBtn || (order.state == localStateEnum.placed  && detailed)"
+            v-if="
+              quickFinishBtn ||
+                (order.state == localStateEnum.placed && detailed) ||
+                (order.state == localStateEnum.preparated && detailed) ||
+                (order.state == localStateEnum.payed && detailed)
+            "
             text
             v-bind="attrs"
             v-on="on"
           >
-            <v-icon right>mdi-pencil</v-icon>
+            <v-icon right>{{
+              (order.state == localStateEnum.preparated ||
+                order.state == localStateEnum.payed) &&
+              detailed &&
+              !openInNew
+                ? "mdi-open-in-new"
+                : "mdi-pencil"
+            }}</v-icon>
           </v-btn>
 
           <v-spacer></v-spacer>
@@ -174,7 +233,7 @@
               v-if="order.state == localStateEnum.preparated"
               @click="updatedState(localStateEnum.payed)"
             >
-              Encaissement terminée
+              Payé
               <v-icon right>mdi-check</v-icon>
             </v-btn>
             <v-btn
@@ -217,18 +276,28 @@
             text
             align="center"
             flex
-            :color="order.state == localStateEnum.served ? 'success': 'primary'"
+            :color="
+              order.state == localStateEnum.served ? 'success' : 'primary'
+            "
           >
             <span
-              v-if="(order.state !== localStateEnum.served) && (order.state !== localStateEnum.canceled)"
+              v-if="
+                order.state !== localStateEnum.served &&
+                  order.state !== localStateEnum.canceled
+              "
               class="warning--text"
             >
               <h3>en préparation</h3>
             </span>
-            <h3 v-else>{{order.state == localStateEnum.served ? 'Traitée': 'Annulée'}}</h3>
+            <h3 v-else>
+              {{ order.state == localStateEnum.served ? "Traitée" : "Annulée" }}
+            </h3>
           </v-btn>
           <v-progress-circular
-            v-if="(order.state !== localStateEnum.served) && (order.state !== localStateEnum.canceled)"
+            v-if="
+              order.state !== localStateEnum.served &&
+                order.state !== localStateEnum.canceled
+            "
             indeterminate
             size="15"
             color="warning"
@@ -236,19 +305,42 @@
         </v-card-actions>
       </v-card>
     </template>
-    <v-card>
+    <OrderTile
+      v-if="
+        (order.state == localStateEnum.preparated ||
+          order.state == localStateEnum.payed) &&
+          detailed &&
+          !openInNew
+      "
+      :detailed="true"
+      :edit="false"
+      :openInNew="true"
+      :order="order"
+    />
+    <v-card
+      v-if="
+        !(
+          (order.state == localStateEnum.preparated ||
+            order.state == localStateEnum.payed) &&
+          detailed &&
+          !openInNew
+        )
+      "
+    >
       <HeadLine
         class="my-2"
-        :title="'Table ' + order.client.table +' | ' + order.orderCode"
+        :title="'Table ' + order.client.table + ' | ' + order.orderCode"
         weight="bold"
       >
         <template v-slot:end>
           <v-btn
             outlined
             align="center"
-            :color="order.state == localStateEnum.served ? 'success': 'warning'"
+            :color="
+              order.state == localStateEnum.served ? 'success' : 'warning'
+            "
           >
-            <h3>{{order.state}}</h3>
+            <h3>{{ order.state }}</h3>
           </v-btn>
         </template>
       </HeadLine>
@@ -265,10 +357,13 @@
               <v-container fluid>
                 <v-row align="center" justify="space-between">
                   <v-col cols="12" class="pb-0">
-                    <div class="overline font-weight-bold">Changer l'état de la commande :</div>
-                    <div
-                      class="underline font-weight-light"
-                    >Cela va déplacer la commande dans l'onglet de l'Icon : à servir, à déposer, à encaisser..</div>
+                    <div class="overline font-weight-bold">
+                      Changer l'état de la commande :
+                    </div>
+                    <div class="underline font-weight-light">
+                      Cela va déplacer la commande dans l'onglet de l'Icon : à
+                      servir, à déposer, à faire payer..
+                    </div>
                   </v-col>
                   <v-col cols="4">
                     <v-btn
@@ -301,7 +396,7 @@
                       align="center"
                       color="success"
                       height="3rem"
-                      @click="updatedState(localStateEnum.served)"
+                      @click="updatedState(localStateEnum.payed)"
                     >
                       <v-icon>mdi-table-chair</v-icon>
                     </v-btn>
@@ -354,7 +449,7 @@
                   </v-list-item-content>
                   <v-list-item-content align="end">
                     <v-list-item-title>
-                      <span class="font-weight-bold">{{totalPrice}} €</span>
+                      <span class="font-weight-bold">{{ totalPrice }} €</span>
                     </v-list-item-title>
                   </v-list-item-content>
                   <v-list-item-action>
@@ -364,7 +459,12 @@
                 </v-list-item>
                 <v-list-item>
                   <v-spacer></v-spacer>
-                  <v-btn depressed align="center" color="success" @click="saveChangesOrder">
+                  <v-btn
+                    depressed
+                    align="center"
+                    color="success"
+                    @click="saveChangesOrder"
+                  >
                     Enregistrer
                     <v-icon right>mdi-pencil</v-icon>
                   </v-btn>
@@ -395,6 +495,7 @@ export default class OrderTile extends Vue {
   @Prop({ default: false }) quickFinishBtn!: boolean;
   @Prop({ default: false }) client!: boolean;
   @Prop({ default: false }) edit!: boolean;
+  @Prop({ default: false }) openInNew!: boolean;
 
   private dialog = false;
   private msgBanner = this.order.message.length > 1;
@@ -445,6 +546,4 @@ export default class OrderTile extends Vue {
 }
 </script>
 
-
-<style scoped>
-</style>
+<style scoped></style>
