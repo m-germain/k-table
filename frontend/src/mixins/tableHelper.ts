@@ -1,6 +1,6 @@
-import Vue from 'vue'
-import Component from 'vue-class-component'
-import { HelpStates, MTable } from '@/models';
+import Vue from "vue";
+import Component from "vue-class-component";
+import { HelpStates, MTable } from "@/models";
 import TableService, { tables } from "../services/table.service";
 
 @Component
@@ -17,8 +17,8 @@ export default class TableHelper extends Vue {
     //Ref to the collection in table service.
     //Local tables array. Bcs I Can't acces to this.tables mdr
     const localTables: MTable[] = [];
-    tables.orderBy("name").onSnapshot(function (snapshot) {
-      snapshot.docChanges().forEach(function (change) {
+    tables.orderBy("name").onSnapshot(function(snapshot) {
+      snapshot.docChanges().forEach(function(change) {
         const table: MTable = {
           id: change.doc.id,
           name: change.doc.data().name,
@@ -27,18 +27,18 @@ export default class TableHelper extends Vue {
           available: change.doc.data().available,
           help: change.doc.data().help,
           token: change.doc.data().token,
-        }
+        };
         if (change.type === "added") {
           localTables.push(table);
         }
         if (change.type === "modified") {
-          const index = localTables.findIndex(item => item.id == table.id)
-          localTables.splice(index, 1, table)
+          const index = localTables.findIndex((item) => item.id == table.id);
+          localTables.splice(index, 1, table);
         }
         if (change.type === "removed") {
-          const index = localTables.findIndex(item => item.id == table.id)
+          const index = localTables.findIndex((item) => item.id == table.id);
           if (index >= 0) {
-            localTables.splice(index, 1)
+            localTables.splice(index, 1);
           }
         }
       });
@@ -58,12 +58,12 @@ export default class TableHelper extends Vue {
     let count = 0;
     this.tablesAvailable.forEach((table: MTable) => {
       count += parseInt(table.capacity.toString());
-    })
+    });
     return count;
   }
 
   get tablesAvailable() {
-    const tablesAvailable: MTable[] = []
+    const tablesAvailable: MTable[] = [];
     for (const table of this.tables) {
       if (table.available) {
         tablesAvailable.push(table);
@@ -73,12 +73,20 @@ export default class TableHelper extends Vue {
   }
 
   get tablesInNeed() {
-    const tablesInNeed: MTable[] = []
+    const tablesInNeed: MTable[] = [];
     for (const table of this.tables) {
-      if (table.help.state !== HelpStates.noNeed.state) {
+      if (table.help.type.state !== HelpStates.noNeed.state) {
         tablesInNeed.push(table);
       }
     }
+    // We sort it by timestamp. to diplay the oldest help request on top.
+    tablesInNeed.sort((a: MTable, b: MTable) => {
+      const timestampA = new Date(a.help.timestamp.seconds * 1000);
+      const timestampB = new Date(b.help.timestamp.seconds * 1000);
+      return timestampA.getTime() - timestampB.getTime();
+    });
+    console.log(tablesInNeed);
+
     return tablesInNeed;
   }
 
@@ -106,7 +114,6 @@ export default class TableHelper extends Vue {
   freshStart() {
     this.tables.forEach((table) => {
       TableService.liberateTable(table.id);
-    })
+    });
   }
-
 }

@@ -194,7 +194,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from "vue-property-decorator";
-import { Categories, MUserData, HelpStates, MHelp } from "../models";
+import { Categories, MUserData, HelpStates, MHelpType } from "../models";
 import LineItemHelper from "../mixins/lineItemtHelper";
 import ProductList from "../components/products/ProductList.vue";
 import ProductListItemClient from "../components/products/ProductListItemClient.vue";
@@ -298,7 +298,7 @@ export default class Barman extends Mixins(LineItemHelper) {
       });
   }
 
-  notify(count: number, help: MHelp) {
+  notify(count: number, help: MHelpType) {
     // Send the notification if the user is spaming we dont send more we just count for fun ;).
     if (count === 0 && this.clientData.tableId) {
       // We don't need to catch the fail here bcs if it fail the counter will not increment and we want this.

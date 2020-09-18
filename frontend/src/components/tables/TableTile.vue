@@ -63,15 +63,15 @@
                     <strong>{{table.client.username}}.</strong>
                   </v-col>
                   <v-col>
-                    <v-btn block outlined align="center" :color="table.help.color" height="3rem">
-                      {{table.help.message}}
+                    <v-btn block outlined align="center" :color="table.help.type.color" height="3rem">
+                      {{table.help.type.message}}
                       <v-icon
                         small
                         right
-                      >{{table.help.state == noNeedHelp.state ? "mdi-bell": "mdi-bell-ring"}}</v-icon>
+                      >{{table.help.type.state == noNeedHelp.state ? "mdi-bell": "mdi-bell-ring"}}</v-icon>
                     </v-btn>
                   </v-col>
-                  <v-col v-if="table.help.state != noNeedHelp.state">
+                  <v-col v-if="table.help.type.state != noNeedHelp.state">
                     <v-btn
                       block
                       depressed
@@ -164,14 +164,7 @@ export default class ProductListItemClient extends Vue {
   @Prop() color!: string;
 
   private dialog = false;
-  private helpMessage = "Besoin d'aide";
   private tableUrl = "";
-
-  mounted() {
-    if (this.table.available) {
-      this.helpMessage = "Attente Validation";
-    }
-  }
 
   dismissNotify() {
     TableService.resolveHelp(this.table.id, this.table.name);

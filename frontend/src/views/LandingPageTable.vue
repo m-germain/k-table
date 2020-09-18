@@ -108,7 +108,7 @@ export default class LandingPageTable extends Vue {
       .then((table) => {
         // Keep the table id on the device.
         this.tableId = table.id;
-        if (table.help.state != HelpStates.noNeed.state) {
+        if (table.help.type.state != HelpStates.noNeed.state) {
           this.count = 1;
         }
         // if table is unavailable.

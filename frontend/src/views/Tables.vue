@@ -94,7 +94,7 @@
 
         <v-row v-if="tablesInNeed.length > 0">
           <v-col cols="3" v-for="table in tablesInNeed" :key="table.name">
-            <TableTile :table="table" :color="table.help.color" />
+            <TableTile :table="table" :color="table.help.type.color" />
           </v-col>
         </v-row>
         <div class="overline font-weight-bold">Activitée des tables</div>
