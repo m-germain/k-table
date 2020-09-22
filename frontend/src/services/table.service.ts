@@ -192,6 +192,21 @@ const TableService = {
       });
   },
 
+  blockTable: async function(id: string) {
+    tables
+      .doc(id)
+      .update({
+        available: false,
+      })
+      .then(() => {
+        Vue.toasted.global.success({ message: "Table Bloquée !" });
+        return id;
+      })
+      .catch((error) => {
+        throw new Error("Could block table." + error);
+      });
+  },
+
   activateTable: async function(id: string, client: MUserData, token: string) {
     tables
       .doc(id)

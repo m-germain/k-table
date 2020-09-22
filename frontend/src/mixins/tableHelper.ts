@@ -67,7 +67,10 @@ export default class TableHelper extends Vue {
     for (const table of this.tables) {
       // We want to know was tables are available, Also we don't want to count tables that are waiting for activations.
       // Bcs if they are waiting for activation this mean that someone is on the table.
-      if (table.available && table.help.type.state != HelpStates.activationTable.state) {
+      if (
+        table.available &&
+        table.help.type.state != HelpStates.activationTable.state
+      ) {
         tablesAvailable.push(table);
       }
     }
@@ -113,6 +116,11 @@ export default class TableHelper extends Vue {
     }, 600);
   }
 
+  blockTables() {
+    this.tables.forEach((table) => {
+      TableService.blockTable(table.id);
+    });
+  }
   freshStart() {
     this.tables.forEach((table) => {
       TableService.liberateTable(table.id);
