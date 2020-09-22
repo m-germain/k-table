@@ -21,11 +21,14 @@
           </h2>
         </v-col>
         <v-col cols="3">
-          <v-btn fab depressed text :color="notified ? 'success' : ''" @click="notify">
+          <v-btn fab depressed text :class="notified ? 'success' : ''" @click="help">
             <v-icon v-if="!notified">mdi-bell</v-icon>
             <v-scroll-x-transition>
               <v-icon v-if="notified">mdi-bell-check</v-icon>
             </v-scroll-x-transition>
+          </v-btn>
+          <v-btn fab depressed text :class="askLeaving ? 'success' : ''" @click="askLeave">
+            <v-icon class="mt-n1">mdi-exit-run</v-icon>
           </v-btn>
           <v-btn fab depressed text to="/order">
             <v-icon>mdi-basket</v-icon>
@@ -62,7 +65,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from "vue-property-decorator";
-import { HelpStates, MUserData } from "../models";
+import { HelpStates, MHelpType, MUserData } from "../models";
 import OrderTile from "../components/orders/OrderTile.vue";
 import TokenService from "../services/token.service";
 import TableService from "../services/table.service";
@@ -77,6 +80,7 @@ export default class MyOrders extends Mixins(OrderHelper) {
 
   // Counting everytime the user spam.
   private count = 0;
+  private leave = 0;
 
   // Client Data
   private clientData: MUserData = {
@@ -107,20 +111,31 @@ export default class MyOrders extends Mixins(OrderHelper) {
       });
   }
 
-  notify() {
-    // Send the notification if the user is spaming we dont send more we just count for fun ;).
-    if (this.count === 0 && this.clientData.tableId) {
-      // We don't need to catch the fail here bcs if it fail the counter will not increment and we want this.
-      // The service take in charge all the web notifications.
-      TableService.askHelp(
-        this.clientData.tableId,
-        HelpStates.helpInOrder
-      ).then(() => this.count++);
-    } else this.count++;
-  }
-
   get notified() {
     return this.count >= 1;
+  }
+
+  notify(count: number, help: MHelpType) {
+    // Send the notification if the user is spaming we dont send more we just count for fun ;).
+    if (count === 0 && this.clientData.tableId) {
+      // We don't need to catch the fail here bcs if it fail the counter will not increment and we want this.
+      // The service take in charge all the web notifications.
+      TableService.askHelp(this.clientData.tableId, help).then(() => count++);
+    } else count++;
+  }
+
+  help() {
+    this.notify(this.count, HelpStates.helpInOrder);
+  }
+
+  askLeave() {
+    this.notify(this.leave, HelpStates.leaveTable);
+  }
+
+  get askLeaving() {
+    console.log(this.leave >= 1);
+
+    return this.leave >= 1;
   }
 }
 </script>
