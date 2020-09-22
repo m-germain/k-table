@@ -65,7 +65,9 @@ export default class TableHelper extends Vue {
   get tablesAvailable() {
     const tablesAvailable: MTable[] = [];
     for (const table of this.tables) {
-      if (table.available) {
+      // We want to know was tables are available, Also we don't want to count tables that are waiting for activations.
+      // Bcs if they are waiting for activation this mean that someone is on the table.
+      if (table.available && table.help.type.state != HelpStates.activationTable.state) {
         tablesAvailable.push(table);
       }
     }
