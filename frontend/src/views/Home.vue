@@ -25,7 +25,7 @@
         <br />
         <strong>Venez vite !</strong>
       </v-col>
-      <v-col cols="7" style="font-size: 1.5rem" v-else>
+      <v-col cols="7" align="center" style="font-size: 1.5rem" v-else>
         <v-icon color="primary" class="my-8" style="font-size: 20vh">mdi-close-circle-outline</v-icon>
         <br />Il ne reste
         <strong>PAS</strong> de tables disponibles.
