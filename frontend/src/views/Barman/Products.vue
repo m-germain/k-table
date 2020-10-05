@@ -2,8 +2,6 @@
   <v-container>
     <HeadLine title="Nos Produits">
       <template v-slot:end>
-        <v-btn @click="updateAll">test</v-btn>
-
         <!-- <v-text-field
           v-model="search"
           dense
