@@ -54,7 +54,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from "vue-property-decorator";
-import TableHelper from "../mixins/tableHelper";
+import TableHelper from "../../mixins/tableHelper";
 
 @Component({
   components: {},

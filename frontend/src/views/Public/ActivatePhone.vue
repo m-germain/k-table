@@ -6,14 +6,19 @@
         <h2>
           <span class="font-weight-medium">
             l'activation de votre
-            <br />telephone est en
-          </span>cours.
+            <br />telephone est en </span
+          >cours.
         </h2>
       </v-col>
     </v-row>
     <v-row align="center" justify="center" v-if="loading">
-      <v-col  block align="center" class="mt-10">
-        <v-progress-circular :size="70" :width="7" color="secondary" indeterminate></v-progress-circular>
+      <v-col block align="center" class="mt-10">
+        <v-progress-circular
+          :size="70"
+          :width="7"
+          color="secondary"
+          indeterminate
+        ></v-progress-circular>
       </v-col>
     </v-row>
   </v-container>
@@ -21,8 +26,8 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import TokenService from "../services/token.service";
-import { MUserData } from "../models";
+import TokenService from "../../services/token.service";
+import { MUserData } from "../../models";
 
 @Component({
   components: {},
@@ -38,6 +43,11 @@ export default class ActivatePhone extends Vue {
             message: "Téléphone barman Activé.",
           });
           this.$router.push("/admin");
+        } else if (userData.table == "association") {
+          this.$toasted.global.success({
+            message: "Téléphone Association Activé.",
+          });
+          this.$router.push("/association");
         } else {
           this.$toasted.global.success({
             message:
@@ -60,6 +70,4 @@ export default class ActivatePhone extends Vue {
 }
 </script>
 
-
-<style scoped>
-</style>
+<style scoped></style>

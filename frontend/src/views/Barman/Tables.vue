@@ -164,9 +164,9 @@
 
 <script lang="ts">
 import { Component, Mixins } from "vue-property-decorator";
-import HeadLine from "../components/communs/HeadLine.vue";
-import TableTile from "../components/tables/TableTile.vue";
-import TableHelper from "../mixins/tableHelper";
+import HeadLine from "../../components/communs/HeadLine.vue";
+import TableTile from "../../components/tables/TableTile.vue";
+import TableHelper from "../../mixins/tableHelper";
 
 @Component({
   components: { HeadLine, TableTile },

@@ -9,7 +9,7 @@
               v-model="formProduct.categorie"
               color="secondary"
               :items="categories"
-              :rules="[v => !!v || 'La catégorie est obligatoire']"
+              :rules="[(v) => !!v || 'La catégorie est obligatoire']"
               chips
               label="Choix de la catégorie du produit"
               item-text="name"
@@ -23,7 +23,7 @@
                   dark
                   @click="data.select"
                 >
-                  <v-icon left>{{data.item.icon}}</v-icon>
+                  <v-icon left>{{ data.item.icon }}</v-icon>
                   {{ data.item.name }}
                 </v-chip>
               </template>
@@ -34,8 +34,8 @@
                 <template v-else>
                   <v-list-item-content>
                     <v-list-item-title>
-                      <v-icon left>{{data.item.icon}}</v-icon>
-                      {{data.item.name}}
+                      <v-icon left>{{ data.item.icon }}</v-icon>
+                      {{ data.item.name }}
                     </v-list-item-title>
                   </v-list-item-content>
                 </template>
@@ -49,7 +49,7 @@
               color="secondary"
               hint="exemple : St-Stefanus Blonde"
               persistent-hint
-              :rules="[v => !!v || 'Le nom est obligatoire']"
+              :rules="[(v) => !!v || 'Le nom est obligatoire']"
               required
               v-model="formProduct.name"
             ></v-text-field>
@@ -64,7 +64,7 @@
               pattern="\d*"
               step="0.1"
               persistent-hint
-              :rules="[v => !!v || 'Le prix est obligatoire']"
+              :rules="[(v) => !!v || 'Le prix est obligatoire']"
               required
               v-model="formProduct.alcohol"
             ></v-text-field>
@@ -79,7 +79,7 @@
               type="text"
               pattern="\d*"
               step="0.1"
-              :rules="[v => !!v || 'Le prix est obligatoire']"
+              :rules="[(v) => !!v || 'Le prix est obligatoire']"
               required
               v-model="formProduct.price"
             ></v-text-field>
@@ -90,7 +90,10 @@
               hint="exemple : Une bière légère et sucrée"
               color="secondary"
               persistent-hint
-              :rules="[v => !!v || 'La description est obligatoire, respect un peu ;)']"
+              :rules="[
+                (v) =>
+                  !!v || 'La description est obligatoire, respect un peu ;)',
+              ]"
               required
               v-model="formProduct.description"
             ></v-text-field>
@@ -104,11 +107,18 @@
               v-model="formProduct.pictureUrl"
             ></v-text-field>
           </v-col>
-          <v-col cols="12" sm="12" md="12" class="py-0">
+          <v-col cols="6" sm="6" md="6" class="py-0">
             <v-switch
               v-model="formProduct.available"
               color="teal ligthen-2"
               label="Disponible à la vente"
+            ></v-switch>
+          </v-col>
+          <v-col cols="6" sm="6" md="6" class="py-0">
+            <v-switch
+              v-model="formProduct.association"
+              color="teal ligthen-2"
+              label="Produit Association"
             ></v-switch>
           </v-col>
         </v-row>
@@ -125,11 +135,17 @@
         depressed
         class="mx-6"
         @click="createNewProduct()"
-      >Créer</v-btn>
+        >Créer</v-btn
+      >
     </v-card-actions>
 
     <v-card-actions v-else>
-      <v-btn outlined color="primary" class="ml-1 mb-2" @click="deleteProduct()">
+      <v-btn
+        outlined
+        color="primary"
+        class="ml-1 mb-2"
+        @click="deleteProduct()"
+      >
         <v-icon left>mdi-delete-outline</v-icon>Supprimer
       </v-btn>
       <v-spacer></v-spacer>
@@ -139,7 +155,8 @@
         class="ml-1 mb-2"
         :disabled="!productFormValid"
         @click="updateProduct()"
-      >Enregistrer</v-btn>
+        >Enregistrer</v-btn
+      >
     </v-card-actions>
   </span>
 </template>
@@ -187,5 +204,4 @@ export default class ProductForm extends Vue {
 }
 </script>
 
-<style>
-</style>
+<style></style>

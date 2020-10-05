@@ -76,6 +76,26 @@
               </v-card-text>-->
             </v-card>
           </v-col>
+          <v-col cols="6" xl="4" lg="4" md="4">
+            <v-card class="mx-auto" to="/admin/association">
+              <v-img
+                class="white--text align-end"
+                height="150px"
+                gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.6)"
+                src="https://content.thriveglobal.com/wp-content/uploads/2018/08/iStock-585522428.jpg"
+              >
+                <v-card-title>
+                  <h2>Associations</h2>
+                </v-card-title>
+              </v-img>
+
+              <!-- <v-card-subtitle class="pb-0">Nombre de tables : {{numberOfTables}}</v-card-subtitle>
+
+              <v-card-text class="text--primary">
+                <div>Tables Libres : {{numberOfTablesAvailable}}</div>
+              </v-card-text>-->
+            </v-card>
+          </v-col>
         </v-row>
       </v-col>
     </v-row>
@@ -99,10 +119,7 @@ import { Component, Vue } from "vue-property-decorator";
 @Component({
   components: {},
 })
-export default class Barman extends Vue {
-}
+export default class Barman extends Vue {}
 </script>
 
-
-<style scoped>
-</style>
+<style scoped></style>

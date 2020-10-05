@@ -63,10 +63,10 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import QrcodeVue from "qrcode.vue";
-import UserDataForm from "../components/forms/UserDataForm.vue";
-import TableService from "../services/table.service";
-import TokenService from "../services/token.service";
-import { MUserData } from "../models";
+import UserDataForm from "../../components/forms/UserDataForm.vue";
+import TableService from "../../services/table.service";
+import TokenService from "../../services/token.service";
+import { MUserData } from "../../models";
 
 @Component({
   components: { QrcodeVue, UserDataForm },

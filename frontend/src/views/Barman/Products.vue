@@ -2,6 +2,8 @@
   <v-container>
     <HeadLine title="Nos Produits">
       <template v-slot:end>
+        <v-btn @click="updateAll">test</v-btn>
+
         <!-- <v-text-field
           v-model="search"
           dense
@@ -30,51 +32,80 @@
     </HeadLine>
     <v-row class="mx-1">
       <v-col cols="12">
-        <v-chip-group v-model="filters" multiple column active-class="primary--text text--accent-4">
-          <v-chip filter outlined v-for="categorie in categories" :key="categorie.name">
-            <v-icon small left>{{categorie.icon}}</v-icon>
-            {{categorie.name}}
+        <v-chip-group
+          v-model="filters"
+          multiple
+          column
+          active-class="primary--text text--accent-4"
+        >
+          <v-chip
+            filter
+            outlined
+            v-for="categorie in categories"
+            :key="categorie.name"
+          >
+            <v-icon small left>{{ categorie.icon }}</v-icon>
+            {{ categorie.name }}
           </v-chip>
         </v-chip-group>
       </v-col>
     </v-row>
     <v-row align="center" justify="center">
       <v-col block align="center" v-if="products.length < 1">
-        <v-progress-circular :size="70" :width="7" color="secondary" indeterminate></v-progress-circular>
+        <v-progress-circular
+          :size="70"
+          :width="7"
+          color="secondary"
+          indeterminate
+        ></v-progress-circular>
       </v-col>
       <v-col cols="12" v-else>
         <ProductList
-          v-if="recomendations.length > 0 && (filters.includes(0) || filters.length == 0)"
+          v-if="
+            recomendations.length > 0 &&
+              (filters.includes(0) || filters.length == 0)
+          "
           :listProduct="recomendations"
           title="Recommended"
           @closeDialog="closeDialog"
         />
         <ProductList
-          v-if="tapBeers.length > 0 && (filters.includes(1) || filters.length == 0)"
+          v-if="
+            tapBeers.length > 0 && (filters.includes(1) || filters.length == 0)
+          "
           :listProduct="tapBeers"
           title="Tap Beers"
           @closeDialog="closeDialog"
         />
         <ProductList
-          v-if="bottledBeers.length > 0 && (filters.includes(2) || filters.length == 0)"
+          v-if="
+            bottledBeers.length > 0 &&
+              (filters.includes(2) || filters.length == 0)
+          "
           :listProduct="bottledBeers"
           title="Bottled Beers"
           @closeDialog="closeDialog"
         />
         <ProductList
-          v-if="wines.length > 0 && (filters.includes(3) || filters.length == 0)"
+          v-if="
+            wines.length > 0 && (filters.includes(3) || filters.length == 0)
+          "
           :listProduct="wines"
           title="Wines"
           @closeDialog="closeDialog"
         />
         <ProductList
-          v-if="softs.length > 0 && (filters.includes(4) || filters.length == 0)"
+          v-if="
+            softs.length > 0 && (filters.includes(4) || filters.length == 0)
+          "
           :listProduct="softs"
           title="Softs"
           @closeDialog="closeDialog"
         />
         <ProductList
-          v-if="foods.length > 0 && (filters.includes(5) || filters.length == 0)"
+          v-if="
+            foods.length > 0 && (filters.includes(5) || filters.length == 0)
+          "
           :listProduct="foods"
           title="Foods"
           @closeDialog="closeDialog"
@@ -86,11 +117,11 @@
 
 <script lang="ts">
 import { Component, Mixins } from "vue-property-decorator";
-import HeadLine from "../components/communs/HeadLine.vue";
-import ProductForm from "../components/products/ProductForm.vue";
-import ProductList from "../components/products/ProductList.vue";
-import ProductHelper from "../mixins/productHelper";
-import { MProduct, Categories } from "../models";
+import HeadLine from "../../components/communs/HeadLine.vue";
+import ProductForm from "../../components/products/ProductForm.vue";
+import ProductList from "../../components/products/ProductList.vue";
+import ProductHelper from "../../mixins/productHelper";
+import { MProduct, Categories } from "../../models";
 
 const defaultProduct: MProduct = {
   name: "",
@@ -101,6 +132,7 @@ const defaultProduct: MProduct = {
   description: "",
   available: true,
   categorie: { name: "", icon: "" },
+  association: false,
 };
 
 @Component({
@@ -124,6 +156,4 @@ export default class Products extends Mixins(ProductHelper) {
 }
 </script>
 
-
-<style scoped>
-</style>
+<style scoped></style>

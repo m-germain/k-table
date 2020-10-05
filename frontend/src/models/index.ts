@@ -7,6 +7,7 @@ export interface MProduct {
   pictureUrl: string;
   available: boolean;
   categorie: MCategorie;
+  association: boolean;
 }
 
 export interface MTable {
@@ -27,6 +28,7 @@ export interface MOrder {
   message: string;
   state: string;
   lineItems: MLineItem[];
+  association: boolean;
 }
 
 export interface MLineItem {
@@ -93,7 +95,6 @@ export interface MHelp {
   type: MHelpType;
   timestamp: FirebaseDateFormat;
 }
-
 
 // Firebase use a differents Date Object dans JS Date.
 // So sometime is better to save it like this to access the date later ON.

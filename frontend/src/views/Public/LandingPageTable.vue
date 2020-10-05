@@ -76,9 +76,9 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { HelpStates } from "../models";
-import TableService from "../services/table.service";
-import TokenService from "../services/token.service";
+import { HelpStates } from "../../models";
+import TableService from "../../services/table.service";
+import TokenService from "../../services/token.service";
 
 @Component({
   components: {},
