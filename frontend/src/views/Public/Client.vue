@@ -352,44 +352,52 @@ export default class Barman extends Mixins(LineItemHelper) {
     TokenService.getAndDecodeToken()
       .then((userData: MUserData) => {
         const splitedOrders = this.splitOrder();
-        OrderService.createOrder(userData, splitedOrders.classic, false)
-          .then(() => {
-            this.$toasted.global.success({
-              message: "Yes ! Ta commande en cours de préparation au bar...",
-            });
-            if (this.clientData.minor > 0) {
-              this.banner = true;
-            }
-            this.$router.push("/myorders");
-            this.getProducts();
-            this.closeDrawer();
-          })
-          .catch((error) => {
-            console.log(error);
+        if (splitedOrders.classic.length > 0) {
+          OrderService.createOrder(userData, splitedOrders.classic, false)
+            .then(() => {
+              this.$toasted.global.success({
+                message: "Yes ! Ta commande en cours de préparation au bar...",
+              });
+              if (this.clientData.minor > 0) {
+                this.banner = true;
+              }
+              this.$router.push("/myorders");
+              this.getProducts();
+              this.closeDrawer();
+            })
+            .catch((error) => {
+              console.log(error);
 
-            this.$toasted.global.error({
-              message: "Imposible de préparer la commande, essayez plus tard..",
+              this.$toasted.global.error({
+                message:
+                  "Imposible de préparer la commande, essayez plus tard..",
+              });
             });
-          });
+        }
 
-        OrderService.createOrder(userData, splitedOrders.association, true)
-          .then(() => {
-            this.$toasted.global.success({
-              message:
-                "Yes ! Ta commande en cours de préparation par l'association...",
+        if (splitedOrders.association.length > 0) {
+          OrderService.createOrder(userData, splitedOrders.association, true)
+            .then(() => {
+              this.$toasted.global.success({
+                message:
+                  "Yes ! Ta commande en cours de préparation par l'association...",
+              });
+              if (this.clientData.minor > 0) {
+                this.banner = true;
+              }
+              this.$router.push("/myorders");
+              this.getProducts();
+              this.closeDrawer();
+            })
+            .catch((err) => {
+              console.log(err);
+
+              this.$toasted.global.error({
+                message:
+                  "Imposible de préparer la commande, essayez plus tard..",
+              });
             });
-            if (this.clientData.minor > 0) {
-              this.banner = true;
-            }
-            this.$router.push("/myorders");
-            this.getProducts();
-            this.closeDrawer();
-          })
-          .catch(() => {
-            this.$toasted.global.error({
-              message: "Imposible de préparer la commande, essayez plus tard..",
-            });
-          });
+        }
       })
       .catch(() => {
         this.$toasted.global.error({
