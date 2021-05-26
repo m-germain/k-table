@@ -32,8 +32,8 @@ npm run build
 ### Connect to firebase
 ```bash
 firebase init
-``` 
-Select your the hosting option, and select the appropriate firebase project. Once you do this a ```.firebaserc``` file will be added to your directory. This file should be good to go. Also, a ```firebase.json``` file will have been added.
+```
+Select your the hosting option, and select the appropriate firebase project and change ```public``` for ```dist``` Once you do this a ```.firebaserc``` file will be added to your directory. This file should be good to go. Also, a ```firebase.json``` file will have been added.
 
 ### Deploy to firebase Hosting (Ask Access KomIf)
 ```
