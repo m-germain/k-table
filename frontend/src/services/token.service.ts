@@ -233,6 +233,7 @@ const TokenService = {
                 localUserData = decodedUserData as MUserData;
               })
               .catch((error) => {
+                console.log(doc.id);
                 // If we cant read the token we clear it from the user local storage.
                 association.doc(doc.id).delete();
                 throw new Error(error);
@@ -249,9 +250,7 @@ const TokenService = {
   async activateAssociation(token: string): Promise<boolean> {
     let isDone = false;
     await association
-      .add({
-        id: token,
-      })
+      .doc(token).set({})
       .then(() => {
         isDone = true;
       })
