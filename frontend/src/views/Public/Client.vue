@@ -104,56 +104,50 @@
           ></v-progress-circular>
         </v-col>
         <v-col cols="12" v-else>
-          <ProductList
+          <ProductListClient
             v-if="
               recomendations.length > 0 &&
-                (filters.includes(0) || filters.length == 0)
+              (filters.includes(0) || filters.length == 0)
             "
             :listLineItem="recomendations"
-            title="Recommended"
-            client="true"
+            :categorie="categories[0]"
           />
-          <ProductList
+          <ProductListClient
             v-if="
               tapBeers.length > 0 &&
                 (filters.includes(1) || filters.length == 0)
             "
             :listLineItem="tapBeers"
-            title="Tap Beers"
-            client="true"
+            :categorie="categories[1]"
           />
-          <ProductList
+          <ProductListClient
             v-if="
               bottledBeers.length > 0 &&
                 (filters.includes(2) || filters.length == 0)
             "
             :listLineItem="bottledBeers"
-            title="Bottled Beers"
-            client="true"
+            :categorie="categories[2]"
           />
-          <ProductList
+          <ProductListClient
             v-if="
               wines.length > 0 && (filters.includes(3) || filters.length == 0)
             "
             :listLineItem="wines"
-            title="Wines"
-            client="true"
+            :categorie="categories[3]"
           />
-          <ProductList
+          <ProductListClient
             v-if="
               softs.length > 0 && (filters.includes(4) || filters.length == 0)
             "
             :listLineItem="softs"
-            title="Softs"
-            client="true"
+            :categorie="categories[4]"
           />
-          <ProductList
+          <ProductListClient
             v-if="
               foods.length > 0 && (filters.includes(5) || filters.length == 0)
             "
             :listLineItem="foods"
-            title="Foods"
-            client="true"
+            :categorie="categories[5]"
           />
         </v-col>
       </v-row>
@@ -161,7 +155,7 @@
         padless
         absolute
         class="font-weight-thin"
-        style="background-color: transparent;"
+        style="background-color: transparent"
       >
         <v-col class="text-center" cols="12">
           Made with
@@ -227,7 +221,7 @@
         padless
         absolute
         class="font-weight-medium"
-        style="background-color: transparent;"
+        style="background-color: transparent"
       >
         <v-col class="text-center" cols="12">
           <v-btn block color="primary" @click="order">
@@ -270,21 +264,21 @@ import {
   MLineItem,
 } from "../../models";
 import LineItemHelper from "../../mixins/lineItemtHelper";
-import ProductList from "../../components/products/ProductList.vue";
+import ProductListClient from "../../components/products/ProductListClient.vue";
 import ProductListItemClient from "../../components/products/ProductListItemClient.vue";
 import OrderService from "../../services/order.service";
 import TokenService from "../../services/token.service";
 import TableService from "../../services/table.service";
 
 @Component({
-  components: { ProductList, ProductListItemClient },
+  components: { ProductListClient, ProductListItemClient },
 })
 export default class Barman extends Mixins(LineItemHelper) {
   // To show the client's command
   private drawer = false;
   private banner = false; // Minor banner
   private bannertuto = true;
-  private categories = Categories;
+  private categories = [...Categories];
   private filters = [];
   private loadingUser = true;
 
@@ -430,8 +424,6 @@ export default class Barman extends Mixins(LineItemHelper) {
   }
 
   get askLeaving() {
-    console.log(this.leave >= 1);
-
     return this.leave >= 1;
   }
 
