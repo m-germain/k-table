@@ -81,6 +81,7 @@
             multiple
             column
             active-class="primary--text text--accent-4"
+            v-if="canOrder"
           >
             <v-chip
               filter
@@ -103,6 +104,49 @@
             indeterminate
           ></v-progress-circular>
         </v-col>
+        <v-col block align="center" v-if="!canOrder">
+          <v-card class="mx-auto" color="danger" dark max-width="400">
+            <v-card-title>
+              <v-icon left>mdi-clock-alert</v-icon>
+              <span class="title font-weight-bold"
+                >Le service est terminé !</span
+              >
+            </v-card-title>
+
+            <v-card-text class="headline font-weight-bold">
+              "Nous ne servons plus après 20h30. Merci de terminer vos verres et
+              de demander des jetons avec le bouton
+              <v-icon class="mt-n1 mx-1 headline">mdi-exit-run</v-icon>. "
+              <br /><br />Merci
+              <v-icon class="mt-n1 mx-1 headline">mdi-heart</v-icon> et à
+              bientôt !
+              <v-icon class="mt-n1 mx-1 headline"
+                >mdi-emoticon-cool-outline</v-icon
+              >
+            </v-card-text>
+
+            <v-card-actions>
+              <v-list-item class="grow">
+                <v-list-item-avatar color="grey darken-3">
+                  <v-img
+                    class="elevation-6"
+                    alt=""
+                    src="https://firebasestorage.googleapis.com/v0/b/k-table.appspot.com/o/Kfet.png?alt=media&token=16b17b0a-9003-4082-8b6a-6870821248bb"
+                  ></v-img>
+                </v-list-item-avatar>
+
+                <v-list-item-content>
+                  <v-list-item-title>Les Barmans</v-list-item-title>
+                </v-list-item-content>
+
+                <v-row align="center" justify="end">
+                  <v-icon small class="mr-1"> mdi-beer </v-icon>
+                  <span class="subheading mr-2">416</span>
+                </v-row>
+              </v-list-item>
+            </v-card-actions>
+          </v-card>
+        </v-col>
         <v-col cols="12" v-else>
           <ProductListClient
             v-if="
@@ -115,7 +159,7 @@
           <ProductListClient
             v-if="
               tapBeers.length > 0 &&
-                (filters.includes(1) || filters.length == 0)
+              (filters.includes(1) || filters.length == 0)
             "
             :listLineItem="tapBeers"
             :categorie="categories[1]"
@@ -123,7 +167,7 @@
           <ProductListClient
             v-if="
               bottledBeers.length > 0 &&
-                (filters.includes(2) || filters.length == 0)
+              (filters.includes(2) || filters.length == 0)
             "
             :listLineItem="bottledBeers"
             :categorie="categories[2]"
@@ -322,6 +366,30 @@ export default class Barman extends Mixins(LineItemHelper) {
         });
         this.$router.push("/");
       });
+  }
+
+  // Return if the service is open or not and if the customer can order.
+  get canOrder(): boolean {
+    let canOrder = false;
+    // We check only the dates
+    const now = new Date();
+    // Convert it to today 00h30
+    const today1600 = new Date();
+    const today2030 = new Date();
+
+    today1600.setHours(16);
+    today1600.setMinutes(0);
+    today1600.setSeconds(0);
+
+    today2030.setHours(20);
+    today2030.setMinutes(30);
+    today2030.setSeconds(0);
+
+    if (now < today2030 && now > today1600) {
+      // So we are btw 16H00 and 20H30 we can order on the table.
+      canOrder = true;
+    }
+    return canOrder;
   }
 
   openDrawer() {
