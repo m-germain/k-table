@@ -27,7 +27,7 @@
         <v-btn
           block
           outlined
-          :disabled="client.username.length < 2 || client.clientsAtTable <= 1 || client.minor > client.clientsAtTable"
+          :disabled="client.username.length < 2 || client.clientsAtTable <= 0 || client.minor > client.clientsAtTable"
           align="center"
           color="success"
           black
