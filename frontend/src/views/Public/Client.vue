@@ -279,7 +279,7 @@
     <transition name="slide-fade">
       <v-btn
         x-large
-        v-if="lineItems.length > 0"
+        v-if="lineItems.length > 0 && canOrder"
         class="absolute-btn ma-8"
         fab
         dark
@@ -411,63 +411,73 @@ export default class Barman extends Mixins(LineItemHelper) {
   }
 
   order() {
-    TokenService.getAndDecodeToken()
-      .then((userData: MUserData) => {
-        const splitedOrders = this.splitOrder();
-        if (splitedOrders.classic.length > 0) {
-          OrderService.createOrder(userData, splitedOrders.classic, false)
-            .then(() => {
-              this.$toasted.global.success({
-                message: "Yes ! Ta commande en cours de préparation au bar...",
-              });
-              if (this.clientData.minor > 0) {
-                this.banner = true;
-              }
-              this.$router.push("/myorders");
-              this.getProducts();
-              this.closeDrawer();
-            })
-            .catch((error) => {
-              console.log(error);
+    if (this.canOrder) {
+      TokenService.getAndDecodeToken()
+        .then((userData: MUserData) => {
+          const splitedOrders = this.splitOrder();
+          if (splitedOrders.classic.length > 0) {
+            OrderService.createOrder(userData, splitedOrders.classic, false)
+              .then(() => {
+                this.$toasted.global.success({
+                  message:
+                    "Yes ! Ta commande en cours de préparation au bar...",
+                });
+                if (this.clientData.minor > 0) {
+                  this.banner = true;
+                }
+                this.$router.push("/myorders");
+                this.getProducts();
+                this.closeDrawer();
+              })
+              .catch((error) => {
+                console.log(error);
 
-              this.$toasted.global.error({
-                message:
-                  "Imposible de préparer la commande, essayez plus tard..",
+                this.$toasted.global.error({
+                  message:
+                    "Imposible de préparer la commande, essayez plus tard..",
+                });
               });
-            });
-        }
+          }
 
-        if (splitedOrders.association.length > 0) {
-          OrderService.createOrder(userData, splitedOrders.association, true)
-            .then(() => {
-              this.$toasted.global.success({
-                message:
-                  "Yes ! Ta commande en cours de préparation par l'association...",
-              });
-              if (this.clientData.minor > 0) {
-                this.banner = true;
-              }
-              this.$router.push("/myorders");
-              this.getProducts();
-              this.closeDrawer();
-            })
-            .catch((err) => {
-              console.log(err);
+          if (splitedOrders.association.length > 0) {
+            OrderService.createOrder(userData, splitedOrders.association, true)
+              .then(() => {
+                this.$toasted.global.success({
+                  message:
+                    "Yes ! Ta commande en cours de préparation par l'association...",
+                });
+                if (this.clientData.minor > 0) {
+                  this.banner = true;
+                }
+                this.$router.push("/myorders");
+                this.getProducts();
+                this.closeDrawer();
+              })
+              .catch((err) => {
+                console.log(err);
 
-              this.$toasted.global.error({
-                message:
-                  "Imposible de préparer la commande, essayez plus tard..",
+                this.$toasted.global.error({
+                  message:
+                    "Imposible de préparer la commande, essayez plus tard..",
+                });
               });
-            });
-        }
-      })
-      .catch(() => {
-        this.$toasted.global.error({
-          message:
-            "Imposible de préparer la commande, ton téléphone à été désactivé..",
+          }
+        })
+        .catch(() => {
+          this.$toasted.global.error({
+            message:
+              "Imposible de préparer la commande, ton téléphone à été désactivé..",
+          });
+          this.$router.push("/");
         });
-        this.$router.push("/");
+    } else {
+      this.$toasted.global.error({
+        message: "La commande n'a pas été envoyé car le service est maintenant terminé...",
       });
+      this.$router.push("/myorders");
+      this.getProducts();
+      this.closeDrawer();
+    }
   }
 
   notify(count: number, help: MHelpType) {
